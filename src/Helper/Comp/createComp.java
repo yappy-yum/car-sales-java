@@ -6,6 +6,7 @@ import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
 
@@ -170,6 +171,37 @@ public class createComp {
         label.setFocusable(false);
 
         return label;
+    }
+
+    /*//////////////////////////////////////////////////////////////
+                                 JPanel
+    //////////////////////////////////////////////////////////////*/    
+
+    /**
+     * create a JPanel (mostly to be used as a box)
+     * 
+     * @param x starting from X-coordinate
+     * @param y starting from Y-coordinate
+     * @param panelWidth width length of the JPanel
+     * @param panelHeight height length of the JPanel
+     * @param border JPanel box border
+     * @return created JPanel
+     * 
+     */
+    public static JPanel createJPanel(
+        int x, int y, 
+        int panelWidth, int panelHeight,
+        Border border
+    ) {
+        JPanel panel = new JPanel();
+
+        panel.setLayout(null);
+        panel.setBorder(border);
+        panel.setLocation(x, y);
+        panel.setOpaque(false);
+        panel.setSize(panelWidth, panelHeight);
+
+        return panel;
     }
 
 }

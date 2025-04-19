@@ -14,12 +14,15 @@ import frontPage.isDarkTheme;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.stream.Stream;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -105,16 +108,14 @@ public class Components extends JPanel {
         G2D.fillRect(0, 0, getWidth(), getHeight());
     }       
 
-    
     /*//////////////////////////////////////////////////////////////
                              add JTextArea
     //////////////////////////////////////////////////////////////*/    
     
     /**
-     * 
      * adding texts into JTextArea data type, usually long text
      * 
-     * @param _text texts to be added
+     * @param _text texts to be added into JTextArea
      * @param startX X coordinate of animation start from
      * @param startY Y coordinate of animation start from
      * @param targetX X coordinate of animation to
@@ -122,9 +123,8 @@ public class Components extends JPanel {
      * @param width the length width of the JTextArea
      * @param height the length height of the JTextArea
      * @param font the type font to be used for the text
-     * @param darkColor text color when light theme
-     * @param lightColor text color when dark theme
-     * 
+     * @param border JTextArea box border
+     * @param textColor text color
      * 
      */
     public void addJTextArea(
@@ -146,7 +146,6 @@ public class Components extends JPanel {
         texts.add(text);
         add(text);
         
-        // add animation effects
         new componentAnim(
             text, 
             startX, startY, 
@@ -171,8 +170,7 @@ public class Components extends JPanel {
      * @param width the length width of the JButton
      * @param height the length height of the JButton
      * @param border the border of the JButton
-     * @param darkColor text color when light theme
-     * @param lightColor text color when dark theme
+     * @param textColor text color
      * @return a JButton, usually when there'a an additional action required
      * 
      */
@@ -215,7 +213,6 @@ public class Components extends JPanel {
      * @param targetY Y coordinate of animation to
      * @param width the length width of the JButton
      * @param height the length height of the JButton
-     * @param border the border of the JButton
      * @return a JButton, usually when there's an additional action required
      * 
      */
@@ -330,15 +327,13 @@ public class Components extends JPanel {
     //////////////////////////////////////////////////////////////*/ 
 
     /**
-     * Attaches a custom scroll wheel listener to the provided JFXPanel,
-     * allowing scroll input even when the mouse hovers over a JavaFX video.
-     *
-     * @param panel The {@link JFXPanel} that should listen for scroll wheel events.
-     *
-     * <p>
-     * This method uses {@link SwingUtilities#invokeLater} to ensure the listener is added
-     * on the Swing event dispatch thread. The scroll delta is scaled by 20 pixels per notch
-     * to match the main scroll behavior in the application.
+     * add short videos
+     * 
+     * @param video the short video to be added
+     * @param x X-coordinate
+     * @param y Y-coordinate
+     * @param width width length of the video
+     * @param height height length of the video
      * 
      */
     public void addShortVideo(Media video, int x, int y, int width, int height) {
@@ -350,12 +345,19 @@ public class Components extends JPanel {
         player.setOnEndOfMedia(() -> player.seek(Duration.ZERO));
     
         createJFX.setupJavaFXScene(fJfxPanel, mediaView, width, height);
-        attachScrollWheelListener(fJfxPanel);
+        createScroll.mouseScroll(fJfxPanel, scrollPane);
         
-        videoAnim animation = new videoAnim(fJfxPanel, x, y + 90, x, y, 1500, scrollPane, () -> {
-            fJfxPanel.setVisible(true);
-            player.play();
-        });
+        videoAnim animation = new videoAnim(
+            fJfxPanel, 
+            x, y + 90, 
+            x, y, 
+            1500, 
+            scrollPane, 
+            () -> {
+                fJfxPanel.setVisible(true);
+                player.play();
+            }
+        );
     
         scrollPane.getViewport().addChangeListener(_ -> {
             if (animation.isFullyVisible()) {
@@ -372,22 +374,14 @@ public class Components extends JPanel {
                 fJfxPanel.setVisible(false);
             }
         });
-    }
-    
-    private void attachScrollWheelListener(JFXPanel panel) {
-        createScroll.mouseScroll(panel, scrollPane);
-    }    
+    } 
 
     /*//////////////////////////////////////////////////////////////
                                 add FaQ
     //////////////////////////////////////////////////////////////*/    
 
     public void _createFAQ(int x, int y, String question, String answer) {
-        int panelWidth = 1000;
-        int questionWidth = 700;
-        int answerWidth = panelWidth - 20;
-        int padding = 20;
-
+        int panelWidth = 1000, questionWidth = 700, answerWidth = panelWidth - 20, padding = 20;
         Color textColor = isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE;
 
         JTextArea questionLabel = _addQuestion(question, questionWidth, textColor, padding);
@@ -395,64 +389,42 @@ public class Components extends JPanel {
         JButton toggleButton = _addButton(panelWidth, textColor);
         JPanel boxPanel = _addBox(x, y, panelWidth);
 
-        // Estimate real answer height
-        int lineHeight = answerLabel.getFontMetrics(answerLabel.getFont()).getHeight();
-        int charPerLine = answerWidth / answerLabel.getFontMetrics(answerLabel.getFont()).charWidth('a');
-        int estimatedLines = (int) Math.ceil((double) answer.length() / charPerLine);
-        int answerHeight = lineHeight * estimatedLines + 10;
+        // Estimate answer height with reusable helpers
+        FontMetrics fm = answerLabel.getFontMetrics(answerLabel.getFont());
+        int answerHeight = (int) Math.ceil((double) answer.length() / (answerWidth / fm.charWidth('a'))) * fm.getHeight() + 10;
 
-        toggleButton.addActionListener( _ -> {
+        // Slide animation lambda
+        Runnable toggleAnswer = () -> {
             boolean isExpanded = !answerLabel.isVisible();
             toggleButton.setText(isExpanded ? "-" : "+");
-
-            Timer slideTimer = new Timer(8, null);
-            int[] currentHeight = {
-                isExpanded ? 0 : answerHeight
-            };
-
             answerLabel.setVisible(true);
+            int[] height = {isExpanded ? 0 : answerHeight};
 
-            slideTimer.addActionListener(_ -> {
-                int step = 3;
-                if (isExpanded) {
-                    currentHeight[0] += step;
-                    if (currentHeight[0] >= answerHeight) {
-                        currentHeight[0] = answerHeight;
-                        slideTimer.stop();
-                    }
-                } else {
-                    currentHeight[0] -= step;
-                    if (currentHeight[0] <= 0) {
-                        currentHeight[0] = 0;
-                        slideTimer.stop();
-                        answerLabel.setVisible(false);
-                    }
+            Timer timer = new Timer(8, null);
+            timer.addActionListener( _ -> {
+                height[0] += (isExpanded ? 3 : -3);
+                boolean done = isExpanded ? height[0] >= answerHeight : height[0] <= 0;
+
+                if (done) {
+                    height[0] = isExpanded ? answerHeight : 0;
+                    if (!isExpanded) answerLabel.setVisible(false);
+                    timer.stop();
                 }
-            
-                // Apply to answer
-                answerLabel.setBounds(
-                    answerLabel.getX(), 
-                    answerLabel.getY(), 
-                    answerLabel.getWidth(), 
-                    currentHeight[0]
-                );
-            
-                // ✅ Apply to boxPanel so the answer is visible!
-                boxPanel.setSize(panelWidth, 60 + currentHeight[0]);
+
+                answerLabel.setBounds(answerLabel.getX(), answerLabel.getY(), answerLabel.getWidth(), height[0]);
+                boxPanel.setSize(panelWidth, 60 + height[0]);
             });
-            slideTimer.start();
+            timer.start();
+        };
 
-        });
+        toggleButton.addActionListener(_ -> toggleAnswer.run());
 
-        JPanels.add(boxPanel);
-        texts.add(questionLabel);
-        texts.add(answerLabel);
+        // 🧩 Add to UI
+        Stream.of(questionLabel, answerLabel, toggleButton).forEach(boxPanel::add);
+        Stream.of(boxPanel).forEach(this::add);
+        Collections.addAll(JPanels, boxPanel);
+        Collections.addAll(texts, questionLabel, answerLabel);
         TButtons.add(toggleButton);
-
-        boxPanel.add(questionLabel);
-        boxPanel.add(answerLabel);
-        boxPanel.add(toggleButton);
-        this.add(boxPanel);
 
         new componentAnim(boxPanel, x, y - 100, x, y, scrollPane);
     }
@@ -497,24 +469,19 @@ public class Components extends JPanel {
     }
 
     protected JPanel _addBox(int x, int y, int panelWidth) {
-        JPanel FAQPanel = new JPanel();
-        FAQPanel.setLayout(null);
-        FAQPanel.setBorder(new roundedBorder(40, isDarkTheme.isDarkTheme ? Color.PINK : Color.BLACK, imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)));
-        FAQPanel.setLocation(x, y);
-        FAQPanel.setOpaque(false);
-        FAQPanel.setSize(panelWidth, 60);
-
-        return FAQPanel;
+        return createComp.createJPanel(
+            x, y, 
+            panelWidth, 60, 
+            new roundedBorder(
+                40, 
+                isDarkTheme.isDarkTheme ? 
+                    Color.PINK : 
+                    Color.BLACK, 
+                imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)
+            )
+        );
     }
     
-    
-    
-    
-    
-    
-    
-    
-
     /*//////////////////////////////////////////////////////////////
                            switch color theme
     //////////////////////////////////////////////////////////////*/

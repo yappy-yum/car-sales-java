@@ -118,21 +118,18 @@ public class FrontPage {
      * 
      */
     void _initializeFrontPage() {
-        topConter();
+        topCenter();
         topLeft();
         topRight();
         frontTexts();
         FaQ();
     }
 
-    void topRight() {
+    /*//////////////////////////////////////////////////////////////
+                             top components
+    //////////////////////////////////////////////////////////////*/    
 
-        _helpAddLoginIcon("Register/Login", 1050, 20);
-        _helpAddThemeIcon(985, 20);
-
-    }
-
-    void topConter() {
+    void topCenter() {
 
         int centerX = components.getWidth() / 2;
 
@@ -182,7 +179,22 @@ public class FrontPage {
             isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLACK
         );
 
+    }    
+
+    /*//////////////////////////////////////////////////////////////
+                          top right components
+    //////////////////////////////////////////////////////////////*/    
+
+    void topRight() {
+
+        _helpAddLoginIcon("Register/Login", 1050, 20);
+        _helpAddThemeIcon(985, 20);
+
     }
+
+    /*//////////////////////////////////////////////////////////////
+                          top left components
+    //////////////////////////////////////////////////////////////*/    
 
     void topLeft() {
 
@@ -192,7 +204,7 @@ public class FrontPage {
                 COMPANY_LOGO, 
                 120, 120
             ),
-            50, 12,
+            50, 20,
             50, 2,
             110, 100
         );
@@ -200,7 +212,7 @@ public class FrontPage {
         // query statement
         components.addJLabel(
             "Visit our showroom at:",
-            50, 100,
+            50, 120,
             50, 90,
             175, 30,
             new Font("Calibri", Font.BOLD, 15),
@@ -214,7 +226,7 @@ public class FrontPage {
             59100 Bangsar,
             Kuala Lumpur, WP Malaysia       
             """, 
-            15, 140, 
+            15, 150, 
             15, 130, 
             230, 100, 
             new Font("Calibri", Font.BOLD, 15), 
@@ -228,13 +240,10 @@ public class FrontPage {
 
     }
 
-    /**
-     * 
-     * targetY = previous targetY + previous height + 50        <p>
-     * height (one line) = 35                                   <p>
-     * height (more than one line) = (35 * line of texts) + 5
-     * 
-     */
+    /*//////////////////////////////////////////////////////////////
+                      front texts and short videos
+    //////////////////////////////////////////////////////////////*/
+
     void frontTexts() {
       
         _helpAddText(
@@ -377,12 +386,11 @@ public class FrontPage {
         
     }
 
-    void FaQ() {
+    /*//////////////////////////////////////////////////////////////
+                                  FaQ
+    //////////////////////////////////////////////////////////////*/
 
-        // ✅ Reset viewport BEFORE animations start
-        SwingUtilities.invokeLater(() -> {
-            scrollPane.getViewport().setViewPosition(new java.awt.Point(0, 0));
-        });   
+    void FaQ() {
 
         components.addJLabel(
             "FAQ", 
@@ -417,8 +425,17 @@ public class FrontPage {
             "Question 5", 
             "Answer 5"
         );
+
+        // ✅ Reset viewport BEFORE animations start
+        SwingUtilities.invokeLater(() -> {
+            scrollPane.getViewport().setViewPosition(new java.awt.Point(0, 0));
+        });   
     }
 
+    /*//////////////////////////////////////////////////////////////
+                        helper: add front texts
+    //////////////////////////////////////////////////////////////*/    
+    
     void _helpAddText(String _text, int targetY, int height) {
         components.addJTextArea(
             _text, 
@@ -429,6 +446,10 @@ public class FrontPage {
             isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLACK
         );
     }
+
+    /*//////////////////////////////////////////////////////////////
+                   helper: add front videos and logos
+    //////////////////////////////////////////////////////////////*/    
 
     void _helpAddShortVideoAndLogo(
         Media video, ImageIcon logo,
@@ -453,7 +474,11 @@ public class FrontPage {
             1280, 600
         );
 
-    }
+    } 
+    
+    /*//////////////////////////////////////////////////////////////
+               helper: add actionListener for login icon
+    //////////////////////////////////////////////////////////////*/
 
     void _helpAddLoginIcon(String loginText, int targetX, int targetY) {
         JButton loginButton = components.addJButton(
@@ -476,6 +501,10 @@ public class FrontPage {
         );
     }
 
+    /*//////////////////////////////////////////////////////////////
+               helper: add actionListener for theme icon
+    //////////////////////////////////////////////////////////////*/       
+    
     void _helpAddThemeIcon(int targetX, int targetY) {
         JButton themeButton = components.addJButton(
             imageSystem._scaleImage(
