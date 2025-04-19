@@ -9,12 +9,12 @@ import Helper.RoundedBorder.roundedBorder;
 import Helper.RoundedBorder.roundedBorderFactory;
 import Helper.fileSystem.imageSystem;
 import Helper.fileSystem.videoSystem;
+import frontPage.FaQConfig;
 import frontPage.isDarkTheme;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -31,7 +31,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 import javax.swing.border.Border;
 
 import javafx.embed.swing.JFXPanel;
@@ -44,16 +43,7 @@ public class Components extends JPanel {
 
     JScrollPane scrollPane;
     isDarkTheme isDarkTheme;
-
-    ArrayList<JTextArea> texts = new ArrayList<>();
-
-    ArrayList<JButton> TButtons = new ArrayList<>();
-    ArrayList<JButton> IButtons = new ArrayList<>();
-
-    ArrayList<JLabel> TLabels = new ArrayList<>();
-    ArrayList<JLabel> ILabels = new ArrayList<>();
-
-    ArrayList<JPanel> JPanels = new ArrayList<>();
+    SwitchThemeComp Switch;
     
     /*//////////////////////////////////////////////////////////////
                               constructor
@@ -61,6 +51,7 @@ public class Components extends JPanel {
     
     public Components(isDarkTheme i) {
         this.isDarkTheme = i;
+        this.Switch = new SwitchThemeComp(i);
 
         setLayout(null);
         setPreferredSize(new Dimension(1280, 8000));
@@ -143,7 +134,7 @@ public class Components extends JPanel {
             textColor
         );
         
-        texts.add(text);
+        Switch.texts.add(text);
         add(text);
         
         new componentAnim(
@@ -189,7 +180,7 @@ public class Components extends JPanel {
             border, textColor
         );
 
-        TButtons.add(button);
+        Switch.TButtons.add(button);
         add(button);
 
         new componentAnim(
@@ -228,7 +219,7 @@ public class Components extends JPanel {
             width, height
         );
         
-        IButtons.add(button);
+        Switch.IButtons.add(button);
         add(button);
         
         new componentAnim(
@@ -275,7 +266,7 @@ public class Components extends JPanel {
             font, textColor
         );
         
-        TLabels.add(label);
+        Switch.TLabels.add(label);
         add(label);
 
         new componentAnim(
@@ -311,7 +302,7 @@ public class Components extends JPanel {
             width, height
         );
         
-        ILabels.add(label);
+        Switch.ILabels.add(label);
         add(label);
 
         new componentAnim(
@@ -346,17 +337,27 @@ public class Components extends JPanel {
     
         createJFX.setupJavaFXScene(fJfxPanel, mediaView, width, height);
         createScroll.mouseScroll(fJfxPanel, scrollPane);
-        
+
+        _videoAnim(fJfxPanel, x, y, player);
+    } 
+
+    /**
+     * helper to handle video animation for {@link #addShortVideo}
+     * 
+     * @param fJfxPanel FFXPanel panel for video
+     * @param x starting from X-coordinate
+     * @param y starting from Y-coordinate
+     * @param player the video player
+     * 
+     */
+    protected void _videoAnim(JFXPanel fJfxPanel, int x, int y, MediaPlayer player) {
         videoAnim animation = new videoAnim(
             fJfxPanel, 
             x, y + 90, 
             x, y, 
             1500, 
             scrollPane, 
-            () -> {
-                fJfxPanel.setVisible(true);
-                player.play();
-            }
+            () -> { fJfxPanel.setVisible(true); player.play(); }
         );
     
         scrollPane.getViewport().addChangeListener(_ -> {
@@ -374,112 +375,30 @@ public class Components extends JPanel {
                 fJfxPanel.setVisible(false);
             }
         });
-    } 
+    }
 
     /*//////////////////////////////////////////////////////////////
                                 add FaQ
     //////////////////////////////////////////////////////////////*/    
 
     public void _createFAQ(int x, int y, String question, String answer) {
-        int panelWidth = 1000, questionWidth = 700, answerWidth = panelWidth - 20, padding = 20;
-        Color textColor = isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE;
 
-        JTextArea questionLabel = _addQuestion(question, questionWidth, textColor, padding);
-        JTextArea answerLabel = _addAnswer(answer, answerWidth, textColor, padding);
-        JButton toggleButton = _addButton(panelWidth, textColor);
-        JPanel boxPanel = _addBox(x, y, panelWidth);
+        FaQConfig.FaQBuilder builder = new FaQConfig(isDarkTheme). new FaQBuilder(x, y, question, answer);
 
-        // Estimate answer height with reusable helpers
-        FontMetrics fm = answerLabel.getFontMetrics(answerLabel.getFont());
-        int answerHeight = (int) Math.ceil((double) answer.length() / (answerWidth / fm.charWidth('a'))) * fm.getHeight() + 10;
-
-        // Slide animation lambda
-        Runnable toggleAnswer = () -> {
-            boolean isExpanded = !answerLabel.isVisible();
-            toggleButton.setText(isExpanded ? "-" : "+");
-            answerLabel.setVisible(true);
-            int[] height = {isExpanded ? 0 : answerHeight};
-
-            Timer timer = new Timer(8, null);
-            timer.addActionListener( _ -> {
-                height[0] += (isExpanded ? 3 : -3);
-                boolean done = isExpanded ? height[0] >= answerHeight : height[0] <= 0;
-
-                if (done) {
-                    height[0] = isExpanded ? answerHeight : 0;
-                    if (!isExpanded) answerLabel.setVisible(false);
-                    timer.stop();
-                }
-
-                answerLabel.setBounds(answerLabel.getX(), answerLabel.getY(), answerLabel.getWidth(), height[0]);
-                boxPanel.setSize(panelWidth, 60 + height[0]);
-            });
-            timer.start();
-        };
-
-        toggleButton.addActionListener(_ -> toggleAnswer.run());
+        JTextArea questionLabel = builder.question;
+        JTextArea answerLabel = builder.answer;
+        JButton toggleButton = builder.toggleButton;
+        JPanel boxPanel = builder.FAQBox;
 
         // 🧩 Add to UI
         Stream.of(questionLabel, answerLabel, toggleButton).forEach(boxPanel::add);
         Stream.of(boxPanel).forEach(this::add);
-        Collections.addAll(JPanels, boxPanel);
-        Collections.addAll(texts, questionLabel, answerLabel);
-        TButtons.add(toggleButton);
+        Collections.addAll(Switch.JPanels, boxPanel);
+        Collections.addAll(Switch.texts, questionLabel, answerLabel);
+        Switch.TButtons.add(toggleButton);
+
 
         new componentAnim(boxPanel, x, y - 100, x, y, scrollPane);
-    }
-
-    protected JTextArea _addQuestion(String question, int questionWidth, Color textColor, int padding) {
-        JTextArea questionLabel = createComp.createJTextArea(
-            question, 
-            padding, 20, 
-            questionWidth, 40, 
-            new Font("Arial", Font.BOLD, 20), 
-            null, 
-            textColor
-        );
-        questionLabel.setLineWrap(true);
-        questionLabel.setWrapStyleWord(true);
-        return questionLabel;
-    }
-
-    protected JTextArea _addAnswer(String answer, int answerWidth, Color textColor, int padding) {
-        JTextArea answerLabel = createComp.createJTextArea(
-            answer,
-            padding, 60,
-            answerWidth, 100,
-            new Font("Arial", Font.PLAIN, 16),
-            null,
-            textColor
-        );
-        answerLabel.setLineWrap(true);
-        answerLabel.setWrapStyleWord(true);
-        answerLabel.setVisible(false);
-        return answerLabel;
-    }
-
-    protected JButton _addButton(int panelWidth, Color textColor) {
-        return createComp.createJButton(
-            "+", 
-            panelWidth - 80, 10, 
-            60, 35, 
-            new roundedBorder(20, textColor, imageSystem._reduceColorTransparency(Color.GRAY, 0.2f)), 
-            Color.PINK
-        );
-    }
-
-    protected JPanel _addBox(int x, int y, int panelWidth) {
-        return createComp.createJPanel(
-            x, y, 
-            panelWidth, 60, 
-            new roundedBorder(
-                40, 
-                isDarkTheme.isDarkTheme ? 
-                    Color.PINK : 
-                    Color.BLACK, 
-                imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)
-            )
-        );
     }
     
     /*//////////////////////////////////////////////////////////////
@@ -490,168 +409,7 @@ public class Components extends JPanel {
         repaint();
         revalidate();
 
-        _switchTexts();
-
-        _switchTButton();
-        _switchIButton();
-
-        _switchTLabel();
-        _switchILabel();
-
-        _switchJPanels();
+        Switch.switchTheme();
     }  
-    
-    /**
-     * 
-     * adjust {@link #texts}
-     */
-    void _switchTexts() {
-        for (JTextArea text : texts) {
-            // black & white
-            if (text.getForeground() == Color.BLACK || text.getForeground() == Color.WHITE) {
-                text.setForeground(isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLACK);
-            }
-            
-            // blue & pink
-            if (text.getForeground() == Color.BLUE || text.getForeground() == Color.PINK) {
-                text.setForeground(isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE);
-                if (text.getBorder() != null) {
-                    text.setBorder(
-                        new roundedBorderFactory().create(
-                        20,    
-                        isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE,
-                        imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)
-                        )
-                    );
-                }
-            }
-        }        
-    }
-
-    /**
-     * 
-     * adjust {@link #TButtons}
-     */
-    void _switchTButton() {
-        for (JButton button : TButtons) {
-            // black & white
-            if (button.getForeground() == Color.BLACK || button.getForeground() == Color.WHITE) {
-                button.setForeground(
-                    (isDarkTheme.isDarkTheme) ? 
-                    (Color.WHITE) : 
-                    (button.getY() > 1000 && button.getY() < 4500) ? (Color.WHITE) : (Color.BLACK)
-                );
-                if (button.getBorder() != null) {
-                    button.setBorder(
-                        new roundedBorderFactory().create(
-                            40,    
-                            (
-                                (isDarkTheme.isDarkTheme) ? 
-                                (Color.PINK) : 
-                                (button.getY() > 1000 && button.getY() < 4500) ? (Color.PINK) : (Color.BLACK)
-                            ),
-                            imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)
-                        )
-                    );
-                }
-            }
-
-            if (button.getText() == "+" || button.getText() == "-") {
-                button.setForeground(isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE);
-                button.setBorder(
-                    new roundedBorder(
-                        20, 
-                        isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE, 
-                        imageSystem._reduceColorTransparency(Color.GRAY, 0.2f)
-                    )
-                );
-            }
-
-        }        
-    }
-
-    /**
-     * 
-     * adjust {@link #IButtons}
-     * 
-     * @notice comparison will be done on the length width but not
-     * the ImageIcon itself, as the ImageIcon itself failed to be compared
-     */
-    void _switchIButton() {
-        for (JButton button : IButtons) {
-            // light & dark theme
-            ImageIcon lightButton = imageSystem._scaleImage(imageSystem.LIGHT_BUTTON, 50, 50);
-            ImageIcon darkButton = imageSystem._scaleImage(imageSystem.DARK_BUTTON, 50, 50);
-            if (button.getWidth() == 50 && button.getHeight() == 50) {
-                button.setIcon(isDarkTheme.isDarkTheme ? lightButton : darkButton);
-            }
-        }        
-    }
-
-    /**
-     * 
-     * adjust {@link #TLabels}
-     */
-    void _switchTLabel() {
-        for (JLabel label : TLabels) {
-            // black & white
-            if (label.getForeground() == Color.BLACK || label.getForeground() == Color.WHITE) {
-                label.setForeground(isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLACK);
-            }
-
-            // big header
-            Color DARK_GREEN = new Color(13, 15, 14);
-            Color LIGHT_GREEN = new Color(59, 245, 99);
-            // !! custom color on comparison is not working !!
-            // if (label.getForeground() == DARK_GREEN || label.getForeground() == LIGHT_GREEN) {
-            //     label.setForeground(isDarkTheme.isDarkTheme ? LIGHT_GREEN : DARK_GREEN);
-            // }
-            if (label.getWidth() == 600 && label.getHeight() == 100) {
-                label.setForeground(isDarkTheme.isDarkTheme ? LIGHT_GREEN : DARK_GREEN);
-            }
-
-            // blue & pink
-            if (label.getForeground() == Color.BLUE || label.getForeground() == Color.PINK) {
-                label.setForeground(isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE);
-            }
-        }        
-    }
-
-    /**
-     * 
-     * adjust {@link #ILabels}
-     * 
-     * @notice comparison will be done on the length width but not
-     * the ImageIcon itself, as the ImageIcon itself failed to be compared
-     */
-    void _switchILabel() {
-        for (JLabel label : ILabels) {
-            // highlight for big header
-            ImageIcon yellowHighlight = imageSystem._reduceImageTransparency(imageSystem._scaleImage(imageSystem.YELLOW_HIGHLIGHT, 650, 250), 0.8f);
-            ImageIcon greyHighlight = imageSystem._reduceImageTransparency(imageSystem._scaleImage(imageSystem.GREY_HIGHLIGHT, 650, 250), 0.5f);
-            if (label.getWidth() == 650 && label.getHeight() == 97) {
-                label.setIcon(isDarkTheme.isDarkTheme ? yellowHighlight : greyHighlight);
-            }
-        }
-    }
-
-    /**
-     * 
-     * adjust {@link #JPanels}
-     */
-    void _switchJPanels() {
-        for (JPanel panel : JPanels) {
-            // black & white
-            if (panel.getY() > 4900) {
-                panel.setBorder(
-                    new roundedBorder(
-                        40, 
-                        isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE, 
-                        imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)
-                    )
-                );
-            }
-        }
-    }
 
 }

@@ -62,8 +62,10 @@ Before initialize/run the program, ensures that below changes has made to avoid 
 src/
 ├── Components/
 │   ├── Components.java
+|   ├── SwitchThemeComp.java
 │   └── Window.java
 ├── frontPage/
+│   ├── FaQConfig
 │   ├── FrontPage.java
 │   └── isDarkTheme.java
 ├── Helper/
