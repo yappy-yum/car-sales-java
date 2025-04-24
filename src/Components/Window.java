@@ -1,11 +1,8 @@
 package Components;
 import frontPage.FrontPage;
-import frontPage.isDarkTheme;
 
 import javax.swing.JFrame;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
 
 import Helper.Comp.createScroll;
 import Helper.fileSystem.imageSystem;
@@ -18,41 +15,23 @@ import java.awt.Toolkit;
 
 public class Window {
     
-    JFrame frame = new JFrame();
-    JScrollBar scrollBar;
+    initializer i;
 
+    /*//////////////////////////////////////////////////////////////
+                              constructor
+    //////////////////////////////////////////////////////////////*/    
 
-    public Window() {
+    public Window(initializer i) {
+        this.i = i;
+        
         _initializeWindow();
         _initializeCursor();
-    
-        isDarkTheme i = new isDarkTheme();
-        Components component = new Components(i);
-    
-        JScrollPane scrollPane = new JScrollPane(component);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    
-        // Hook up custom scroll control
-        _initializeControl(scrollPane);
-        component.addScroll(scrollPane);
-    
-        // Fix layout
-        frame.getContentPane().removeAll();
-        frame.getContentPane().setLayout(new BorderLayout());
-        frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
-    
-        frame.setVisible(true);
-    
-        // Reset scroll position
-        SwingUtilities.invokeLater(() -> {
-            scrollPane.getViewport().setViewPosition(new Point(0, 0));
-        });
-
-        new FrontPage(i, component, scrollPane);
-
+        _init();
+        
+        i.frame.setVisible(true);  
+        i.frontPage = new FrontPage(i);           
     }
     
-
    /*//////////////////////////////////////////////////////////////
                         initialize window JFrame
     //////////////////////////////////////////////////////////////*/    
@@ -72,12 +51,13 @@ public class Window {
      * 
      */
     void _initializeWindow() {
-        frame.setTitle("millionaire hub");
-        frame.setResizable(false);
-        frame.setSize(1280, 720); // HD size
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
-        frame.setLayout(null);
+        i.frame.setTitle("millionaire hub");
+        i.frame.setIconImage(imageSystem.COMPANY_LOGO.getImage());
+        i.frame.setResizable(false);
+        i.frame.setSize(1280, 720); // HD size
+        i.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        i.frame.setLocationRelativeTo(null);
+        i.frame.setLayout(null);
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -96,7 +76,7 @@ public class Window {
                                 new Point(0, 0),
                                 "professional cursor"
                             );
-        frame.setCursor(cursor);
+        i.frame.setCursor(cursor);
     }       
 
 
@@ -112,9 +92,53 @@ public class Window {
      * @param scrollPane a scroll bar component to be applied hardware control to
      * 
      */
-    void _initializeControl(JScrollPane scrollPane) {
-        createScroll.keyboardScroll(scrollPane);
-        createScroll.mouseScroll(scrollPane);
+    void _initializeScrollControl(Components component) {
+        i.scrollPane = new JScrollPane(component);
+        i.scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        createScroll.keyboardScroll(i.scrollPane);
+        createScroll.mouseScroll(i.scrollPane);
+        
+        component.addScroll(i.scrollPane);
     }    
+
+    /*//////////////////////////////////////////////////////////////
+                                 reload
+    //////////////////////////////////////////////////////////////*/    
+
+    /**
+     * reload all components, especially when user has successfully login
+     * 
+     */
+    public void _reloadEverything() {              
+        i.frame.getContentPane().removeAll();
+        i.frame.remove(i.scrollPane);
+        i.frame.remove(i.component);
+        
+        _init();
+            
+        i.frame.setVisible(true);
+        i.frontPage = new FrontPage(i); 
+    }
+
+    /*//////////////////////////////////////////////////////////////
+                             helper method
+    //////////////////////////////////////////////////////////////*/    
+
+    void _init() {
+        i.scrollPane = null;
+        i.component = null;
+        i.switchThemeComp = null;
+        i.frontPage = null;
+
+        i.switchThemeComp = new SwitchThemeComp(i);
+        i.component = new Components(i, this);
+    
+        _initializeScrollControl(i.component);
+
+        i.frame.getContentPane().removeAll();
+        i.frame.getContentPane().setLayout(new BorderLayout());
+        i.frame.getContentPane().add(i.scrollPane, BorderLayout.CENTER);
+    }
 
 }

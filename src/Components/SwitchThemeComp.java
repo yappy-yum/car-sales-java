@@ -36,7 +36,7 @@ public class SwitchThemeComp {
                               constructor
     //////////////////////////////////////////////////////////////*/
      
-    SwitchThemeComp(isDarkTheme i) { this.isDarkTheme = i; }    
+    SwitchThemeComp(initializer i) { this.isDarkTheme = i.isDarkTheme; }    
     
     /*//////////////////////////////////////////////////////////////
                   switch components according to theme
@@ -70,7 +70,7 @@ public class SwitchThemeComp {
                 text.setForeground(isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE);
                 if (text.getBorder() != null) {
                     text.setBorder(
-                        new roundedBorderFactory().create(
+                        roundedBorderFactory.create(
                         20,    
                         isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE,
                         imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)
@@ -96,7 +96,7 @@ public class SwitchThemeComp {
                 );
                 if (button.getBorder() != null) {
                     button.setBorder(
-                        new roundedBorderFactory().create(
+                        roundedBorderFactory.create(
                             40,    
                             (
                                 (isDarkTheme.isDarkTheme) ? 

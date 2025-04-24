@@ -1,10 +1,12 @@
 package Helper.fileSystem;
 
 import java.awt.Color;
+import java.util.function.Consumer;
 
 import javax.swing.JTextArea;
 
 import Helper.RoundedBorder.roundedBorder;
+import javafx.application.Platform;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -28,16 +30,16 @@ public class videoSystem {
      * before running the program to avoid unneccessary missing dependencies or images
      * 
      */
-    private static final String FILE_PATH = "file:///".concat(filePath.FILE_PATH); 
+    private static final String FILE_PATH = "file:///".concat(filePath.FILE_PATH).concat("video/"); 
 
     /*//////////////////////////////////////////////////////////////
                          front page persuasion
     //////////////////////////////////////////////////////////////*/
      
-    public static final Media ROLLS_ROYCE = new Media(FILE_PATH.concat("frontPage/RollsRoyce.mp4"));    
-    public static final Media BUGATTI = new Media(FILE_PATH.concat("frontPage/Bugatti.mp4"));
-    public static final Media MERCEDES = new Media(FILE_PATH.concat("frontPage/Mercedes.mp4"));
-    public static final Media BENTLEY = new Media(FILE_PATH.concat("frontPage/Bentley.mp4"));
+    public static final String ROLLS_ROYCE = FILE_PATH.concat("RollsRoyce.mp4");    
+    public static final String BUGATTI = FILE_PATH.concat("Bugatti.mp4");
+    public static final String MERCEDES = FILE_PATH.concat("Mercedes.mp4");
+    public static final String BENTLEY = FILE_PATH.concat("Bentley.mp4");
     
     /*//////////////////////////////////////////////////////////////
                         scale video size method
@@ -52,17 +54,20 @@ public class videoSystem {
      * @return the scaled video in MediaView data type
      * 
      */
-    public static MediaView _adjustVideoSize(Media video, double width, double height) {
-        MediaPlayer mediaPlayer = new MediaPlayer(video);
-        mediaPlayer.setAutoPlay(true);
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE); // ✅ Loop automatically
+    public static void _adjustVideoSize(String videoPath, double width, double height, Consumer<MediaView> onMediaViewReady) {
+        Platform.runLater(() -> {
+            Media media = new Media(videoPath);
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            MediaView scalingVideo = new MediaView(mediaPlayer);
     
-        MediaView scalingVideo = new MediaView(mediaPlayer);
-        scalingVideo.setFitWidth(width);
-        scalingVideo.setFitHeight(height);
-        scalingVideo.setPreserveRatio(false); // ✅ Ensure exact width & height
+            scalingVideo.setFitWidth(width);
+            scalingVideo.setFitHeight(height);
+            scalingVideo.setPreserveRatio(false);
     
-        return scalingVideo;
+            mediaPlayer.setAutoPlay(true);
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+            onMediaViewReady.accept(scalingVideo);
+        });
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -96,8 +101,4 @@ public class videoSystem {
 
         return box;
     }   
-
-
-    
-
 }

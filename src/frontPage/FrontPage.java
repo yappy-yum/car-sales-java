@@ -1,9 +1,11 @@
 package frontPage;
 import Components.Components;
+import Components.initializer;
 import Helper.RoundedBorder.roundedBorderFactory;
+import Helper.fileSystem.fontSystem;
 import Helper.fileSystem.imageSystem;
 import Helper.fileSystem.videoSystem;
-import javafx.scene.media.Media;
+import javafx.embed.swing.JFXPanel;
 
 import java.awt.Font;
 import java.awt.Color;
@@ -17,10 +19,8 @@ import javax.swing.SwingUtilities;
 public class FrontPage {
     
     isDarkTheme isDarkTheme;
-    Components components;
+    Components component;
     JScrollPane scrollPane;
-
-    roundedBorderFactory border = new roundedBorderFactory();
 
     /*//////////////////////////////////////////////////////////////
                         light/dark theme button
@@ -87,19 +87,19 @@ public class FrontPage {
                            short videos clip
     //////////////////////////////////////////////////////////////*/   
      
-    private final Media BENTLEY_CLIP = videoSystem.BENTLEY;
-    private final Media ROLLS_ROYCE_CLIP = videoSystem.ROLLS_ROYCE;
-    private final Media BUGATTI_CLIP = videoSystem.BUGATTI;
-    private final Media MERCEDES_CLIP = videoSystem.MERCEDES;
+    private final String BENTLEY_CLIP = videoSystem.BENTLEY;
+    private final String ROLLS_ROYCE_CLIP = videoSystem.ROLLS_ROYCE;
+    private final String BUGATTI_CLIP = videoSystem.BUGATTI;
+    private final String MERCEDES_CLIP = videoSystem.MERCEDES;
     
     /*//////////////////////////////////////////////////////////////
                               constructor
     //////////////////////////////////////////////////////////////*/    
     
-    public FrontPage(isDarkTheme i, Components components, JScrollPane scrollPane) {
-        this.components = components; 
-        this.isDarkTheme = i; 
-        this.scrollPane = scrollPane;
+    public FrontPage(initializer i) {
+        this.component = i.component; 
+        this.isDarkTheme = i.isDarkTheme; 
+        this.scrollPane = i.scrollPane;
 
         SwingUtilities.invokeLater(this::_initializeFrontPage); 
     }
@@ -131,32 +131,32 @@ public class FrontPage {
 
     void topCenter() {
 
-        int centerX = components.getWidth() / 2;
+        int centerX = component.getWidth() / 2;
 
         // first sub-header
-        components.addJLabel(
+        component.addJLabel(
             "the", 
             centerX - 40, 40, 
             centerX - 40, 30, 
             60, 40, 
-            imageSystem.SLAB.deriveFont(60f), 
+            fontSystem.SLAB.deriveFont(60f), 
             isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLACK
         );
         
         // big header
         Color DARK_GREEN = new Color(13, 15, 14);
         Color LIGHT_GREEN = new Color(59, 245, 99);
-        components.addJLabel(
+        component.addJLabel(
             "ONLY PLACE",
             centerX - 280, 100,
             centerX - 280, 80,
             600, 100,
-            imageSystem.MONTSERRAT.deriveFont(80f),
+            fontSystem.MONTSERRAT.deriveFont(80f),
             isDarkTheme.isDarkTheme ? LIGHT_GREEN : DARK_GREEN
         );
 
         // a highlight for big-header
-        components.addJLabel(
+        component.addJLabel(
             imageSystem._reduceImageTransparency(
                 imageSystem._scaleImage(
                     isDarkTheme.isDarkTheme ? YELLOW_HIGHLIGHT : GREY_HIGHLIGHT, 
@@ -170,12 +170,12 @@ public class FrontPage {
         );        
 
         // second sub-header
-        components.addJLabel(
+        component.addJLabel(
             "car lovers will ever need",
             centerX - 200, 290,
             centerX - 200, 200,
             400, 40,
-            imageSystem.SLAB.deriveFont(55f),
+            fontSystem.SLAB.deriveFont(55f),
             isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLACK
         );
 
@@ -199,7 +199,7 @@ public class FrontPage {
     void topLeft() {
 
         // company logo
-        components.addJLabel(
+        component.addJLabel(
             imageSystem._scaleImage(
                 COMPANY_LOGO, 
                 120, 120
@@ -210,7 +210,7 @@ public class FrontPage {
         );
 
         // query statement
-        components.addJLabel(
+        component.addJLabel(
             "Visit our showroom at:",
             50, 120,
             50, 90,
@@ -220,7 +220,7 @@ public class FrontPage {
         );
 
         // address
-        components.addJTextArea(
+        component.addJTextArea(
             """
             Lot 45-2, Jalan Bukit Pantai,
             59100 Bangsar,
@@ -230,7 +230,7 @@ public class FrontPage {
             15, 130, 
             230, 100, 
             new Font("Calibri", Font.BOLD, 15), 
-            border.create(
+            roundedBorderFactory.create(
                 20, 
                 isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE, 
                 imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)
@@ -392,35 +392,35 @@ public class FrontPage {
 
     void FaQ() {
 
-        components.addJLabel(
+        component.addJLabel(
             "FAQ", 
             80, 4970, 
             80, 4930, 
             600, 50,
-            imageSystem.ROSETTA.deriveFont(30f), 
+            fontSystem.ROSETTA.deriveFont(30f), 
             isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLACK
         );
-        components._createFAQ(
+        component._createFAQ(
             30, 5000, 
             "Question 1", 
             "Answer 1"
         );
-        components._createFAQ(
+        component._createFAQ(
             30, 5120, 
             "Question 2", 
             "Answer 2"
         );
-        components._createFAQ(
+        component._createFAQ(
             30, 5240, 
             "Question 3", 
             "Answer 3"
         );
-        components._createFAQ(
+        component._createFAQ(
             30, 5360, 
             "Question 4", 
             "Answer 4"
         );
-        components._createFAQ(
+        component._createFAQ(
             30, 5480, 
             "Question 5", 
             "Answer 5"
@@ -437,7 +437,7 @@ public class FrontPage {
     //////////////////////////////////////////////////////////////*/    
     
     void _helpAddText(String _text, int targetY, int height) {
-        components.addJTextArea(
+        component.addJTextArea(
             _text, 
             30, targetY + 90,
             30, targetY, 
@@ -452,7 +452,7 @@ public class FrontPage {
     //////////////////////////////////////////////////////////////*/    
 
     void _helpAddShortVideoAndLogo(
-        Media video, ImageIcon logo,
+        String videoPath, ImageIcon logo,
         int videoTargetY, int logoTargetY,
         int logoWidth, int logoHeight
     ) {
@@ -460,16 +460,19 @@ public class FrontPage {
         logo = imageSystem._scaleImage(logo, logoWidth, logoHeight);
         
         // add logo
-        components.addJLabel(
+        component.addJLabel(
             logo, 
             40, logoTargetY + 90, 
             40, logoTargetY, 
             logoWidth, logoHeight
         );
+
+        // silently create a JFXPanel
+        new JFXPanel();
         
         // add short video clip
-        components.addShortVideo(
-            video, 
+        component.addShortVideo(
+            videoPath, 
             0, videoTargetY, 
             1280, 600
         );
@@ -481,12 +484,12 @@ public class FrontPage {
     //////////////////////////////////////////////////////////////*/
 
     void _helpAddLoginIcon(String loginText, int targetX, int targetY) {
-        JButton loginButton = components.addJButton(
+        JButton loginButton = component.addJButton(
             loginText, 
             targetX, targetY + 90, 
             targetX, targetY, 
             loginText.length() > 20 ? 230 : 180, 50, 
-            border.create(
+            roundedBorderFactory.create(
                 40, 
                 (
                     (isDarkTheme.isDarkTheme) ?
@@ -499,6 +502,9 @@ public class FrontPage {
                 Color.WHITE : 
                 (targetY > 1000 && targetY < 4500) ? (Color.WHITE) : (Color.BLACK)
         );
+        loginButton.addActionListener( _ -> {
+            component.initializeProfile();
+        });
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -506,7 +512,7 @@ public class FrontPage {
     //////////////////////////////////////////////////////////////*/       
     
     void _helpAddThemeIcon(int targetX, int targetY) {
-        JButton themeButton = components.addJButton(
+        JButton themeButton = component.addJButton(
             imageSystem._scaleImage(
                 isDarkTheme.isDarkTheme ? LIGHT_BUTTON : DARK_BUTTON, 
                 50, 50
@@ -517,7 +523,7 @@ public class FrontPage {
         );
         themeButton.addActionListener( _ -> {
             isDarkTheme.switchTheme();
-            components.switchTheme();
+            component.switchTheme();
         });
     }
 

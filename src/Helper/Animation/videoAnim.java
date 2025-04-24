@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 
 import javafx.scene.media.*;
-import javafx.util.Duration;
 
 /**
  * Class that used to apply animation on a video when displayed. The 
@@ -83,11 +82,22 @@ public class videoAnim {
 
     public void exit(MediaPlayer player) {
         if (videoPanel.isVisible()) {
-            videoPanel.setVisible(false);
-            player.pause(); // Stop the video when hidden
-            player.seek(Duration.ZERO); // Reset video to the beginning
+    
+            videoPanel.setVisible(false); // Hide the video panel
+    
+            if (player == null) {
+                System.out.println("❌ exit(): MediaPlayer is null. Cannot reset.");
+                return;
+            }
+    
+            // Always try to stop and reset
+            player.stop(); // Stops and resets the video
+
+        } else {
+            System.out.println("exit(): Video panel already hidden.");
         }
     }
+            
 
     public boolean isFullyVisible() {
         JViewport viewport = scrollPane.getViewport();

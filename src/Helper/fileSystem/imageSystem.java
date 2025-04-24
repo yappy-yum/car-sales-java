@@ -2,11 +2,9 @@ package Helper.fileSystem;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.File;
 
 import javax.swing.ImageIcon;
 
@@ -28,82 +26,13 @@ public class imageSystem {
      * before running the program to avoid unneccessary missing dependencies or images
      * 
      */
-    private static final String FILE_PATH = filePath.FILE_PATH; 
+    private static final String FILE_PATH = filePath.FILE_PATH.concat("img/"); 
     
     /*//////////////////////////////////////////////////////////////
                               company logo
     //////////////////////////////////////////////////////////////*/
      
     public static final ImageIcon COMPANY_LOGO = new ImageIcon(FILE_PATH.concat("frontPage/companyLogo.png"));    
-
-    /*//////////////////////////////////////////////////////////////
-                              custom font
-    //////////////////////////////////////////////////////////////*/
-     
-    /**
-     * custom font: Nordin Slab Rounded Drawn by craftsupplyco
-     * 
-     * <p>
-     * 
-     * used for sub-headers in front page
-     * 
-     * @see https://www.fontspace.com/search?q=Nordin%20Slab%20Rounded%20Drawn%20by%20craftsupplyco
-     * 
-     */
-    public static final Font SLAB;
-    static {
-        try {
-            SLAB = Font.createFont(
-                Font.TRUETYPE_FONT, 
-                new File(FILE_PATH.concat("font/NordinslabroundeddrawnRegDemo-aYO0o.ttf"))
-            );
-        } catch (Exception e) {
-            throw new RuntimeException("you're a failure :D", e);
-        }
-    }
-
-    /**
-     * custom font: Montserrat by 
-     *          Julieta Ulanovsky, 
-     *          Sol Matas, 
-     *          Juan Pablo del Peral,
-     *          Jacques Le Bailly
-     * 
-     * <p>
-     * 
-     * used for big-headers in front page
-     * 
-     * @see https://fonts.google.com/specimen/Montserrat
-     * 
-     */
-    public static final Font MONTSERRAT;
-    static {
-        try {
-            MONTSERRAT = Font.createFont(
-                Font.TRUETYPE_FONT, 
-                new File(FILE_PATH.concat("font/Montserrat-Bold.ttf"))
-            );
-        } catch (Exception e) {
-            throw new RuntimeException("you're a failure :D", e);
-        }
-    }
-
-    /**
-     * 
-     * https://www.fontspace.com/new/fonts
-     * 
-     */
-    public static final Font ROSETTA;
-    static {
-        try {
-            ROSETTA = Font.createFont(
-                Font.TRUETYPE_FONT, 
-                new File(FILE_PATH.concat("font/CsRosettaRegularDemo-rvpKO.TTF"))
-            );
-        } catch (Exception e) {
-            throw new RuntimeException("you're a failure :D", e);
-        }
-    }
 
     /*//////////////////////////////////////////////////////////////
                             custom highlight
@@ -143,7 +72,14 @@ public class imageSystem {
                               profile icon
     //////////////////////////////////////////////////////////////*/
      
-    public static final ImageIcon PROFILE = new ImageIcon(FILE_PATH.concat("profile/profileIcon.png"));    
+    public static final ImageIcon PROFILE = new ImageIcon(FILE_PATH.concat("profile/profileIcon.png"));  
+    
+    /*//////////////////////////////////////////////////////////////
+                          password show & hide
+    //////////////////////////////////////////////////////////////*/
+     
+    public static final ImageIcon PASSWORD_SHOW = new ImageIcon(FILE_PATH.concat("password/show.png"));
+    public static final ImageIcon PASSWORD_HIDE = new ImageIcon(FILE_PATH.concat("password/hide.png"));    
 
     /*//////////////////////////////////////////////////////////////
                             scale image size

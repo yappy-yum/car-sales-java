@@ -3,31 +3,26 @@
     "configurations": [
         {
             "type": "java",
-            "name": "testArgon",
-            "request": "launch",
-            "mainClass": "loginPage.Argon2.testArgon",
-            "projectName": "car-sales-java_ad07ba69"
-        },
-        {
-            "type": "java",
-            "name": "testArgon",
-            "request": "launch",
-            "mainClass": "loginPage.Argon2.testArgon",
-            "projectName": "car-sale-java_1d61302"
-        },
-        {
-            "type": "java",
             "name": "Current File",
             "request": "launch",
-            "mainClass": "${file}"
+            "mainClass": "${file}",
+            "vmArgs": "-cp \"lib/argon2/*;bin\""
         },
         {
             "type": "java",
             "name": "App",
             "request": "launch",
             "mainClass": "App",
-            "vmArgs": "--module-path ./lib/javafx-sdk-24/lib --add-modules javafx.controls,javafx.fxml,javafx.media",
-            "projectName": "car-sale-java_1d61302"
+            "projectName": "car-sales-java_ad07ba69",
+            "vmArgs": "-cp \"lib/argon2/*;bin\" --module-path ./lib/javafx-sdk-24/lib --add-modules javafx.controls,javafx.fxml,javafx.media"
+        },
+        {
+            "type": "java",
+            "name": "testArgon",
+            "request": "launch",
+            "mainClass": "loginPage.Argon2.testArgon",
+            "projectName": "car-sales-java_ad07ba69",
+            "vmArgs": "-cp \"lib/argon2/*;bin\" --module-path ./lib/javafx-sdk-24/lib --add-modules javafx.controls,javafx.fxml,javafx.media"
         }
     ]
 }

@@ -92,7 +92,7 @@ public class componentAnim {
         });
     }
 
-    public void start(Runnable onComplete) {
+    private void start(Runnable onComplete) {
         if (!isAnimating && !lastState) {
             this.onComplete = onComplete;  // ✅ Store the callback
             targetComponent.setVisible(true);

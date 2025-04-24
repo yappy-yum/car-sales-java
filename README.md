@@ -32,14 +32,22 @@ To verify the installation, run the following command:
 > ```
 > An output similar to `GNU Make x.x.x` indicates a successful installation
 
+## ⏩ Quickstart
+
+To get all the codes installed in your code editor, run the following command:
+
+```bash
+git clone https://github.com/yappy-yum/car-sales-java
+```
+
 ## ⚠️ Configuration
 
-Before initialize/run the program, ensures that below changes has made to avoid any unnecessarily bug, not excluding missing dependencies.
+**Before initialize/run the program, ensures that below changes has made to avoid any unnecessarily bug, not excluding missing dependencies.**
 
 <details>
 <summary>MANDATORY</summary>
 
-1. File Path
+**1. File Path**
 - Head over to `Helper.fileSystem.filePath` and look for `FILE_PATH`, ensures that the file path is relevant to your devices
 
 </details>
@@ -47,14 +55,22 @@ Before initialize/run the program, ensures that below changes has made to avoid 
 <details>
 <summary>OPTIONAL</summary>
 
-1. Argon2 configuration
+**1. Argon2 configuration**
 - head over to `loginPage.Argon2.Argon`, and change the value of `ITERATION`, `MEMORY`, and `PARALLELISM` that best suit for your own device and preferences
 - to test the effects, run the `main` method in `loginPage.Argon2.testArgon` 
 
-2. Makefile
+**2. Makefile**
 - if you're using the header generater, you might want to check the file path on row no.4
 
 </details>
+
+<br>
+
+> once you've finished all the configuration process, run the following command to run the program
+>
+> ```
+> make deploy
+> ```
 
 ## 🔎 Scope
 
@@ -62,12 +78,15 @@ Before initialize/run the program, ensures that below changes has made to avoid 
 src/
 ├── Components/
 │   ├── Components.java
+|   ├── initializer.java
 |   ├── SwitchThemeComp.java
 │   └── Window.java
+|
 ├── frontPage/
 │   ├── FaQConfig
 │   ├── FrontPage.java
 │   └── isDarkTheme.java
+|
 ├── Helper/
 │   ├── Animation/
 │   │   ├── ComponentAnim.java
@@ -78,18 +97,27 @@ src/
 │   │   └── ScrollHelper.java
 │   ├── fileSystem/
 │   │   ├── filePath.java
+│   │   ├── fontSystem.java
 │   │   ├── imageSystem.java
 │   │   └── videoSystem.java
-│   └── RoundedBorder/
-│       ├── roundedBorder.java
-│       └── roundedBorderFactory.java
+│   ├── RoundedBorder/
+│   |   ├── roundedBorder.java
+│   |   └── roundedBorderFactory.java
+|   └── blur.java
+|
 ├── loginPage/
 │   ├── Argon2/
 │   │   ├── Argon.java
 │   │   └── testArgon.java
+│   ├── PageInit/
+│   │   ├── addLoginFill.java
+│   │   ├── loginFill.java
+│   │   ├── loginMessage.java
+│   │   └── loginPage.java
 │   ├── isLogin.java
-│   ├── loginPage.java
+│   ├── Profile.java
 │   └── storage.java
+|
 └── App.java
 ```
 

@@ -67,8 +67,8 @@ public class Argon {
         /**
          * verify the login credentials 
          * 
-         * @param password user's login attempt text in String
-         * @param hash user's real hashed text set during registration
+         * @param password user's input password login attempt text (not hashed)
+         * @param hash user's real hashed password during the registration
          * @return password validation in boolean
          * 
          */

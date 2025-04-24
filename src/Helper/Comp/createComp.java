@@ -7,7 +7,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 import javax.swing.border.Border;
 
 public class createComp {
@@ -48,6 +51,71 @@ public class createComp {
         text.setFocusable(false);
 
         return text;
+    }
+
+    public static JTextField createJTextField(
+        int X, int Y,
+        int width, int height,
+        Font font, Border border,
+        Color textColor
+    ) {
+        JTextField text = new JTextField();
+
+        text.setBounds(X, Y, width, height);
+        text.setOpaque(false);
+        text.setEditable(true);
+        text.setForeground(textColor);
+        text.setFont(font);
+        text.setBorder(border);
+        text.setFocusable(true);
+        text.setVisible(false);
+
+        return text;
+    }
+
+    public static JPasswordField createJPasswordField(
+        int X, int Y,
+        int width, int height,
+        char echo, Color textColor,
+        Font textFont, Border border
+    ) {
+        JPasswordField text = new JPasswordField();
+
+        text.setBounds(X, Y, width, height);
+        text.setEchoChar(echo);
+        text.setForeground(textColor);
+        text.setOpaque(false);
+        text.setFocusable(true);
+        text.setFont(textFont);
+        text.setBorder(border);
+        text.setVisible(false);
+
+        return text;
+    }
+
+    /**
+     * create a clickable multiple choice button: hardcoded ⚪ and ⚫
+     * 
+     * @apiNote dont forget to create ButtonGroup
+     * 
+     * @param font type of font
+     * @param _command recorded action command from clicked toggle button
+     * @return created JToggleButton
+     * 
+     */
+    public static JToggleButton createJToggleButton(Font font, String _command) {
+        JToggleButton dot = new JToggleButton();
+
+        dot.setText("⚪");
+        dot.setFont(font);
+        dot.setFocusPainted(false);
+        dot.setOpaque(false);
+        dot.setContentAreaFilled(false);
+        dot.setBorder(null);
+        dot.setActionCommand(_command);
+        dot.setVisible(true);
+
+        return dot;
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -144,6 +212,7 @@ public class createComp {
         label.setForeground(textColor);
         label.setFont(font);
         label.setFocusable(false);
+        label.setVisible(false);
 
         return label;
     }

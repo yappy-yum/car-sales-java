@@ -29,7 +29,7 @@ public class roundedBorderFactory {
      * @return Border data type
      * 
      */
-    public Border create(
+    public static Border create(
         int radius, 
         Color borderColor,
         Color fillColor

@@ -5,9 +5,6 @@ import Helper.Animation.componentAnim;
 import Helper.Comp.createComp;
 import Helper.Comp.createJFX;
 import Helper.Comp.createScroll;
-import Helper.RoundedBorder.roundedBorder;
-import Helper.RoundedBorder.roundedBorderFactory;
-import Helper.fileSystem.imageSystem;
 import Helper.fileSystem.videoSystem;
 import frontPage.FaQConfig;
 import frontPage.isDarkTheme;
@@ -19,13 +16,12 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.stream.Stream;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -33,25 +29,35 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
+import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import javafx.util.Duration;
+import loginPage.isLogin;
+import loginPage.PageInit.loginPage;
 
 public class Components extends JPanel {
 
+    JFrame frame;
     JScrollPane scrollPane;
+
+    initializer i;
     isDarkTheme isDarkTheme;
     SwitchThemeComp Switch;
+    isLogin isLogin;
+    Window window;
     
     /*//////////////////////////////////////////////////////////////
                               constructor
     //////////////////////////////////////////////////////////////*/    
     
-    public Components(isDarkTheme i) {
-        this.isDarkTheme = i;
-        this.Switch = new SwitchThemeComp(i);
+    public Components(initializer i, Window w) {
+        this.i = i;
+        this.isDarkTheme = i.isDarkTheme;
+        this.isLogin = i.isLogin;
+        this.frame = i.frame;
+        this.Switch = i.switchThemeComp;
+        this.window = w;
 
         setLayout(null);
         setPreferredSize(new Dimension(1280, 8000));
@@ -163,7 +169,7 @@ public class Components extends JPanel {
      * @param border the border of the JButton
      * @param textColor text color
      * @return a JButton, usually when there'a an additional action required
-     * 
+     * `
      */
     public JButton addJButton(
         String _text, 
@@ -327,20 +333,37 @@ public class Components extends JPanel {
      * @param height height length of the video
      * 
      */
-    public void addShortVideo(Media video, int x, int y, int width, int height) {
-        JFXPanel fJfxPanel = createJFX.createJFXPanel(x, y, width, height);
-        add(fJfxPanel);
+    public void addShortVideo(String videoPath, int x, int y, int width, int height) {
+        Platform.setImplicitExit(false);            
+        Platform.runLater(() -> {
+            JFXPanel fJfxPanel = createJFX.createJFXPanel(x, y, width, height);
+            add(fJfxPanel);
     
-        MediaView mediaView = videoSystem._adjustVideoSize(video, width, height);
-        MediaPlayer player = mediaView.getMediaPlayer();
-        player.setOnEndOfMedia(() -> player.seek(Duration.ZERO));
+            // Adjust video size
+            videoSystem._adjustVideoSize(
+                videoPath, width, height, mediaView -> {
+                    MediaPlayer player = mediaView.getMediaPlayer();
+        
+                    if (player != null) {
+                        player.setOnEndOfMedia(() -> player.seek(Duration.ZERO));
+        
+                        createJFX.setupJavaFXScene(fJfxPanel, mediaView, width, height);
+        
+                        createScroll.mouseScroll(fJfxPanel, scrollPane);
+        
+                        _videoAnim(fJfxPanel, x, y, player);
+        
+                        // Force the JFXPanel to update
+                        Platform.runLater(() -> {
+                            fJfxPanel.invalidate();
+                            fJfxPanel.repaint();
+                        });
+                    } 
+                }
+            );
+        });
+    }
     
-        createJFX.setupJavaFXScene(fJfxPanel, mediaView, width, height);
-        createScroll.mouseScroll(fJfxPanel, scrollPane);
-
-        _videoAnim(fJfxPanel, x, y, player);
-    } 
-
     /**
      * helper to handle video animation for {@link #addShortVideo}
      * 
@@ -400,6 +423,39 @@ public class Components extends JPanel {
 
         new componentAnim(boxPanel, x, y - 100, x, y, scrollPane);
     }
+
+    /*//////////////////////////////////////////////////////////////
+                         login and view profile
+    //////////////////////////////////////////////////////////////*/    
+
+    public void initializeProfile() {
+        switch (isLogin.isLogin ? 1 : 0) {
+            case 0: _initializeLoginPage(); break;
+        
+            case 1: System.out.println("viewing profile"); break;
+        }
+    }
+
+    protected void _initializeLoginPage() {        
+        loginPage LP = new loginPage(i, window);
+
+        int X = (1280 - 1000) / 2; 
+        int Y = (720 - 500) / 2;
+
+        LP.setBounds(X, Y, 1000, 500);
+        LP.setVisible(true);
+
+        frame.getContentPane().add(LP);
+
+        componentAnim anim = new componentAnim(
+            LP, 
+            X, Y - 100, 
+            X, Y, 
+            scrollPane
+        );
+        anim.start();
+    }
+    
     
     /*//////////////////////////////////////////////////////////////
                            switch color theme
