@@ -49,6 +49,7 @@ public class createComp {
         text.setFont(font);
         text.setBorder(border);
         text.setFocusable(false);
+        text.setVisible(false);
 
         return text;
     }
@@ -113,7 +114,7 @@ public class createComp {
         dot.setContentAreaFilled(false);
         dot.setBorder(null);
         dot.setActionCommand(_command);
-        dot.setVisible(true);
+        dot.setVisible(false);
 
         return dot;
     }
@@ -150,6 +151,7 @@ public class createComp {
         button.setFocusable(false);
         button.setContentAreaFilled(false);
         button.setOpaque(false);
+        button.setVisible(false);
 
         return button;
     }

@@ -34,7 +34,7 @@ import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import loginPage.isLogin;
-import loginPage.PageInit.loginPage;
+import loginPage.Customer.loginPage;
 
 public class Components extends JPanel {
 

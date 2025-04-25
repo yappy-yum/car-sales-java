@@ -1,5 +1,7 @@
 package loginPage;
 
+import javax.swing.JTextField;
+
 public class Profile {
     
     public static class userProfile {
@@ -22,8 +24,8 @@ public class Profile {
         userProfile(
             Status status, String firstName, String lastName, 
             String gender, int phoneNumber, int age,
-            String username, String hashedPassword, 
-            String hashedFavText, String hashedFavNum
+            String username, String Password, 
+            String favText, String favNum
         ) {
             this.status = status;
             this.firstName = firstName;
@@ -32,10 +34,54 @@ public class Profile {
             this.age = age;
             this.phoneNumber = phoneNumber;
             this.username = username;
-            this.password = hashedPassword;
-            this.favText = hashedFavText;
-            this.favNum = hashedFavNum;
+            this.password = Password;
+            this.favText = favText;
+            this.favNum = favNum;
         }
+    }
+
+    public static class CV {
+        enum Status {
+            MANAGER,
+            SALESMAN
+        }
+        Status status;
+
+        enum Approval {
+            PENDING,
+            APPROVED
+        }
+        Approval approval;
+
+        JTextField CV;
+
+        String firstName, lastName;
+        String username, password;
+        String favText, favNum; 
+
+        String gender;
+        int age;
+        int phoneNumber;
+
+        CV(
+            Status status, Approval approval, JTextField CV,
+            String firstName, String lastName, 
+            String username, String password,
+            String favText, String favNum, 
+            String gender, int age, int phoneNumber
+        ) {
+            this.status = status;
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.gender = gender;
+            this.age = age;
+            this.phoneNumber = phoneNumber;
+            this.username = username;
+            this.password = password;
+            this.favText = favText;
+            this.favNum = favNum;
+        }
+        
     }
 
 }

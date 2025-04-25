@@ -136,6 +136,7 @@ public class FaQConfig {
             );
             questionLabel.setLineWrap(true);
             questionLabel.setWrapStyleWord(true);
+            questionLabel.setVisible(true);
 
             return questionLabel;
         }

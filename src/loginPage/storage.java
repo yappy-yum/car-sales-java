@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.JTextField;
+
 import loginPage.Argon2.Argon;
 
 public class storage {
@@ -14,30 +16,77 @@ public class storage {
                              users details
     //////////////////////////////////////////////////////////////*/    
     
+    /**
+     * store all the users detail
+     */
     public HashMap<String, Profile.userProfile> Users = new HashMap<String, Profile.userProfile>();
+
+    /**
+     * store all the CV details for salesman and manager
+     * 
+     * <p>
+     * 
+     * when Admin has approve the Profile.CVpending.approval, all the informations will 
+     * automatically moved to the `Users` HashMap, meaning they can directly login
+     *
+     */
+    public HashMap<String, Profile.CV> Job = new HashMap<String, Profile.CV>();
 
     /*//////////////////////////////////////////////////////////////
                               registration
     //////////////////////////////////////////////////////////////*/
      
-    public boolean register(Profile.userProfile profile) {
-        checkUniqueness isUnique = new checkUniqueness(profile.username, profile.phoneNumber);
-
-        if (!isUnique.username) return false;
-        if (!isUnique.phoneNumber) return false;
-        if (!isYourPasswordStrong(profile.password)) return false;
-
-        String hashedPassword = argon.HashIt(profile.password);
-        String hashedFavText = argon.HashIt(profile.favText);
-        String hashedFavNum = argon.HashIt(profile.favNum);
+    /**
+     * registration only open for customer, salesman and manager will require an approval
+     * from the admin by having a CV attached and perhaps an interview conducted. The 
+     * approval will be made by the admin, therefore if one's approved, can straight away
+     * login, rather than going through the registration process at first
+     * 
+     * @param profile user's information
+     * @return true if registration is successful
+     * 
+     */
+    public boolean customerRegister(
+        String firstName, String lastName, 
+        String gender, int phoneNumber, int age, 
+        String username, String password, 
+        String favText, String favNum
+    ) {
+        String hashedPassword = argon.HashIt(password);
+        String hashedFavText = argon.HashIt(favText);
+        String hashedFavNum = argon.HashIt(favNum);
 
         Users.put(
-            profile.username, 
+            username, 
             new Profile.userProfile(
-                profile.status, profile.firstName, profile.lastName, 
-                profile.gender, profile.phoneNumber, profile.age,
-                profile.username, hashedPassword, 
+                Profile.userProfile.Status.CUSTOMER, firstName, lastName, 
+                gender, phoneNumber, age,
+                username, hashedPassword, 
                 hashedFavText, hashedFavNum
+            )
+        );
+        return true;
+    }
+
+    public boolean employeeRegister(
+        Profile.CV.Status status, JTextField CV,
+        String firstName, String lastName, 
+        String username, String password,
+        String favText, String favNum, 
+        String gender, int age, int phoneNumber
+    ) {
+        String hashedPassword = argon.HashIt(password);
+        String hashedFavText = argon.HashIt(favText);
+        String hashedFavNum = argon.HashIt(favNum);
+
+        Job.put(
+            username, 
+            new Profile.CV(
+                status, Profile.CV.Approval.PENDING, 
+                CV, firstName, lastName, 
+                username, hashedPassword,
+                hashedFavText, hashedFavNum, 
+                gender, age, phoneNumber
             )
         );
         return true;
@@ -56,6 +105,8 @@ public class storage {
      * 
      */
     public boolean login(String username, String password) {
+        if (!Users.containsKey(username)) return false;
+
         return argon.verify(
             password, 
             Users.get(username).password
@@ -121,12 +172,6 @@ public class storage {
         Profile.userProfile profile = Users.get(oldUsername);
         Users.remove(oldUsername);
 
-        checkUniqueness isUnique = new checkUniqueness(newUsername, newPhoneNumber);
-
-        if (!isUnique.username) return false;
-        if (!isUnique.phoneNumber) return false;
-        if (!isYourPasswordStrong(newPassword)) return false;
-
         String hashedPassword = argon.HashIt(newPassword);
         String hashedFavText = argon.HashIt(newFavText);
         String hashedFavNum = argon.HashIt(newFavNum);
@@ -144,22 +189,45 @@ public class storage {
     }
 
     /*//////////////////////////////////////////////////////////////
-                        check profile uniqueness
+                              job approval
     //////////////////////////////////////////////////////////////*/    
-
-    /**
-     * this sub-class responsible for checking if a user information, such 
-     * as username, and phone number, are unique and has not been used
-     * 
-     */
-    class checkUniqueness { 
-        boolean username;
-        boolean phoneNumber;
-
-        checkUniqueness(String username, int phoneNumber) {
-            if (username != null) this.username = !Users.containsKey(username);
-            if (phoneNumber != 0) this.phoneNumber = Users.values().stream().noneMatch(profile -> profile.phoneNumber == phoneNumber);
+     
+    public void setApproval(String username, boolean approval) {
+        Profile.CV job = Job.get(username);
+        
+        if (approval) {
+            job.approval = Profile.CV.Approval.APPROVED;
+            Profile.userProfile.Status status = 
+                job.status == Profile.CV.Status.MANAGER 
+                    ? Profile.userProfile.Status.MANAGER 
+                    : Profile.userProfile.Status.SALESMAN;
+    
+            Users.put(username, new Profile.userProfile(
+                status,
+                job.firstName, job.lastName, job.gender, job.phoneNumber, job.age,
+                username, job.password,
+                job.favText, job.favNum
+            ));
+        } else if (!approval) {
+            Users.remove(username);
         }
+    }
+    
+
+    /*//////////////////////////////////////////////////////////////
+                        check profile uniqueness
+    //////////////////////////////////////////////////////////////*/   
+     
+    public boolean isUsernameUnique(String username) {
+        return 
+            !Users.containsKey(username) &&
+            !Job.containsKey(username);
+    }
+
+    public boolean isPhoneNumberUnique(int phoneNumber) {
+        return 
+            Users.values().stream().noneMatch(profile -> profile.phoneNumber == phoneNumber) &&
+            Job.values().stream().noneMatch(profile -> profile.phoneNumber == phoneNumber);
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -180,28 +248,28 @@ public class storage {
      * @return true if the password is strong, false otherwise
      * 
      */
-    protected boolean isYourPasswordStrong(String password) {
+    public boolean isYourPasswordStrong(String password) {
 
-        String twoCapitals = "(.*[A-Z].*[A-Z])";  // capital letters
-        String twoLowercase = "(.*[a-z].*[a-z])"; // lowercase letters
-        String twoNumbers = "(.*\\d.*\\d)";       // numbers
-        String twoSymbols = "(.*[^a-zA-Z0-9].*[^a-zA-Z0-9])"; // symbols
-        String twoSpaces = "(.*\\s.*\\s)";        // spaces
-
+        String twoCapitals = "(.*[A-Z].*[A-Z])";       // two capital letters
+        String twoLowercase = "(.*[a-z].*[a-z])";      // two lowercase letters
+        String twoNumbers = "(.*\\d.*\\d)";            // two digits
+        String twoSymbols = "(.*[^a-zA-Z0-9].*[^a-zA-Z0-9])"; // two symbols
+        String twoSpaces = "(.*\\s.*\\s)";             // two spaces
+    
         Matcher Capitals = Pattern.compile(twoCapitals).matcher(password);
         Matcher Lowercase = Pattern.compile(twoLowercase).matcher(password);
         Matcher Numbers = Pattern.compile(twoNumbers).matcher(password);
         Matcher Symbols = Pattern.compile(twoSymbols).matcher(password);
         Matcher Spaces = Pattern.compile(twoSpaces).matcher(password);
-
+    
         return 
-        Capitals.matches() &&
-        Lowercase.matches() &&
-        Numbers.matches() &&
-        Symbols.matches() &&
-        Spaces.matches();
-
-    }    
+            Capitals.find() &&
+            Lowercase.find() &&
+            Numbers.find() &&
+            Symbols.find() &&
+            Spaces.find();
+    }
+    
 
 
 }
