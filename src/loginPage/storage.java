@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.JTextField;
 
 import loginPage.Argon2.Argon;
 
@@ -46,47 +45,36 @@ public class storage {
      * @return true if registration is successful
      * 
      */
-    public boolean customerRegister(
-        String firstName, String lastName, 
-        String gender, int phoneNumber, int age, 
-        String username, String password, 
-        String favText, String favNum
-    ) {
-        String hashedPassword = argon.HashIt(password);
-        String hashedFavText = argon.HashIt(favText);
-        String hashedFavNum = argon.HashIt(favNum);
+    public boolean customerRegister(Profile.userProfile user) {
+        String hashedPassword = argon.HashIt(user.password);
+        String hashedFavText = argon.HashIt(user.favText);
+        String hashedFavNum = argon.HashIt(user.favNum);
 
         Users.put(
-            username, 
+            user.username, 
             new Profile.userProfile(
-                Profile.userProfile.Status.CUSTOMER, firstName, lastName, 
-                gender, phoneNumber, age,
-                username, hashedPassword, 
+                user.status, user.firstName, user.lastName, 
+                user.gender, user.phoneNumber, user.age,
+                user.username, hashedPassword, 
                 hashedFavText, hashedFavNum
             )
         );
         return true;
     }
 
-    public boolean employeeRegister(
-        Profile.CV.Status status, JTextField CV,
-        String firstName, String lastName, 
-        String username, String password,
-        String favText, String favNum, 
-        String gender, int age, int phoneNumber
-    ) {
-        String hashedPassword = argon.HashIt(password);
-        String hashedFavText = argon.HashIt(favText);
-        String hashedFavNum = argon.HashIt(favNum);
+    public boolean employeeRegister(Profile.CV employee) {
+        String hashedPassword = argon.HashIt(employee.password);
+        String hashedFavText = argon.HashIt(employee.favText);
+        String hashedFavNum = argon.HashIt(employee.favNum);
 
         Job.put(
-            username, 
+            employee.username, 
             new Profile.CV(
-                status, Profile.CV.Approval.PENDING, 
-                CV, firstName, lastName, 
-                username, hashedPassword,
+                employee.status, employee.approval, 
+                employee.CV, employee.firstName, employee.lastName, 
+                employee.username, hashedPassword,
                 hashedFavText, hashedFavNum, 
-                gender, age, phoneNumber
+                employee.gender, employee.age, employee.phoneNumber
             )
         );
         return true;

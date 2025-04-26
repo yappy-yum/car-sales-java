@@ -303,6 +303,29 @@ public class loginFill {
 
         }
 
+        public boolean isOthersSelectedButEmpty() {
+            return gender[2].isSelected() && others.getText().trim().isEmpty();
+        }
+
+        public String getSelectedGender() {
+            if (gender[1].isSelected() || gender[0].isSelected()) {
+                return 
+                    gender[0].isSelected() ? 
+                    gender[0].getActionCommand() : 
+                    gender[1].getActionCommand();
+            } else if (gender[2].isSelected()) {
+                return others.getText();
+            }
+
+            return null;
+        }
+
+        public void makeUnclickable() {
+            for (JToggleButton i : gender) {
+                i.setEnabled(false);
+            }
+        }
+
         public List<Component> getAllComponents() {
             return Stream.of(
                 Stream.of(others),

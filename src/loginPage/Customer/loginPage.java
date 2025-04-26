@@ -26,6 +26,7 @@ import Helper.Animation.componentAnim;
 import Helper.Comp.createComp;
 import Helper.RoundedBorder.roundedBorder;
 import Helper.fileSystem.imageSystem;
+import loginPage.Profile;
 import loginPage.storage;
 
 public class loginPage extends JPanel {
@@ -35,6 +36,30 @@ public class loginPage extends JPanel {
     Window window;
     Components component;
     storage storage;
+
+    Profile.userProfile user = new Profile.userProfile(
+        null, null, null, 
+        null, 0, 0, 
+        null, null, 
+        null, null
+    );
+
+    JLabel[] loadingLabel = {
+        createComp.createJLabel(
+            "Loading...",
+            530, 300,
+            100, 80, 
+            new Font("Arial", Font.BOLD, 20),
+            Color.BLACK
+        ),
+        createComp.createJLabel(
+            "Loading...",
+            510, 300,
+            80, 20, 
+            new Font("Arial", Font.BOLD, 20),
+            Color.BLACK
+        )
+    };
 
     /*//////////////////////////////////////////////////////////////
                         Registration Components
@@ -64,19 +89,19 @@ public class loginPage extends JPanel {
     );
 
     loginMessage.createPasswordInstructor instructor1 = new loginMessage.createPasswordInstructor(910, 200);
-    loginFill.createGender gender = new loginFill.createGender(530, 30);
+    loginFill.createGender genders = new loginFill.createGender(530, 30);
     loginFill.FillLongJPassWordField longPasswordField = new loginFill.FillLongJPassWordField(650, 230);
     loginFill.FillShortJPassWordField shortPasswordField1 = new loginFill.FillShortJPassWordField(720, 300);
     loginFill.FillShortJPassWordField shortPasswordField2 = new loginFill.FillShortJPassWordField(720, 370);
     Deque<Object> SecondPageRegister = new LinkedList<>(
         Arrays.asList(
-            gender.getAllComponents().get(0), // label[0]
-            gender.getAllComponents().get(1), // label[1]
-            gender.getAllComponents().get(2), // label[2]
-            gender.getAllComponents().get(3), // gender[0]
-            gender.getAllComponents().get(4), // gender[1]
-            gender.getAllComponents().get(5), // gender[2]
-            gender.getAllComponents().get(6), // others textfield
+            genders.getAllComponents().get(0), // label[0]
+            genders.getAllComponents().get(1), // label[1]
+            genders.getAllComponents().get(2), // label[2]
+            genders.getAllComponents().get(3), // gender[0]
+            genders.getAllComponents().get(4), // gender[1]
+            genders.getAllComponents().get(5), // gender[2]
+            genders.getAllComponents().get(6), // others textfield
 
             instructor1.getComponents().get(0),
             instructor1.getComponents().get(1),
@@ -159,19 +184,20 @@ public class loginPage extends JPanel {
 
     List<Object> RegisterFirstErrorMessage = new ArrayList<>(
         Arrays.asList(
-            loginMessage.createErrorMessage("First name and Last name must only contain characters", 520, 410),
-            loginMessage.createErrorMessage("Username has used", 520, 410),
-            loginMessage.createErrorMessage("Phone number is not valid", 520, 410),
-            loginMessage.createErrorMessage("only the age between 18 - 60", 520, 410)
+            loginMessage.createErrorMessage("First name and Last name must only contain characters", 505, 410),
+            loginMessage.createErrorMessage("Username has used", 505, 410),
+            loginMessage.createErrorMessage("Phone number is not valid", 505, 410),
+            loginMessage.createErrorMessage("only the age between 18 - 60", 505, 410)
         )
     );
 
     List<Object> RegisterSecondErrorMessage = new ArrayList<>(
         Arrays.asList(
-            loginMessage.createErrorMessage("Gender is not selected", 520, 410),
-            loginMessage.createErrorMessage("Password is weak", 520, 410),
-            loginMessage.createErrorMessage("favourite text must contain only characters", 520, 410),
-            loginMessage.createErrorMessage("favourite number must contain only numbers", 520, 410)
+            loginMessage.createErrorMessage("Gender is not selected", 505, 410),
+            loginMessage.createErrorMessage("'Others' gender is selected, but did not explicitly named your gender", 505, 410),
+            loginMessage.createErrorMessage("Password is weak", 505, 410),
+            loginMessage.createErrorMessage("favourite text must contain only characters", 505, 410),
+            loginMessage.createErrorMessage("favourite number must contain only numbers", 505, 410)
         )
     );
 
@@ -184,6 +210,14 @@ public class loginPage extends JPanel {
             loginMessage.createErrorMessage("incorrect username or/and password", 30, 410)
         )
     );
+
+    /*//////////////////////////////////////////////////////////////
+                            Success Message
+    //////////////////////////////////////////////////////////////*/
+     
+    JLabel[] successLabel = {
+        loginMessage.createSuccessMessage("◀ Register Success, click 'Close' to reload and login again", 510, 410)
+    };
 
     /*//////////////////////////////////////////////////////////////
                               constructor
@@ -426,6 +460,13 @@ public class loginPage extends JPanel {
 
         }
 
+        user.status = Profile.userProfile.Status.CUSTOMER;
+        user.firstName = FirstName;
+        user.lastName = lastName;
+        user.username = username;
+        user.phoneNumber = Integer.parseInt(phoneNumber);
+        user.age = Integer.parseInt(age);
+
         FirstPageRegister.forEach(i -> ((Component) i).setVisible(false));
         FillSecondRegister();
 
@@ -440,7 +481,7 @@ public class loginPage extends JPanel {
      * 2.1 once the registration checks has passed, show the second page
      * 
      */    
-    protected void FillSecondRegister() { 
+    protected void FillSecondRegister() {
         int index = 0;
         for (Object i : SecondPageRegister) {
             switch (index == 7 || index == 8 ? 1 : 0) {
@@ -464,10 +505,13 @@ public class loginPage extends JPanel {
     protected void CheckSecondRegister() {
         RegisterSecondErrorMessage.forEach(i -> ((Component) i).setVisible(false));
 
+        String gender = new String();
         String password = new String();
         String favText = new String();
         String favNum = new String();
 
+        gender = genders.getSelectedGender();
+        
         int index = 0;
         for (Object i : SecondPageRegister) {
             switch (index) {
@@ -489,7 +533,30 @@ public class loginPage extends JPanel {
             boolean shouldBreak = false;
 
             switch (i) {
+                case 0:
+                    if 
+                    (
+                        !shouldBreak &&
+                        gender == null
+                    ) {
+                        ((Component) l).setVisible(true);
+                        shouldBreak = true;
+                    }
+                    break;
+
                 case 1:
+                    if 
+                    (
+                        !shouldBreak &&
+                        genders.isOthersSelectedButEmpty()
+                    )
+                    {
+                        ((Component) l).setVisible(true);
+                        shouldBreak = true;
+                    }
+                    break;
+
+                case 2:
                     if 
                     (
                         !shouldBreak &&
@@ -501,7 +568,7 @@ public class loginPage extends JPanel {
                     }
                     break;
             
-                case 2:
+                case 3:
                     if 
                     (
                         !shouldBreak &&
@@ -513,7 +580,7 @@ public class loginPage extends JPanel {
                     }
                     break;
 
-                case 3:
+                case 4:
                     if 
                     (
                         !shouldBreak &&
@@ -534,40 +601,56 @@ public class loginPage extends JPanel {
             };
         }
 
-        System.out.println("register successful");
-
-        // String firstName = new String();
-        // String lastName = new String();
-        // String username = new String();
-        // String phoneNumber = new String();
-        // String age = new String();        
+        user.gender = gender;
+        user.password = password;
+        user.favText = favText;
+        user.favNum = favNum;  
         
-        // int l = 0;
-        // for (Object i : FirstPageRegister) {
-        //     switch (l) {
-        //         case 1:
-        //             firstName = ((JTextField) i).getText();
-        //             break;
-        //         case 3:
-        //             lastName = ((JTextField) i).getText();
-        //             break;
-        //         case 5:
-        //             username = ((JTextField) i).getText();
-        //             break;
-        //         case 7:
-        //             phoneNumber = ((JTextField) i).getText();
-        //             break;
-        //         case 9:
-        //             phoneNumber = ((JTextField) i).getText();
-        //             break;
-        //         case 19:
-        //             age = ((JTextField) i).getText();
-        //             break;
-        //     }
-        //     l ++;
-        // }
+        _register();
+    }
 
-        
+    protected void _register() {
+        System.out.println("start cleaning...");
+        int index = 0;
+        for (Object i : SecondPageRegister) {
+            switch (index) {
+                case 0:
+                    genders.makeUnclickable();
+                    break;
+
+                case 6:
+                    ((JTextField) i).setEditable(false);
+                    break;
+
+                case 7:
+                    ((JTextField) i).setEditable(false);
+                    break;
+
+                case 12:
+                    ((JPasswordField) i).setEditable(false);
+                    break;
+
+                case 15:
+                    ((JPasswordField) i).setEditable(false);
+                    break;
+
+                case 18:
+                    ((JPasswordField) i).setEditable(false);
+                    break;
+            }
+        }
+        loadingLabel[0].setVisible(true);
+
+        new Thread(() -> {
+            System.out.println("registering...");
+            storage.customerRegister(user);
+
+            SwingUtilities.invokeLater(() -> {
+                System.out.println("registered");
+                loadingLabel[0].setVisible(false);
+                successLabel[0].setVisible(true);
+            });
+        }).start();
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -657,6 +740,9 @@ public class loginPage extends JPanel {
         SecondPageRegister.forEach(i -> add((Component) i));
         SecondPageLogin.forEach(i -> add((Component) i));
         RegisterSecondErrorMessage.forEach(i -> add((Component) i));
+        Arrays.stream(successLabel).forEach(i -> add((Component) i));
+        Arrays.stream(loadingLabel).forEach(i -> add((Component) i));
+
 
         Fill();
     }

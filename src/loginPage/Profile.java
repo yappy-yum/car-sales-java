@@ -5,23 +5,23 @@ import javax.swing.JTextField;
 public class Profile {
     
     public static class userProfile {
-        enum Status {
+        public enum Status {
             ADMIN,
             MANAGER,
             SALESMAN,
             CUSTOMER
         }
-        Status status;
+        public Status status;
 
-        String firstName, lastName;
-        String username, password;
-        String favText, favNum; 
+        public String firstName, lastName;
+        public String username, password;
+        public String favText, favNum; 
 
-        String gender;
-        int age;
-        int phoneNumber;
+        public String gender;
+        public int age;
+        public int phoneNumber;
 
-        userProfile(
+        public userProfile(
             Status status, String firstName, String lastName, 
             String gender, int phoneNumber, int age,
             String username, String Password, 
@@ -41,29 +41,29 @@ public class Profile {
     }
 
     public static class CV {
-        enum Status {
+        public enum Status {
             MANAGER,
             SALESMAN
         }
-        Status status;
+        public Status status;
 
-        enum Approval {
+        public enum Approval {
             PENDING,
             APPROVED
         }
-        Approval approval;
+        public Approval approval;
 
-        JTextField CV;
+        public JTextField CV;
 
-        String firstName, lastName;
-        String username, password;
-        String favText, favNum; 
+        public String firstName, lastName;
+        public String username, password;
+        public String favText, favNum; 
 
-        String gender;
-        int age;
-        int phoneNumber;
+        public String gender;
+        public int age;
+        public int phoneNumber;
 
-        CV(
+        public CV(
             Status status, Approval approval, JTextField CV,
             String firstName, String lastName, 
             String username, String password,

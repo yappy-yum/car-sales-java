@@ -216,14 +216,18 @@ public class loginMessage {
         }
 
         public List<Component> getComponents() {
-            return Arrays.asList(textArea, textBackground, button);
+            return Arrays.asList(
+                textArea, 
+                textBackground, 
+                button
+            );
         }
 
     }
 
     static JButton createRegisterNext(loginPage LP) {
         JButton button = createComp.createJButton(
-            "Register ➜", 
+            "Register ▶", 
             820, 440, 
             150, 50, 
             null, Color.BLACK
@@ -256,7 +260,7 @@ public class loginMessage {
 
     static JButton createLoginNext(loginPage LP) {
         JButton button = createComp.createJButton(
-            "Login ➜", 
+            "Login ▶", 
             320, 440, 
             150, 50, 
             null, Color.BLACK
@@ -289,15 +293,22 @@ public class loginMessage {
     }
 
     static JLabel createErrorMessage(String message, int X, int Y) {
-        JLabel label = createComp.createJLabel(
+        return createComp.createJLabel(
             message, X, Y, 
             450, 50, 
-            new Font("Arial", Font.PLAIN, 15), 
+            new Font("Arial", Font.BOLD, 15), 
             Color.RED
         );
-
-        return label;
     } 
+
+    static JLabel createSuccessMessage(String message, int X, int Y) {
+        return createComp.createJLabel(
+            message, X, Y, 
+            450, 50, 
+            new Font("Arial", Font.BOLD, 15), 
+            Color.GREEN
+        );
+    }
 
     static JButton passwordView(int X, int Y) {
         JButton button = createComp.createJButton(
