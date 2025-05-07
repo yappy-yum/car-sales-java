@@ -15,7 +15,7 @@ public class filePath {
      * to avoid unneccessary missing dependencies or images
      * 
      */
-    public static final String FILE_PATH = "<file-path>/car-sales-java/files/"; 
+    public static final String FILE_PATH = "<file-path>/car-sales-java/files/";
 
 
 }

@@ -110,7 +110,6 @@ public class storage {
      * 
      * @param firstName first name of the user 
      * @param lastName last name of the user
-     * @param gender gender of the user
      * @param phoneNumber phone number of the user
      * @param IC IC number of the user (input plain integer, not hashed)
      * @param favText favourite text of the user (input plain text, not hashed)
@@ -119,16 +118,12 @@ public class storage {
      * 
      */
     public boolean login(
-        String firstName, String lastName, 
-        String gender, int phoneNumber, int IC, 
-        String favText, int favNum
+        int phoneNumber,
+        String favText, String favNum
     ) {
         return 
             Users.values().stream().anyMatch(
                 profile ->
-                    profile.firstName.equals(firstName) &&
-                    profile.lastName.equals(lastName) &&
-                    profile.gender.equals(gender) &&
                     profile.phoneNumber == phoneNumber &&
                     argon.verify(favText, profile.favText) &&
                     argon.verify(String.valueOf(favNum), profile.favNum)

@@ -1,29 +1,25 @@
-package loginPage.Customer;
+package Helper.login;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.Timer;
 
 import Helper.Comp.createComp;
 import Helper.RoundedBorder.roundedBorder;
 import Helper.fileSystem.fontSystem;
 import Helper.fileSystem.imageSystem;
 
-/**
- * this class is nothing but a helper to create some texts and buttons 
- * on the half sides to let user to navigate between login and register
- * 
- */
-public class loginMessage {
-
+public class loginComp {
+    
     /*//////////////////////////////////////////////////////////////
                                 Welcome
     //////////////////////////////////////////////////////////////*/    
@@ -34,7 +30,7 @@ public class loginMessage {
      * @return created JLabel
      * 
      */
-    static JLabel createWelcomeHeader() {
+    public static JLabel createWelcomeHeader() {
         JLabel label = createComp.createJLabel(
             "Welcome Back", 
             150, 50, 
@@ -57,7 +53,7 @@ public class loginMessage {
      * @return created JTextArea
      * 
      */
-    static JTextArea createWelcomeSubHeader() {
+    public static JTextArea createWelcomeSubHeader() {
         JTextArea textArea = createComp.createJTextArea(
             """
             To keep connected with us please login
@@ -72,7 +68,7 @@ public class loginMessage {
 
 
         return textArea;
-    }
+    }    
 
     /*//////////////////////////////////////////////////////////////
                          register/login button
@@ -84,7 +80,7 @@ public class loginMessage {
      * @return created JButton
      * 
      */
-    static JButton createRL() {
+    public static JButton createRL() {
         JButton button = createComp.createJButton(
             "login", 
             150, 320, 
@@ -96,8 +92,8 @@ public class loginMessage {
         button.setVisible(true);
 
         return button;
-    }
-
+    }   
+    
     /*//////////////////////////////////////////////////////////////
                               close button
     //////////////////////////////////////////////////////////////*/    
@@ -108,7 +104,7 @@ public class loginMessage {
      * @return created JButton
      * 
      */
-    static JButton createClose() {
+    public static JButton createClose() {
         JButton button = createComp.createJButton(
             "close",
             205, 420,
@@ -120,7 +116,7 @@ public class loginMessage {
         button.setVisible(true);
 
         return button;
-    }
+    }    
 
     /*//////////////////////////////////////////////////////////////
                                 Switched
@@ -135,7 +131,7 @@ public class loginMessage {
      * @param button login/register button
      * 
      */
-    static void SwitchMessage(boolean isLogin, JLabel header, JTextArea subHeader, JButton button) {
+    public static void SwitchMessage(boolean isLogin, JLabel header, JTextArea subHeader, JButton button) {
         header.setText(!isLogin ? "Welcome Back" : "Hello Friend");
         header.setBounds(!isLogin ? 150 : 180, 50, 300, 100);
 
@@ -158,12 +154,16 @@ public class loginMessage {
         );
 
         button.setText(!isLogin ? "login" : "register");
-    }
+    } 
 
+    /*//////////////////////////////////////////////////////////////
+                          password instruction
+    //////////////////////////////////////////////////////////////*/    
+    
     public static class createPasswordInstructor {
-        JButton button;
-        JTextArea textArea;
-        JTextArea textBackground;
+        public JButton button;
+        public JTextArea textArea;
+        public JTextArea textBackground;
 
         public createPasswordInstructor(int X, int Y) {
 
@@ -195,7 +195,14 @@ public class loginMessage {
                 null, X - 95, Y - 92,
                 170, 90,
                 null, 
-                new roundedBorder(5, Color.BLACK, imageSystem._reduceColorTransparency(Color.GRAY, 0.9f)), 
+                new roundedBorder(
+                    5, 
+                    Color.BLACK, 
+                    imageSystem._reduceColorTransparency(
+                        Color.GRAY, 
+                        0.9f
+                    )
+                ), 
                 null
             );
 
@@ -212,123 +219,86 @@ public class loginMessage {
                     textArea.setVisible(false);
                 }
             });
-
         }
+    }    
 
-        public List<Component> getComponents() {
-            return Arrays.asList(
-                textArea, 
-                textBackground, 
-                button
-            );
-        }
-
-    }
-
-    static JButton createRegisterNext(loginPage LP) {
+    public static JButton createFillNext(String _text, int X, int Y, int fontSize, Runnable method) {
         JButton button = createComp.createJButton(
-            "Register ▶", 
-            820, 440, 
-            150, 50, 
+            _text, 
+            X, Y, 
+            300, 50, 
             null, Color.BLACK
         );
-        button.setFont(new Font("SansSerif", Font.PLAIN, 20));
-        button.setVisible(true);
+        button.setFont(new Font("SansSerif", Font.PLAIN, fontSize));
 
         button.addActionListener( _ -> {
-            LP.CheckFirstRegister();
+            method.run();
         });
 
         return button;
     }
 
-    static JButton createRegister(loginPage LP) {
-        JButton button = createComp.createJButton(
-            "Register", 
-            820, 440, 
-            150, 50, 
-            null, Color.BLACK
-        );
-        button.setFont(new Font("SansSerif", Font.PLAIN, 20));
-
-        button.addActionListener( _ -> {
-            LP.CheckSecondRegister();
-        });
-
-        return button;
-    }
-
-    static JButton createLoginNext(loginPage LP) {
-        JButton button = createComp.createJButton(
-            "Login ▶", 
-            320, 440, 
-            150, 50, 
-            null, Color.BLACK
-        );
-        button.setFont(new Font("SansSerif", Font.PLAIN, 20));
-        button.setVisible(true);
-
-        button.addActionListener( _ -> {
-            LP.CheckFirstLogin();
-        });
-
-        return button;
-    }
-
-    static JButton createForgetPassword(loginPage LP) {
-        JButton button = createComp.createJButton(
-            "forget password",
-            320, 400,
-            150, 50,
-            null, Color.BLACK
-        );
-        button.setFont(new Font("SansSerif", Font.PLAIN, 20));
-        button.setVisible(true);
-
-        button.addActionListener( _ -> {
-            LP.fullLogin();
-        });
-
-        return button;
-    }
-
-    static JLabel createErrorMessage(String message, int X, int Y) {
+    public static JLabel createErrorMessage(String message, int X, int Y) {
         return createComp.createJLabel(
             message, X, Y, 
-            450, 50, 
+            500, 50, 
             new Font("Arial", Font.BOLD, 15), 
             Color.RED
         );
     } 
 
-    static JLabel createSuccessMessage(String message, int X, int Y) {
+    public static JLabel createSuccessMessage(String message, int X, int Y) {
         return createComp.createJLabel(
             message, X, Y, 
             450, 50, 
-            new Font("Arial", Font.BOLD, 15), 
+            new Font("SansSerif", Font.BOLD, 15), 
             Color.GREEN
         );
     }
 
-    static JButton passwordView(int X, int Y) {
-        JButton button = createComp.createJButton(
-            imageSystem._scaleImage(
-                imageSystem.PASSWORD_HIDE, 
-                30, 30
-            ),
+    public static JLabel createLoading(int X, int Y) {
+        JLabel label = createComp.createJLabel(
+            "Loading ", 
             X, Y, 
-            30, 30
+            450, 50,
+            new Font("SansSerif", Font.BOLD, 15), 
+            Color.BLACK
         );
 
-        button.addActionListener( _ -> {
-            button.setIcon(imageSystem._scaleImage(
-                imageSystem.PASSWORD_SHOW, 
-                30, 30
-            ));
-        });
+        Timer timer = new Timer(
+            500, 
+            new ActionListener() {
+                int dotCount = 0;
 
-        return button;
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    dotCount = (dotCount + 1) % 5; // cycle between 0 to 4 dots
+                    String dots = ".".repeat(dotCount);
+                    label.setText("Loading " + dots);
+                }
+            }
+        );
+        timer.start();
 
+        return label;
     }
+
+    /**
+     * special JPanel for the login page of the welcome statement from the 
+     * half of the login page panel
+     * 
+     * @return created JPanel
+     * 
+     */
+    public static JPanel Panel() {
+        JPanel panel = createComp.createJPanel(
+            0, 0, 
+            500, 500, 
+            new roundedBorder(20, Color.BLACK, Color.GRAY)
+        );
+        panel.setVisible(true);
+        
+        return panel;
+    }    
 
 }

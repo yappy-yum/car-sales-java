@@ -8,6 +8,7 @@ import frontPage.isDarkTheme;
 import loginPage.isLogin;
 import loginPage.storage;
 import loginPage.Argon2.Argon;
+import loginPage.Customer.loginPage;
 
 public class initializer {
     
@@ -21,6 +22,7 @@ public class initializer {
     public Components component;
     public SwitchThemeComp switchThemeComp;
     public FrontPage frontPage;
+    public loginPage loginPage;
 
     public initializer() {
         new Window(this);

@@ -437,7 +437,8 @@ public class Components extends JPanel {
     }
 
     protected void _initializeLoginPage() {        
-        loginPage LP = new loginPage(i, window);
+        i.loginPage = new loginPage(i, window);
+        loginPage LP = i.loginPage;
 
         int X = (1280 - 1000) / 2; 
         int Y = (720 - 500) / 2;

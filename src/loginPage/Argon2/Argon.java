@@ -20,7 +20,7 @@ public class Argon {
      * <p> - prevent brute-force attacks
      * 
      */
-    protected final int ITERATION = 10;
+    protected final int ITERATION = 50;
 
     /**
      * @dev
@@ -40,7 +40,7 @@ public class Argon {
      * <p> - determines the number of threads (CPU cores) used by the algorithm
      * 
      */    
-    protected final int PARALLELISM = 1;
+    protected final int PARALLELISM = 2;
 
     /*//////////////////////////////////////////////////////////////
                              get hash here

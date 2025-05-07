@@ -1,126 +1,124 @@
-package loginPage.Customer;
+package Helper.login;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Component;
-
-import java.util.Arrays;
 import java.util.Enumeration;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
+ 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
 import Helper.Comp.createComp;
-import Helper.RoundedBorder.roundedBorder;
 import Helper.RoundedBorder.roundedBorderFactory;
 import Helper.fileSystem.imageSystem;
 
 public class loginFill {
-
-    /*//////////////////////////////////////////////////////////////
-                                 JLabel
-    //////////////////////////////////////////////////////////////*/    
     
-    /**
-     * create label
-     * 
-     * @param _text label text
-     * @param X X-coordinate    
-     * @param Y Y-coordinate
-     * @param width width length of the label
-     * @param height height length of the label
-     * @return created JLabel
-     * 
-     */
-    public static JLabel setLabel(String _text, int X, int Y, int width, int height) {
-        return createComp.createJLabel(
-            _text,
-            X, Y,
-            width, height,
-            new Font("Arial", Font.BOLD, 18),
-            Color.BLACK
-        );
+    public static class createLabelAndLongJTextField {
+        public JLabel label;
+        public JTextField textField;
+
+        public createLabelAndLongJTextField(
+            String _text,
+            int X, int Y
+        ) {
+            label = createComp.createJLabel(
+                _text, 
+                X, Y, 
+                200, 40, 
+                new Font("Arial", Font.BOLD, 18), 
+                Color.BLACK
+            );
+            label.setVisible(false);
+
+            textField = createComp.createJTextField(
+                X + 120, Y, 
+                300, 40, 
+                new Font("Arial", Font.BOLD, 18), 
+                roundedBorderFactory.create(
+                    10, 
+                    Color.BLACK,
+                    null
+                ),
+                Color.BLACK
+            );
+            textField.setVisible(false);
+        }
+
+        public void setUnEditable() {
+            textField.setEditable(false);
+        }
+
+        public void setEditable() {
+            textField.setEditable(true);
+        }
     }
 
-    /*//////////////////////////////////////////////////////////////
-                               JTextField
-    //////////////////////////////////////////////////////////////*/    
-    
-    /**
-     * longer text field width
-     * 
-     * @param X X-coordinate
-     * @param Y Y-coordinate
-     * @return created JTextField
-     * 
-     */
-    public static JTextField FillLongJTextArea(int X, int Y) {
-        return createComp.createJTextField(
-            X, Y,
-            300, 40, 
-            new Font("Arial", Font.BOLD, 18), 
-            roundedBorderFactory.create(
-                10, 
-                Color.BLACK,
-                null
-            ),
-            Color.BLACK
-        );
+    public static class createLabelAndShortJTextField {
+        public JLabel label;
+        public JTextField textField;
+
+        public createLabelAndShortJTextField(
+            String _text,
+            int X, int Y
+        ) {
+            label = createComp.createJLabel(
+                _text, 
+                X, Y, 
+                200, 40, 
+                new Font("Arial", Font.BOLD, 18), 
+                Color.BLACK
+            );
+            label.setVisible(false);
+
+            textField = createComp.createJTextField(
+                X + 190, Y, 
+                230, 40, 
+                new Font("Arial", Font.BOLD, 18), 
+                roundedBorderFactory.create(
+                    10, 
+                    Color.BLACK,
+                    null
+                ),
+                Color.BLACK
+            );
+            textField.setVisible(false);
+        }
+
+        public void setUnEditable() {
+            textField.setEditable(false);
+        }
     }
 
-    /**
-     * shorter text field width
-     * 
-     * @param X X-coordinate
-     * @param Y Y-coordinate
-     * @return created JTextField
-     * 
-     */
-    public static JTextField FillShortJTextArea(int X, int Y) {
-        return createComp.createJTextField(
-            X, Y,
-            230, 40, 
-            new Font("Arial", Font.BOLD, 18), 
-            roundedBorderFactory.create(
-                10, 
-                Color.BLACK,
-                null
-            ),
-            Color.BLACK
-        );
-    }
+    public static class createLabelAndLongJPasswordField {
+        public JLabel label;
+        public JPasswordField passwordField;
+        public JButton button;
 
-    /*//////////////////////////////////////////////////////////////
-                             JPasswordField
-    //////////////////////////////////////////////////////////////*/    
-
-    /**
-     * a sub-class that returns a longer JPasswordField for password 
-     * filling box and a button that switch between show and hide password
-     *  
-     */
-    public static class FillLongJPassWordField {
-        JPasswordField passwordField;
-        JButton button;
-
+        boolean isPasswordVisible = false;
         ImageIcon PASSWORD_SHOW = imageSystem._scaleImage(imageSystem.PASSWORD_SHOW, 30, 30);
         ImageIcon PASSWORD_HIDE = imageSystem._scaleImage(imageSystem.PASSWORD_HIDE, 30, 30);
 
-        boolean isPasswordVisible = false;
-
-        public FillLongJPassWordField(int X, int Y) {
-            passwordField = createComp.createJPasswordField(
+        public createLabelAndLongJPasswordField(
+            String _text,
+            int X, int Y
+        ) {
+            label = createComp.createJLabel(
+                _text, 
                 X, Y, 
+                200, 40, 
+                new Font("Arial", Font.BOLD, 18), 
+                Color.BLACK
+            );
+            label.setVisible(false);
+
+            passwordField = createComp.createJPasswordField(
+                X + 120, Y, 
                 300, 40, 
                 '*', Color.BLACK, 
                 new Font(null, Font.BOLD, 15), 
@@ -130,16 +128,16 @@ public class loginFill {
                     null
                 )
             );
+            passwordField.setVisible(false);
 
             button = createComp.createJButton(
                 PASSWORD_HIDE, 
-                X + 255, Y + 5,
+                (X + 120) + 255, Y + 5,
                 30, 30
             );
-
+            button.setVisible(false);
             button.addActionListener( _ -> {
                 isPasswordVisible = !isPasswordVisible;
-    
                 if (isPasswordVisible) {
                     passwordField.setEchoChar((char) 0);
                     button.setIcon(PASSWORD_SHOW);
@@ -149,33 +147,42 @@ public class loginFill {
                 }
             });
 
-            passwordField.setVisible(false);
-            button.setVisible(false);
-            
         }
 
-        public List<Component> getComponents() {
-            return Arrays.asList(button, passwordField);
+        public void setUnEditable() {
+            passwordField.setEditable(false);
         }
-    }    
 
-    /**
-     * a sub-class that returns shorter JPasswordField for password 
-     * filling box and a button that switch between show and hide password
-     * 
-     */
-    public static class FillShortJPassWordField {
-        JPasswordField passwordField;
-        JButton button;
+        public void setEditable() {
+            passwordField.setEditable(true);
+        }
 
+    }
+
+    public static class createLabelAndShortJPasswordField {
+        public JLabel label;
+        public JPasswordField passwordField;
+        public JButton button;
+
+        boolean isPasswordVisible = false;
         ImageIcon PASSWORD_SHOW = imageSystem._scaleImage(imageSystem.PASSWORD_SHOW, 30, 30);
         ImageIcon PASSWORD_HIDE = imageSystem._scaleImage(imageSystem.PASSWORD_HIDE, 30, 30);
 
-        boolean isPasswordVisible = false;
-
-        public FillShortJPassWordField(int X, int Y) {
-            passwordField = createComp.createJPasswordField(
+        public createLabelAndShortJPasswordField(
+            String _text,
+            int X, int Y
+        ) {
+            label = createComp.createJLabel(
+                _text, 
                 X, Y, 
+                200, 40, 
+                new Font("Arial", Font.BOLD, 18), 
+                Color.BLACK
+            );
+            label.setVisible(false);
+
+            passwordField = createComp.createJPasswordField(
+                X + 190, Y, 
                 230, 40, 
                 '*', Color.BLACK, 
                 new Font(null, Font.BOLD, 15), 
@@ -185,16 +192,16 @@ public class loginFill {
                     null
                 )
             );
+            passwordField.setVisible(false);
 
             button = createComp.createJButton(
                 PASSWORD_HIDE, 
-                X + 185, Y + 5,
+                (X + 190) + 185, Y + 5,
                 30, 30
             );
-
+            button.setVisible(false);
             button.addActionListener( _ -> {
                 isPasswordVisible = !isPasswordVisible;
-    
                 if (isPasswordVisible) {
                     passwordField.setEchoChar((char) 0);
                     button.setIcon(PASSWORD_SHOW);
@@ -203,53 +210,28 @@ public class loginFill {
                     button.setIcon(PASSWORD_HIDE);
                 }
             });
-
-            passwordField.setVisible(false);
-            button.setVisible(false);
-            
         }
 
-        public List<Component> getComponents() {
-            return Arrays.asList(button, passwordField);
+        public void setUnEditable() {
+            passwordField.setEditable(false);
         }
+
+        public void setEditable() {
+            passwordField.setEditable(true);
+        }
+
     }
-
-    /*//////////////////////////////////////////////////////////////
-                                 JPanel
-    //////////////////////////////////////////////////////////////*/    
-
-    /**
-     * special JPanel for the login page of the welcome statement from the 
-     * half of the login page panel
-     * 
-     * @return created JPanel
-     * 
-     */
-    public static JPanel Panel() {
-        JPanel panel = createComp.createJPanel(
-            0, 0, 
-            500, 500, 
-            new roundedBorder(20, Color.BLACK, Color.GRAY)
-        );
-        panel.setVisible(true);
-        
-        return panel;
-    }
-
-    /*//////////////////////////////////////////////////////////////
-                             JToggleButton
-    //////////////////////////////////////////////////////////////*/    
 
     public static class createGender {
-        JToggleButton[] gender = new JToggleButton[3];
-        JLabel[] label = new JLabel[3];
-        JTextField others = new JTextField();
+        public JToggleButton[] gender = new JToggleButton[3];
+        public JLabel[] label = new JLabel[3];
+        public JTextField others = new JTextField();
 
         ButtonGroup genderGroup = new ButtonGroup();
         String[] normalGender = {"Male", "Female", "Others"};
 
         public createGender(int X, int Y) {
-            
+
             for (int i = 0; i < normalGender.length; i++) {
                 final int index = i;
 
@@ -264,6 +246,7 @@ public class loginFill {
                 // set toggle button action
                 gender[i].addActionListener( _ -> {
                     Enumeration<AbstractButton> buttons = genderGroup.getElements();
+
                     while (buttons.hasMoreElements()) {
                         AbstractButton b = buttons.nextElement();
                         b.setText("⚪");
@@ -278,29 +261,29 @@ public class loginFill {
                     }
                 });
 
+                // create label
                 label[i] = createComp.createJLabel(
                     normalGender[i], 
-                    X + (i * 95), Y - 30, 
+                    X + (i * 95), Y - 30,
                     100, 100, 
-                    new Font("SansSerif", Font.BOLD, 15), 
+                    new Font("Arial", Font.BOLD, 15), 
                     Color.BLACK
                 );
-
             }
 
+            // create text field
             others = createComp.createJTextField(
                 X + 290, Y, 
                 155, 40, 
-                new Font(null, Font.BOLD, 15), 
+                new Font("Arial", Font.BOLD, 18), 
                 roundedBorderFactory.create(
                     10, 
-                    Color.BLACK, 
+                    Color.BLACK,
                     null
                 ),
                 Color.BLACK
             );
             others.setEditable(false);
-
         }
 
         public boolean isOthersSelectedButEmpty() {
@@ -324,16 +307,23 @@ public class loginFill {
             for (JToggleButton i : gender) {
                 i.setEnabled(false);
             }
+            _setUnEditable();
         }
 
-        public List<Component> getAllComponents() {
-            return Stream.of(
-                Stream.of(others),
-                Arrays.stream(gender),
-                Arrays.stream(label)
-            ).flatMap(s -> s).collect(Collectors.toList());
+        public void _makeclickable() {
+            for (JToggleButton i : gender) {
+                i.setEnabled(true);
+            }
+            _setEditable();
+        }
+
+        void _setUnEditable() {
+            others.setEditable(false);
+        }
+
+        void _setEditable() {
+            others.setEditable(true);
         }
     }
-    
 
 }

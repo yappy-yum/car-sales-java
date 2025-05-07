@@ -130,6 +130,7 @@ public class Window {
         i.component = null;
         i.switchThemeComp = null;
         i.frontPage = null;
+        i.loginPage = null;
 
         i.switchThemeComp = new SwitchThemeComp(i);
         i.component = new Components(i, this);

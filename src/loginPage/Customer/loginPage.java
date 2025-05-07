@@ -3,7 +3,6 @@ package loginPage.Customer;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -28,6 +27,8 @@ import Helper.RoundedBorder.roundedBorder;
 import Helper.fileSystem.imageSystem;
 import loginPage.Profile;
 import loginPage.storage;
+import Helper.login.loginFill;
+import Helper.login.loginComp;
 
 public class loginPage extends JPanel {
 
@@ -37,6 +38,9 @@ public class loginPage extends JPanel {
     Components component;
     storage storage;
 
+    JButton LRButton;
+    JButton close;
+
     Profile.userProfile user = new Profile.userProfile(
         null, null, null, 
         null, 0, 0, 
@@ -44,68 +48,61 @@ public class loginPage extends JPanel {
         null, null
     );
 
-    JLabel[] loadingLabel = {
-        createComp.createJLabel(
-            "Loading...",
-            530, 300,
-            100, 80, 
-            new Font("Arial", Font.BOLD, 20),
-            Color.BLACK
-        ),
-        createComp.createJLabel(
-            "Loading...",
-            510, 300,
-            80, 20, 
-            new Font("Arial", Font.BOLD, 20),
-            Color.BLACK
-        )
-    };
-
     /*//////////////////////////////////////////////////////////////
                         Registration Components
     //////////////////////////////////////////////////////////////*/    
 
+    loginFill.createLabelAndLongJTextField RegisterFirstName = new loginFill.createLabelAndLongJTextField("First Name:", 530, 90);
+    loginFill.createLabelAndLongJTextField RegisterLastName = new loginFill.createLabelAndLongJTextField("Last Name:", 530, 160);
+    loginFill.createLabelAndLongJTextField RegisterUsername = new loginFill.createLabelAndLongJTextField("Username:", 530, 230);
+    loginFill.createLabelAndShortJTextField RegisterPhoneNum = new loginFill.createLabelAndShortJTextField("Phone Number:", 530, 300);
+    loginFill.createLabelAndShortJTextField RegisterAge = new loginFill.createLabelAndShortJTextField("Age:", 530, 370);
+
     Deque<Object> FirstPageRegister = new LinkedList<>(
         Arrays.asList(
-            loginFill.setLabel("Registration", 700, 30, 110, 40),
+            createComp.createJLabel("Register", 700, 30, 110, 40, new Font("Arial", Font.BOLD, 18), Color.BLACK),
 
-            loginFill.setLabel("First Name:", 530, 90, 110, 40),
-            loginFill.FillLongJTextArea(650, 90),
+            RegisterFirstName.label,
+            RegisterFirstName.textField,
+            
+            RegisterLastName.label,
+            RegisterLastName.textField,
 
-            loginFill.setLabel("Last Name:", 530, 160, 110, 40),
-            loginFill.FillLongJTextArea(650, 160),
+            RegisterUsername.label,
+            RegisterUsername.textField,
 
-            loginFill.setLabel("Username:", 530, 230, 110, 40),
-            loginFill.FillLongJTextArea(650, 230),
+            RegisterPhoneNum.label,
+            RegisterPhoneNum.textField,
 
-            loginFill.setLabel("Phone Number:", 530, 300, 150, 40),
-            loginFill.FillShortJTextArea(720, 300),
+            RegisterAge.label,
+            RegisterAge.textField,
 
-            loginFill.setLabel("Age:", 530, 370, 110, 40),
-            loginFill.FillShortJTextArea(720, 370),
-
-            loginMessage.createRegisterNext(this)
+            loginComp.createFillNext("Register ▶", 770, 440, 20, this::CheckFirstRegister)
         )
     );
 
-    loginMessage.createPasswordInstructor instructor1 = new loginMessage.createPasswordInstructor(910, 200);
-    loginFill.createGender genders = new loginFill.createGender(530, 30);
-    loginFill.FillLongJPassWordField longPasswordField = new loginFill.FillLongJPassWordField(650, 230);
-    loginFill.FillShortJPassWordField shortPasswordField1 = new loginFill.FillShortJPassWordField(720, 300);
-    loginFill.FillShortJPassWordField shortPasswordField2 = new loginFill.FillShortJPassWordField(720, 370);
+    loginFill.createGender RegisterGender = new loginFill.createGender(530, 30);
+    loginComp.createPasswordInstructor RegisterPasswordInstructor = new loginComp.createPasswordInstructor(910, 200);
+    loginFill.createLabelAndLongJPasswordField RegisterPassword = new loginFill.createLabelAndLongJPasswordField("Password:", 530, 230);
+    loginFill.createLabelAndShortJPasswordField RegisterFavText = new loginFill.createLabelAndShortJPasswordField("Favourite texts:", 530, 300);
+    loginFill.createLabelAndShortJPasswordField RegisterFavNum = new loginFill.createLabelAndShortJPasswordField("Favourite numbers:", 530, 370);
+    JButton register = loginComp.createFillNext("Register", 770, 440, 20, this::CheckSecondRegister);
+
     Deque<Object> SecondPageRegister = new LinkedList<>(
         Arrays.asList(
-            genders.getAllComponents().get(0), // label[0]
-            genders.getAllComponents().get(1), // label[1]
-            genders.getAllComponents().get(2), // label[2]
-            genders.getAllComponents().get(3), // gender[0]
-            genders.getAllComponents().get(4), // gender[1]
-            genders.getAllComponents().get(5), // gender[2]
-            genders.getAllComponents().get(6), // others textfield
+            RegisterGender.gender[0],
+            RegisterGender.gender[1],
+            RegisterGender.gender[2],
 
-            instructor1.getComponents().get(0),
-            instructor1.getComponents().get(1),
-            instructor1.getComponents().get(2),
+            RegisterGender.label[0],
+            RegisterGender.label[1],
+            RegisterGender.label[2],
+
+            RegisterGender.others,
+
+            RegisterPasswordInstructor.button,
+            RegisterPasswordInstructor.textArea,
+            RegisterPasswordInstructor.textBackground,
 
             createComp.createJTextArea(
                 """
@@ -120,19 +117,20 @@ public class loginPage extends JPanel {
                 null, Color.BLACK
             ),
 
-            loginFill.setLabel("Password:", 530, 230, 110, 40),
-            longPasswordField.getComponents().get(0),
-            longPasswordField.getComponents().get(1),
+            RegisterPassword.button,
+            RegisterPassword.label,
+            RegisterPassword.passwordField,
 
-            loginFill.setLabel("Favourite Texts:", 530, 300, 170, 40),
-            shortPasswordField1.getComponents().get(0),
-            shortPasswordField1.getComponents().get(1),
+            RegisterFavText.button,
+            RegisterFavText.label,
+            RegisterFavText.passwordField,
 
-            loginFill.setLabel("Favourite Numbers:", 530, 370, 190, 40),
-            shortPasswordField2.getComponents().get(0),
-            shortPasswordField2.getComponents().get(1),
-            
-            loginMessage.createRegister(this)
+            RegisterFavNum.button,
+            RegisterFavNum.label,
+            RegisterFavNum.passwordField,
+
+            register
+
         )
     );
  
@@ -140,40 +138,52 @@ public class loginPage extends JPanel {
                             login Components
     //////////////////////////////////////////////////////////////*/   
      
-    loginMessage.createPasswordInstructor instructor2 = new loginMessage.createPasswordInstructor(420, 260);
-    loginFill.FillLongJPassWordField passwordField2 = new loginFill.FillLongJPassWordField(150, 290);
+    loginFill.createLabelAndLongJTextField LoginUsername = new loginFill.createLabelAndLongJTextField("Username:", 30, 150);
+    loginFill.createLabelAndLongJPasswordField LoginPassword = new loginFill.createLabelAndLongJPasswordField("Password:", 30, 250);
+    JButton login1 = loginComp.createFillNext("Login ▶", 270, 440, 20, this::CheckFirstLogin);
+    JButton alternative1 = loginComp.createFillNext("𝙵̲𝚘̲𝚛̲𝚐̲𝚎̲𝚝̲ ̲𝚄̲𝚜̲𝚎̲𝚛̲𝚗̲𝚊̲𝚖̲𝚎̲/̲𝙿̲𝚊̲𝚜̲𝚜̲𝚠̲𝚘̲𝚛̲𝚍̲?̲", 200, 310, 15, this::fullLogin);
+
+
     Deque<Object> FirstPageLogin = new LinkedList<>(
         Arrays.asList(
-            instructor2.getComponents().get(0),
-            instructor2.getComponents().get(1),
-            instructor2.getComponents().get(2),
+            createComp.createJLabel("Login", 250, 30, 110, 40, new Font("Arial", Font.BOLD, 18), Color.BLACK),
 
-            loginFill.setLabel("Username:", 30, 220, 110, 40),
-            loginFill.FillLongJTextArea(150, 220),
+            LoginUsername.label,
+            LoginUsername.textField,
 
-            loginFill.setLabel("Password:", 30, 290, 110, 40),
-            passwordField2.getComponents().get(0),
-            passwordField2.getComponents().get(1),
+            LoginPassword.button,
+            LoginPassword.label,
+            LoginPassword.passwordField,
 
-            loginMessage.createLoginNext(this)
+            alternative1,
 
+            login1
         )
     ); 
 
-    loginFill.FillShortJPassWordField shortPasswordField3 = new loginFill.FillShortJPassWordField(150, 170);
-    loginFill.FillShortJPassWordField shortPasswordField4 = new loginFill.FillShortJPassWordField(150, 240);
+    loginFill.createLabelAndShortJTextField LoginPhoneNumber = new loginFill.createLabelAndShortJTextField("Phone Number:", 30, 90);
+    loginFill.createLabelAndShortJPasswordField LoginFavNum = new loginFill.createLabelAndShortJPasswordField("Favourite number:", 30, 180);
+    loginFill.createLabelAndShortJPasswordField LoginFavText = new loginFill.createLabelAndShortJPasswordField("Favourite text:", 30, 270);
+    JButton login2 = loginComp.createFillNext("Login ▶", 270, 440, 20, this::checkSecondLogin);
+    JButton alternative2 = loginComp.createFillNext("𝐿̲𝑜̲𝑔̲𝑖̲𝑛̲ 𝑢̲𝑠̲𝑖̲𝑛̲𝑔̲ 𝑈̲𝑠̲𝑒̲𝑟̲𝑛̲𝑎̲𝑚̲𝑒̲ 𝑎̲𝑛̲𝑑̲ 𝑃̲𝑎̲𝑠̲𝑠̲𝑤̲𝑜̲𝑟̲𝑑̲", 200, 310, 15, this::FillLogin);
+
+
     Deque<Object> SecondPageLogin = new LinkedList<>(
-        Arrays.asList(
-            loginFill.setLabel("Phone Number", 30, 100, 110, 40),
-            loginFill.FillLongJTextArea(150, 100),
+        Arrays.asList(    
+            LoginPhoneNumber.label,
+            LoginPhoneNumber.textField,
 
-            loginFill.setLabel("Favourite Texts", 30, 170, 170, 40),
-            shortPasswordField3.getComponents().get(0),
-            shortPasswordField3.getComponents().get(1),
+            LoginFavNum.button,
+            LoginFavNum.label,
+            LoginFavNum.passwordField,
 
-            loginFill.setLabel("Favourite Numbers", 30, 240, 190, 40),
-            shortPasswordField4.getComponents().get(0),
-            shortPasswordField4.getComponents().get(1)
+            LoginFavText.button,
+            LoginFavText.label,
+            LoginFavText.passwordField,
+
+            alternative2,
+
+            login2
 
         )
     );
@@ -182,41 +192,46 @@ public class loginPage extends JPanel {
                        Registration Error Message
     //////////////////////////////////////////////////////////////*/    
 
-    List<Object> RegisterFirstErrorMessage = new ArrayList<>(
+    List<JLabel> RegisterFirstErrorMessage = new LinkedList<>(
         Arrays.asList(
-            loginMessage.createErrorMessage("First name and Last name must only contain characters", 505, 410),
-            loginMessage.createErrorMessage("Username has used", 505, 410),
-            loginMessage.createErrorMessage("Phone number is not valid", 505, 410),
-            loginMessage.createErrorMessage("only the age between 18 - 60", 505, 410)
+            loginComp.createErrorMessage("First name and Last name must only contain characters", 505, 410),
+            loginComp.createErrorMessage("Username has used", 505, 410),
+            loginComp.createErrorMessage("Phone number is not valid", 505, 410),
+            loginComp.createErrorMessage("only the age between 18 - 60", 505, 410)
         )
     );
 
-    List<Object> RegisterSecondErrorMessage = new ArrayList<>(
+    List<JLabel> RegisterSecondErrorMessage = new LinkedList<>(
         Arrays.asList(
-            loginMessage.createErrorMessage("Gender is not selected", 505, 410),
-            loginMessage.createErrorMessage("'Others' gender is selected, but did not explicitly named your gender", 505, 410),
-            loginMessage.createErrorMessage("Password is weak", 505, 410),
-            loginMessage.createErrorMessage("favourite text must contain only characters", 505, 410),
-            loginMessage.createErrorMessage("favourite number must contain only numbers", 505, 410)
+            loginComp.createErrorMessage("Gender is not selected", 505, 410),
+            loginComp.createErrorMessage("'Others' gender is selected, but did not explicitly named your gender", 505, 410),
+            loginComp.createErrorMessage("Password is weak, hower 'i' for more", 505, 410),
+            loginComp.createErrorMessage("favourite text must contain only characters", 505, 410),
+            loginComp.createErrorMessage("favourite number must contain only numbers", 505, 410)
         )
     );
 
     /*//////////////////////////////////////////////////////////////
                           Login Error Message
-    //////////////////////////////////////////////////////////////*/    
+    //////////////////////////////////////////////////////////////*/  
 
-    List<Object> LoginErrorMessage = new ArrayList<>(
-        Arrays.asList(
-            loginMessage.createErrorMessage("incorrect username or/and password", 30, 410)
-        )
-    );
+    JLabel[] LoginErrorMessage = {
+        loginComp.createErrorMessage("incorrect username or/and password", 30, 410),
+        loginComp.createErrorMessage("incorrect phone number or/and favourite text or/and number", 30, 410)
+    };
 
     /*//////////////////////////////////////////////////////////////
                             Success Message
     //////////////////////////////////////////////////////////////*/
      
     JLabel[] successLabel = {
-        loginMessage.createSuccessMessage("◀ Register Success, click 'Close' to reload and login again", 510, 410)
+        loginComp.createSuccessMessage("◀ Register Success, click 'Close' to reload and login again", 510, 410),
+        loginComp.createSuccessMessage("Login Success, click 'Close' to reload and login again ▶", 30, 380)
+    }; 
+    
+    JLabel[] loadingLabel = {
+        loginComp.createLoading(530, 410),
+        loginComp.createLoading(30, 380)
     };
 
     /*//////////////////////////////////////////////////////////////
@@ -274,27 +289,27 @@ public class loginPage extends JPanel {
      * 
      */
     protected void halfNotice() {
-        JPanel half = loginFill.Panel();
-        JLabel header = loginMessage.createWelcomeHeader();
-        JTextArea subHeader = loginMessage.createWelcomeSubHeader();
-        JButton button = loginMessage.createRL();
-        JButton close = loginMessage.createClose();
+        JPanel half = loginComp.Panel();
+        JLabel header = loginComp.createWelcomeHeader();
+        JTextArea subHeader = loginComp.createWelcomeSubHeader();
+        LRButton = loginComp.createRL();
+        close = loginComp.createClose();
 
         add(half);
         half.add(header);
         half.add(subHeader);
-        half.add(button);
+        half.add(LRButton);
         half.add(close);
 
         // Add action listener to the button
-        button.addActionListener( _ -> { toggleLoginRegister(header, subHeader, button, half); });
+        LRButton.addActionListener( _ -> { toggleLoginRegister(header, subHeader, LRButton, half); });
         close.addActionListener( _ -> {
             blur.removeBlur();
             SwingUtilities.invokeLater(() -> {
                 window._reloadEverything();
             });
         });
-    }
+    } 
 
     /**
      * a helper method to switch the welcome statement and move the half 
@@ -310,7 +325,7 @@ public class loginPage extends JPanel {
         if (half.getLocation().x != 0 && half.getLocation().x != 500) return;
 
         boolean isLogin = half.getLocation().x == 0;
-        loginMessage.SwitchMessage(isLogin, header, subHeader, button);
+        loginComp.SwitchMessage(isLogin, header, subHeader, button);
 
         int shift = isLogin ? 500 : -500;
 
@@ -353,6 +368,7 @@ public class loginPage extends JPanel {
      * 
      */
     protected void FillFirstRegister() { 
+        SecondPageRegister.forEach(i -> ((Component) i).setVisible(false));
         FirstPageRegister.forEach(i -> ((Component) i).setVisible(true)); 
     }
 
@@ -415,7 +431,7 @@ public class loginPage extends JPanel {
                     if 
                     (
                         !shouldBreak &&
-                        username.isEmpty() || 
+                        username.trim().isEmpty() || 
                         !storage.isUsernameUnique(username)
                     )
                     {
@@ -484,7 +500,7 @@ public class loginPage extends JPanel {
     protected void FillSecondRegister() {
         int index = 0;
         for (Object i : SecondPageRegister) {
-            switch (index == 7 || index == 8 ? 1 : 0) {
+            switch (index == 9 || index == 8 ? 1 : 0) {
                 case 0:
                     ((Component) i).setVisible(true);
                     break;
@@ -510,7 +526,7 @@ public class loginPage extends JPanel {
         String favText = new String();
         String favNum = new String();
 
-        gender = genders.getSelectedGender();
+        gender = RegisterGender.getSelectedGender();
         
         int index = 0;
         for (Object i : SecondPageRegister) {
@@ -537,7 +553,7 @@ public class loginPage extends JPanel {
                     if 
                     (
                         !shouldBreak &&
-                        gender == null
+                        gender == null || gender == ""
                     ) {
                         ((Component) l).setVisible(true);
                         shouldBreak = true;
@@ -548,7 +564,7 @@ public class loginPage extends JPanel {
                     if 
                     (
                         !shouldBreak &&
-                        genders.isOthersSelectedButEmpty()
+                        RegisterGender.isOthersSelectedButEmpty()
                     )
                     {
                         ((Component) l).setVisible(true);
@@ -595,10 +611,7 @@ public class loginPage extends JPanel {
             }
 
 
-            if (shouldBreak) {
-                System.out.println("register failed");
-                return;
-            };
+            if (shouldBreak) return;
         }
 
         user.gender = gender;
@@ -610,47 +623,23 @@ public class loginPage extends JPanel {
     }
 
     protected void _register() {
-        System.out.println("start cleaning...");
-        int index = 0;
-        for (Object i : SecondPageRegister) {
-            switch (index) {
-                case 0:
-                    genders.makeUnclickable();
-                    break;
-
-                case 6:
-                    ((JTextField) i).setEditable(false);
-                    break;
-
-                case 7:
-                    ((JTextField) i).setEditable(false);
-                    break;
-
-                case 12:
-                    ((JPasswordField) i).setEditable(false);
-                    break;
-
-                case 15:
-                    ((JPasswordField) i).setEditable(false);
-                    break;
-
-                case 18:
-                    ((JPasswordField) i).setEditable(false);
-                    break;
-            }
-        }
+        _makeUnclickable();
         loadingLabel[0].setVisible(true);
 
         new Thread(() -> {
-            System.out.println("registering...");
             storage.customerRegister(user);
 
             SwingUtilities.invokeLater(() -> {
-                System.out.println("registered");
+                System.out.println("Username: " + user.username);
+                System.out.println("Password: " + storage.Users.get(user.username).password);
+                System.out.println("Favourite Texts: " + storage.Users.get(user.username).favText);
+                System.out.println("Favourite Number: " + storage.Users.get(user.username).favNum);
                 loadingLabel[0].setVisible(false);
                 successLabel[0].setVisible(true);
+                close.setEnabled(true);
             });
         }).start();
+
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -663,18 +652,9 @@ public class loginPage extends JPanel {
      * 
      */
     protected void FillLogin() {
-        int index = 0;
-        for (Object i : FirstPageLogin) {
-            switch (index == 0 || index == 1 ? 1 : 0) {
-                case 0:
-                    ((Component) i).setVisible(true);
-                    break;
-                case 1:
-                    ((Component) i).setVisible(false);
-                    break;
-            }
-            index ++;
-        }
+        SecondPageLogin.forEach(i -> ((Component) i).setVisible(false));
+        FirstPageLogin.forEach(i -> ((Component) i).setVisible(true));
+        _makeclickable();
     }    
     
     /**
@@ -683,35 +663,49 @@ public class loginPage extends JPanel {
      * 
      */
     protected void CheckFirstLogin() {
-        LoginErrorMessage.forEach(i -> ((Component) i).setVisible(false));
+        _makeUnclickable();
+        System.out.println("checking login");
 
-        String username = new String();
-        String password = new String();
+        Arrays.stream(LoginErrorMessage).forEach(i -> ((Component) i).setVisible(false));
+
+        String _username = "";
+        String _password = "";
 
         int index = 0;
         for (Object i : FirstPageLogin) {
             switch (index) {
-                case 4:
-                    username = ((JTextField) i).getText();
+                case 2:
+                    _username = ((JTextField) i).getText();
                     break;
-                case 7:
-                    password = String.valueOf(((JPasswordField) i).getPassword());
+                case 5:
+                    _password = String.valueOf(((JPasswordField) i).getPassword());
                     break;
             }
             index ++;
         }
 
-        for (int i = 0; i < LoginErrorMessage.size(); i ++) {
-            Object l = LoginErrorMessage.get(i);
+        final String username = _username;
+        final String password = _password; 
+        
+        loadingLabel[1].setVisible(true);
 
-            if 
-            (
-                !storage.login(username, password)
-            ) {
-                ((Component) l).setVisible(true);
-            } 
-            else return ;
-        }
+        new Thread(() -> {
+            boolean chechLogin = storage.login(username, password);
+
+            SwingUtilities.invokeLater(() -> {
+                if (!chechLogin) {
+                    LoginErrorMessage[0].setVisible(true);
+                    loadingLabel[1].setVisible(false);
+                    _makeclickable();
+                } else {
+                    successLabel[1].setVisible(true);
+                    loadingLabel[1].setVisible(false);
+                    _makeUnclickable();
+                    close.setEnabled(true);
+                }
+            });
+        }).start();
+
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -726,6 +720,56 @@ public class loginPage extends JPanel {
     protected void fullLogin() {
         FirstPageLogin.forEach(i -> ((Component) i).setVisible(false));
         SecondPageLogin.forEach(i -> ((Component) i).setVisible(true));
+        _makeclickable();
+    }
+
+    protected void checkSecondLogin() {
+        Arrays.stream(LoginErrorMessage).forEach(i -> ((Component) i).setVisible(false)); 
+        _makeUnclickable();
+
+        String _phoneNumber = "";
+        String _favText = "";
+        String _favNum = "";
+
+        int index = 0;
+        for (Object i : SecondPageLogin) {
+            switch (index) {
+                case 1:
+                    _phoneNumber = ((JTextField) i).getText();
+                    break;
+                case 4:
+                    _favNum = String.valueOf(((JPasswordField) i).getPassword());
+                    break;
+                case 7:
+                    _favText = String.valueOf(((JPasswordField) i).getPassword());
+                    break;
+            }
+            index ++;
+        }
+
+        final int phoneNumber = Integer.parseInt(_phoneNumber);
+        final String favText = _favText;
+        final String favNum = _favNum;
+
+        loadingLabel[1].setVisible(true);
+
+        new Thread(() -> {
+            boolean checkLogin = storage.login(phoneNumber, favText, favNum);
+
+            SwingUtilities.invokeLater(() -> {
+                if (!checkLogin) {
+                    LoginErrorMessage[1].setVisible(true);
+                    loadingLabel[1].setVisible(false);
+                    _makeclickable();
+                } else {
+                    successLabel[1].setVisible(true);
+                    loadingLabel[1].setVisible(false);
+                    _makeUnclickable();
+                    close.setEnabled(true);
+                }
+            });
+        }).start();
+
     }
 
     /**
@@ -734,17 +778,56 @@ public class loginPage extends JPanel {
      */
     protected void _addComp() {
         FirstPageRegister.forEach(i -> add((Component) i));
-        FirstPageLogin.forEach(i -> add((Component) i));
         RegisterFirstErrorMessage.forEach(i -> add((Component) i));
-        LoginErrorMessage.forEach(i -> add((Component) i));
         SecondPageRegister.forEach(i -> add((Component) i));
-        SecondPageLogin.forEach(i -> add((Component) i));
+
         RegisterSecondErrorMessage.forEach(i -> add((Component) i));
         Arrays.stream(successLabel).forEach(i -> add((Component) i));
         Arrays.stream(loadingLabel).forEach(i -> add((Component) i));
+        Arrays.stream(LoginErrorMessage).forEach(i -> add((Component) i));
 
+        FirstPageLogin.forEach(i -> add((Component) i));
+        SecondPageLogin.forEach(i -> add((Component) i));
 
         Fill();
     }
+
+    protected void _makeUnclickable() {
+        RegisterGender.makeUnclickable();
+        RegisterPassword.setUnEditable();
+        RegisterFavNum.setUnEditable();
+        RegisterFavText.setUnEditable();
+
+        register.setEnabled(false);
+        login1.setEnabled(false);
+        login2.setEnabled(false);
+        alternative1.setEnabled(false);
+        alternative2.setEnabled(false);
+
+        LoginUsername.setUnEditable();
+        LoginPassword.setUnEditable();
+
+        LRButton.setEnabled(false);
+        close.setEnabled(false);
+    }    
+
+    protected void _makeclickable() {
+        RegisterGender._makeclickable();
+        RegisterPassword.setEditable();
+        RegisterFavNum.setEditable();
+        RegisterFavText.setEditable();
+
+        register.setEnabled(true);
+        login1.setEnabled(true);
+        login2.setEnabled(true);
+        alternative1.setEnabled(true);
+        alternative2.setEnabled(true);
+
+        LoginUsername.setEditable();
+        LoginPassword.setEditable();        
+
+        LRButton.setEnabled(true);
+        close.setEnabled(true);
+    }    
 
 }

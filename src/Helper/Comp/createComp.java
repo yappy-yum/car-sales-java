@@ -151,7 +151,6 @@ public class createComp {
         button.setFocusable(false);
         button.setContentAreaFilled(false);
         button.setOpaque(false);
-        button.setVisible(false);
 
         return button;
     }
