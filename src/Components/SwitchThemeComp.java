@@ -207,4 +207,18 @@ public class SwitchThemeComp {
             }
         }
     }
+
+    /*//////////////////////////////////////////////////////////////
+                               clear data
+    //////////////////////////////////////////////////////////////*/
+    
+    public void clearEverything() {
+        texts.clear();
+        TButtons.clear();
+        IButtons.clear();
+        TLabels.clear();
+        ILabels.clear();
+        JPanels.clear();
+    }
+
 }

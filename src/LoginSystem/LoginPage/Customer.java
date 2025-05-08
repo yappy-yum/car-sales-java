@@ -1,0 +1,499 @@
+package LoginSystem.LoginPage;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.util.Arrays;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
+
+import Components.Components;
+import Components.Window;
+import Components.initializer;
+import Helper.blur;
+import Helper.Animation.componentAnim;
+import Helper.RoundedBorder.roundedBorder;
+import Helper.fileSystem.imageSystem;
+import Helper.login.loginComp;
+import LoginSystem.Profile;
+import LoginSystem.storage;
+
+public class Customer extends JPanel {
+    
+    JScrollPane pane;
+    blur blur;
+    Window window;
+    Components component;
+    storage storage;
+    CustReadyComp readyComp;
+
+    Profile.userProfile user = new Profile.userProfile(
+        null, null, null, 
+        null, 0, 0, 
+        null, null, 
+        null, null
+    );
+
+    /*//////////////////////////////////////////////////////////////
+                              constructor
+    //////////////////////////////////////////////////////////////*/    
+
+    public Customer(initializer i, Window w) {
+        this.blur = new blur(i.frame);
+        this.pane = i.scrollPane;
+        this.component = i.component;
+        this.storage = i.storage;
+        this.window = w;
+        this.readyComp = new CustReadyComp(this);
+
+        background();
+    }
+
+    /*//////////////////////////////////////////////////////////////
+                            login background
+    //////////////////////////////////////////////////////////////*/    
+
+    /**
+     * 1. create the login page background
+     * 
+     * <p>
+     * 
+     * 1.1 {@link #halfNotice} create a half welcome page on the login page 
+     * 
+     * <p>
+     * 
+     * 1.2 {@link #_addComp} add all the components to the JPanel
+     * 
+     */
+    protected void background() {
+        setOpaque(false);
+        setLayout(null);
+        setBorder(
+            new roundedBorder(
+                20, 
+                Color.BLACK, 
+                imageSystem._reduceColorTransparency(Color.GRAY, 0.7f)
+            )
+        );
+
+        halfNotice();
+        _addComp();
+    }    
+
+    /*//////////////////////////////////////////////////////////////
+                                  half
+    //////////////////////////////////////////////////////////////*/    
+
+    /**
+     * 
+     * 1.1 create a half welcome page on the login page
+     * 
+     */
+    protected void halfNotice() {
+        JPanel half = readyComp.half;
+
+        add(half);
+        half.add(readyComp.header);
+        half.add(readyComp.subHeader);
+        half.add(readyComp.LRButton);
+        half.add(readyComp.close);
+
+        // Add action listener to the button
+        readyComp.LRButton.addActionListener( 
+            _ -> { 
+                toggleLoginRegister(
+                    readyComp.header, 
+                    readyComp.subHeader, 
+                    readyComp.LRButton, 
+                    half
+                ); 
+            }
+        );
+        readyComp.close.addActionListener( 
+            _ -> {
+                blur.removeBlur();
+                remove(half);
+                readyComp = null;
+                SwingUtilities.invokeLater(
+                    () -> {
+                        window._reloadEverything();
+                    }
+                );
+            }
+        );
+    }   
+    
+    /**
+     * a helper method to switch the welcome statement and move the half 
+     * panel to the other side, when "login" or ""register" button is clicked
+     * 
+     * @param header the welcome header
+     * @param subHeader the welcome sub-header
+     * @param button the login/register button
+     * @param half the half background panel
+     * 
+     */
+    protected void toggleLoginRegister(JLabel header, JTextArea subHeader, JButton button, JPanel half) {
+        if (half.getLocation().x != 0 && half.getLocation().x != 500) return;
+
+        boolean isLogin = half.getLocation().x == 0;
+        loginComp.SwitchMessage(isLogin, header, subHeader, button);
+
+        int shift = isLogin ? 500 : -500;
+
+        int X = half.getLocation().x;
+        int Y = half.getLocation().y;
+
+        // Animate the panel movement
+        componentAnim anim = new componentAnim(half, X, Y, (X + shift), Y, pane);
+        anim.setDuration(1500);
+        anim.start();
+    }  
+
+    /*//////////////////////////////////////////////////////////////
+                              Login System
+    //////////////////////////////////////////////////////////////*/    
+
+    /**
+     * 2. initialize register and login stuff
+     * 
+     * <p>
+     * 
+     * 2.1 {@link #FillFirstRegister} fill the first show of registration
+     * 2.2 {@link #FillLogin} fill the first show of login
+     * 
+     */
+    protected void Fill() {
+        
+        FillFirstRegister();
+        FillLogin();
+
+    }   
+    
+    /*//////////////////////////////////////////////////////////////
+                        First Page Registration
+    //////////////////////////////////////////////////////////////*/   
+
+    /**
+     * 
+     * 2.1 fill the first page of registration
+     * 
+     */
+    protected void FillFirstRegister() { 
+        readyComp._setFirstRegisterVisible(true);
+        readyComp._setSecondRegisterVisible(false);
+    }    
+
+    /**
+     * 
+     * 2.1 when the "Register ▶" clicked, filled details is checked. Then show up the second page
+     * 
+     */
+    protected void CheckFirstRegister() {
+
+        Arrays.stream(readyComp.RegisterFirstErrorMessage).forEach(i -> ((Component) i).setVisible(false));
+
+        String FirstName = new String();
+        String lastName = new String();
+        String username = new String();
+        String phoneNumber = new String(); 
+        String age = new String();
+
+        FirstName = readyComp.RegisterFirstName.textField.getText();
+        lastName = readyComp.RegisterLastName.textField.getText();
+        username = readyComp.RegisterUsername.textField.getText();
+        phoneNumber = readyComp.RegisterPhoneNum.textField.getText().trim();
+        age = readyComp.RegisterAge.textField.getText().trim();
+
+        System.out.println("checking first register");
+
+        if (!FirstName.matches("[a-zA-Z]+") || !lastName.matches("[a-zA-Z]+")) {
+            readyComp.RegisterFirstErrorMessage[0].setVisible(true);
+            return;
+        }
+        if (username.trim().isEmpty() || !storage.isUsernameUnique(username)) {
+            readyComp.RegisterFirstErrorMessage[1].setVisible(true);
+            return;
+        }
+        if (!phoneNumber.chars().allMatch(Character::isDigit) || !(phoneNumber.matches("^01[0-46-9][0-9]{7,8}$") || phoneNumber.matches("^0[3-9][0-9]{7,8}$"))) {
+            readyComp.RegisterFirstErrorMessage[2].setVisible(true);
+            return;
+        }
+        if (!storage.isPhoneNumberUnique(Integer.parseInt(phoneNumber))) {
+            readyComp.RegisterFirstErrorMessage[3].setVisible(true);
+            return;
+        }
+        if (age.trim().isEmpty() || !age.chars().allMatch(Character::isDigit) || Integer.parseInt(age) < 0 || Integer.parseInt(age) > 120) {
+            readyComp.RegisterFirstErrorMessage[4].setVisible(true);
+            return;
+        }
+
+        user.status = Profile.userProfile.Status.CUSTOMER;
+        user.firstName = FirstName;
+        user.lastName = lastName;
+        user.username = username;
+        user.phoneNumber = Integer.parseInt(phoneNumber);
+        user.age = Integer.parseInt(age);
+
+        readyComp._setFirstRegisterVisible(false);
+        readyComp._setSecondRegisterVisible(true);
+    }    
+
+    /**
+     * 
+     * 2.1 when the "Register" clicked, filled details is checked. Then store the details by calling {@link #_register}
+     * 
+     */
+    protected void CheckSecondRegister() {
+        Arrays.stream(readyComp.RegisterSecondErrorMessage).forEach(i -> ((Component) i).setVisible(false));
+
+        String gender = new String();
+        String password = new String();
+        String favText = new String();
+        String favNum = new String();
+
+        gender = readyComp.RegisterGender.getSelectedGender();
+        password = String.valueOf(readyComp.RegisterPassword.passwordField.getPassword());
+        favText = String.valueOf(readyComp.RegisterFavText.passwordField.getPassword());
+        favNum = String.valueOf(readyComp.RegisterFavNum.passwordField.getPassword());
+
+        if (gender == null || gender.trim() == "") {
+            readyComp.RegisterSecondErrorMessage[0].setVisible(true);
+            return;
+        }
+        if (readyComp.RegisterGender.isOthersSelectedButEmpty()) {
+            readyComp.RegisterSecondErrorMessage[1].setVisible(true);
+            return;
+        }
+        if (!storage.isYourPasswordStrong(password)) {
+            readyComp.RegisterSecondErrorMessage[2].setVisible(true);
+            return;
+        }
+        if (favText.trim().isEmpty() || !favText.matches("[a-zA-Z]+")) {
+            readyComp.RegisterSecondErrorMessage[3].setVisible(true);
+            return;
+        }
+        if (favNum.trim().isEmpty() || !favNum.chars().allMatch(Character::isDigit)) {
+            readyComp.RegisterSecondErrorMessage[4].setVisible(true);
+            return;
+        }
+
+        user.gender = gender;
+        user.password = password;
+        user.favText = favText;
+        user.favNum = favNum;
+
+        _register();
+
+    }
+
+    /**
+     * 
+     * 2.1 store the details
+     * 
+     */
+    protected void _register() {
+        readyComp._makeUnclickable();
+        readyComp.loadingLabel[0].setVisible(true);
+
+        new Thread(() -> {
+            storage.customerRegister(user);
+
+            SwingUtilities.invokeLater(() -> {
+                System.out.println("Username: " + user.username);
+                System.out.println("Password: " + storage.Users.get(user.username).password);
+                System.out.println("Favourite Texts: " + storage.Users.get(user.username).favText);
+                System.out.println("Favourite Number: " + storage.Users.get(user.username).favNum);
+                readyComp.loadingLabel[0].setVisible(false);
+                readyComp.successLabel[0].setVisible(true);
+                readyComp.close.setEnabled(true);
+            });
+        }).start();
+
+    }    
+
+    /*//////////////////////////////////////////////////////////////
+                            First Page Login
+    //////////////////////////////////////////////////////////////*/    
+
+    /**
+     * 
+     * 2.2 Fill the first show of login
+     * 
+     */
+    protected void FillLogin() {
+        readyComp._setSecondLoginVisible(false);
+        readyComp._setFirstLoginVisible(true);
+        readyComp._makeclickable();
+    }   
+    
+    /**
+     * 
+     * 2.2 when the "Login ▶" clicked, filled details is checked
+     * 
+     */
+    protected void CheckFirstLogin() {
+        readyComp._makeUnclickable();
+
+        Arrays.stream(readyComp.LoginErrorMessage).forEach(i -> ((Component) i).setVisible(false));
+
+        String _username = "";
+        String _password = "";
+
+        _username = readyComp.LoginUsername.textField.getText();
+        _password = String.valueOf(readyComp.LoginPassword.passwordField.getPassword());
+
+        final String username = _username;
+        final String password = _password;
+
+        readyComp.loadingLabel[1].setVisible(true);
+        new Thread(() -> {
+            boolean chechLogin = storage.login(username, password);
+
+            SwingUtilities.invokeLater(() -> {
+                if (!chechLogin) {
+                    readyComp.LoginErrorMessage[0].setVisible(true);
+                    readyComp.loadingLabel[1].setVisible(false);
+                    readyComp._makeclickable();
+                } else {
+                    readyComp.successLabel[1].setVisible(true);
+                    readyComp.loadingLabel[1].setVisible(false);
+                    readyComp.close.setEnabled(true);
+                }
+            });
+        }).start();
+
+    }    
+
+    /*//////////////////////////////////////////////////////////////
+                           Second Page Login
+    //////////////////////////////////////////////////////////////*/    
+
+    /**
+     * 
+     * 2.2 when user chose to have an alternative login method
+     * 
+     */
+    protected void fullLogin() {
+        readyComp._setFirstLoginVisible(false);
+        readyComp._setSecondLoginVisible(true);
+        readyComp._makeclickable();
+    }  
+    
+    protected void checkSecondLogin() {
+        Arrays.stream(readyComp.LoginErrorMessage).forEach(i -> ((Component) i).setVisible(false)); 
+        readyComp._makeUnclickable();
+
+        String _phoneNumber = "";
+        String _favText = "";
+        String _favNum = "";
+
+        _phoneNumber = readyComp.LoginPhoneNumber.textField.getText();
+        _favNum = String.valueOf(readyComp.LoginFavNum.passwordField.getPassword());
+        _favText = String.valueOf(readyComp.LoginFavText.passwordField.getPassword());
+
+        final int phoneNumber = Integer.parseInt(_phoneNumber);
+        final String favText = _favText;
+        final String favNum = _favNum;
+
+        readyComp.loadingLabel[1].setVisible(true);
+        new Thread(() -> {
+            boolean chechLogin = storage.login(phoneNumber, favText, favNum);
+
+            SwingUtilities.invokeLater(() -> {
+                if (!chechLogin) {
+                    readyComp.LoginErrorMessage[1].setVisible(true);
+                    readyComp.loadingLabel[1].setVisible(false);
+                    readyComp._makeclickable();
+                } else {
+                    readyComp.successLabel[1].setVisible(true);
+                    readyComp.loadingLabel[1].setVisible(false);
+                    readyComp.close.setEnabled(true);
+                }
+            });
+        }).start();
+    }
+    
+    /*//////////////////////////////////////////////////////////////
+                               add JPanel
+    //////////////////////////////////////////////////////////////*/
+     
+    /**
+     * 1.2 add all the components to the JPanel
+     * 
+     */
+    protected void _addComp() {
+        // first page register
+        add(readyComp.FirstPageRegisterLabel);
+        add(readyComp.RegisterFirstName.label);
+        add(readyComp.RegisterFirstName.textField);
+        add(readyComp.RegisterLastName.label);
+        add(readyComp.RegisterLastName.textField);
+        add(readyComp.RegisterUsername.label);
+        add(readyComp.RegisterUsername.textField);
+        add(readyComp.RegisterPhoneNum.label);
+        add(readyComp.RegisterPhoneNum.textField);
+        add(readyComp.RegisterAge.label);
+        add(readyComp.RegisterAge.textField);
+        add(readyComp.FirstRegisterButton);
+
+        // second page register
+        add(readyComp.RegisterGender.gender[0]);
+        add(readyComp.RegisterGender.gender[1]);
+        add(readyComp.RegisterGender.gender[2]);
+        add(readyComp.RegisterGender.label[0]);
+        add(readyComp.RegisterGender.label[1]);
+        add(readyComp.RegisterGender.label[2]);
+        add(readyComp.RegisterGender.others);
+        add(readyComp.RegisterPasswordInstructor.button);
+        add(readyComp.RegisterPasswordInstructor.textArea);
+        add(readyComp.RegisterPasswordInstructor.textBackground);
+        add(readyComp.RegisterPassword.label);
+        add(readyComp.RegisterPassword.button);
+        add(readyComp.RegisterPassword.passwordField);
+        add(readyComp.RegisterFavText.label);
+        add(readyComp.RegisterFavText.button);
+        add(readyComp.RegisterFavText.passwordField);
+        add(readyComp.RegisterFavNum.label);
+        add(readyComp.RegisterFavNum.button);
+        add(readyComp.RegisterFavNum.passwordField);
+        add(readyComp.passwordInstruct);
+        add(readyComp.register);
+
+        // first page login
+        add(readyComp.FirstPageLoginLabel);
+        add(readyComp.LoginUsername.label);
+        add(readyComp.LoginUsername.textField);
+        add(readyComp.LoginPassword.label);
+        add(readyComp.LoginPassword.button);
+        add(readyComp.LoginPassword.passwordField);
+        add(readyComp.login1);
+        add(readyComp.alternative1);
+
+        // second page login
+        add(readyComp.LoginPhoneNumber.label);
+        add(readyComp.LoginPhoneNumber.textField);
+        add(readyComp.LoginFavNum.label);
+        add(readyComp.LoginFavNum.button);
+        add(readyComp.LoginFavNum.passwordField);
+        add(readyComp.LoginFavText.label);
+        add(readyComp.LoginFavText.button);
+        add(readyComp.LoginFavText.passwordField);
+        add(readyComp.login2);
+        add(readyComp.alternative2);
+
+        // error && success message
+        Arrays.stream(readyComp.RegisterFirstErrorMessage).forEach(i -> add((Component) i));
+        Arrays.stream(readyComp.RegisterSecondErrorMessage).forEach(i -> add((Component) i));
+        Arrays.stream(readyComp.LoginErrorMessage).forEach(i -> add((Component) i));
+        Arrays.stream(readyComp.successLabel).forEach(i -> add((Component) i));
+        Arrays.stream(readyComp.loadingLabel).forEach(i -> add((Component) i));
+        Arrays.stream(readyComp.LoginErrorMessage).forEach(i -> add((Component) i));
+
+        Fill();
+    }  
+}

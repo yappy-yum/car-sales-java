@@ -1,4 +1,4 @@
-package loginPage;
+package LoginSystem;
 
 import javax.swing.JTextField;
 

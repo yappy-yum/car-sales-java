@@ -3,12 +3,12 @@ package Components;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
+import LoginSystem.isLogin;
+import LoginSystem.storage;
+import LoginSystem.Argon2.Argon;
+import LoginSystem.LoginPage.Customer;
 import frontPage.FrontPage;
 import frontPage.isDarkTheme;
-import loginPage.isLogin;
-import loginPage.storage;
-import loginPage.Argon2.Argon;
-import loginPage.Customer.loginPage;
 
 public class initializer {
     
@@ -22,7 +22,7 @@ public class initializer {
     public Components component;
     public SwitchThemeComp switchThemeComp;
     public FrontPage frontPage;
-    public loginPage loginPage;
+    public Customer Customer;
 
     public initializer() {
         new Window(this);

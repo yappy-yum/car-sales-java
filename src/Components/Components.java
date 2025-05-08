@@ -6,6 +6,8 @@ import Helper.Comp.createComp;
 import Helper.Comp.createJFX;
 import Helper.Comp.createScroll;
 import Helper.fileSystem.videoSystem;
+import LoginSystem.isLogin;
+import LoginSystem.LoginPage.Customer;
 import frontPage.FaQConfig;
 import frontPage.isDarkTheme;
 
@@ -33,8 +35,6 @@ import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
-import loginPage.isLogin;
-import loginPage.Customer.loginPage;
 
 public class Components extends JPanel {
 
@@ -60,7 +60,8 @@ public class Components extends JPanel {
         this.window = w;
 
         setLayout(null);
-        setPreferredSize(new Dimension(1280, 8000));
+        setPreferredSize(new Dimension(1280, 5750));
+
     }
 
     public void addScroll(JScrollPane scrollPane) { 
@@ -437,19 +438,18 @@ public class Components extends JPanel {
     }
 
     protected void _initializeLoginPage() {        
-        i.loginPage = new loginPage(i, window);
-        loginPage LP = i.loginPage;
+        i.Customer = new Customer(i, window);
 
         int X = (1280 - 1000) / 2; 
         int Y = (720 - 500) / 2;
 
-        LP.setBounds(X, Y, 1000, 500);
-        LP.setVisible(true);
+        i.Customer.setBounds(X, Y, 1000, 500);
+        i.Customer.setVisible(true);
 
-        frame.getContentPane().add(LP);
+        frame.getContentPane().add(i.Customer);
 
         componentAnim anim = new componentAnim(
-            LP, 
+            i.Customer, 
             X, Y - 100, 
             X, Y, 
             scrollPane

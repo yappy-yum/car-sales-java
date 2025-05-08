@@ -1,4 +1,4 @@
-package loginPage.Argon2;
+package LoginSystem.Argon2;
 
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;

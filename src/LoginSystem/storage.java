@@ -1,11 +1,10 @@
-package loginPage;
+package LoginSystem;
 
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
-import loginPage.Argon2.Argon;
+import LoginSystem.Argon2.Argon;
 
 public class storage {
 

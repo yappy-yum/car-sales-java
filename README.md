@@ -83,7 +83,7 @@ src/
 │   └── Window.java
 |
 ├── frontPage/
-│   ├── FaQConfig
+│   ├── FaQConfig.java
 │   ├── FrontPage.java
 │   └── isDarkTheme.java
 |
@@ -100,19 +100,21 @@ src/
 │   │   ├── fontSystem.java
 │   │   ├── imageSystem.java
 │   │   └── videoSystem.java
+│   ├── login/
+│   │   ├── loginComp.java
+│   │   └── loginFill.java
 │   ├── RoundedBorder/
 │   |   ├── roundedBorder.java
 │   |   └── roundedBorderFactory.java
 |   └── blur.java
 |
-├── loginPage/
+├── loginSystem/
 │   ├── Argon2/
 │   │   ├── Argon.java
 │   │   └── testArgon.java
-│   ├── Customer/
-│   │   ├── loginFill.java
-│   │   ├── loginMessage.java
-│   │   └── loginPage.java
+│   ├── LoginPage/
+│   │   ├── Customer.java
+│   │   ├── CustReadyComp.java
 │   ├── isLogin.java
 │   ├── Profile.java
 │   └── storage.java

@@ -1,4 +1,4 @@
-package loginPage;
+package LoginSystem;
 
 /**
  * a global centralize class that determine the login status

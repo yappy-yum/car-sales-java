@@ -114,7 +114,9 @@ public class Window {
         i.frame.getContentPane().removeAll();
         i.frame.remove(i.scrollPane);
         i.frame.remove(i.component);
+        i.frame.remove(i.Customer);
         
+        i.switchThemeComp.clearEverything();
         _init();
             
         i.frame.setVisible(true);
@@ -130,7 +132,7 @@ public class Window {
         i.component = null;
         i.switchThemeComp = null;
         i.frontPage = null;
-        i.loginPage = null;
+        i.Customer = null;
 
         i.switchThemeComp = new SwitchThemeComp(i);
         i.component = new Components(i, this);

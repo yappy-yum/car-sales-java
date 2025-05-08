@@ -1,4 +1,4 @@
-package loginPage.Argon2;
+package LoginSystem.Argon2;
 
 import java.util.HashMap;
 import java.util.Scanner;
