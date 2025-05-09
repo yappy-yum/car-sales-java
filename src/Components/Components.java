@@ -19,10 +19,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.Collections;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -60,7 +62,7 @@ public class Components extends JPanel {
         this.window = w;
 
         setLayout(null);
-        setPreferredSize(new Dimension(1280, 5750));
+        setPreferredSize(new Dimension(1280, 5700));
 
     }
 
@@ -178,13 +180,13 @@ public class Components extends JPanel {
         int targetX, int targetY,
         int width, int height,
         Border border, 
-        Color textColor
+        Color textColor, Font font
     ) {
         JButton button = createComp.createJButton(
             _text, 
             startX, startY, 
             width, height, 
-            border, textColor
+            border, textColor, font
         );
 
         Switch.TButtons.add(button);
@@ -431,31 +433,40 @@ public class Components extends JPanel {
 
     public void initializeProfile() {
         switch (isLogin.isLogin ? 1 : 0) {
-            case 0: _initializeLoginPage(); break;
+            case 0: 
+                _startDropDown(
+                    () -> i.Customer = new Customer(i, window),
+                    () -> i.Customer
+                ); 
+                break;
         
             case 1: System.out.println("viewing profile"); break;
         }
     }
 
-    protected void _initializeLoginPage() {        
-        i.Customer = new Customer(i, window);
+    public void _startDropDown(Runnable initializer, Supplier<JComponent> componentGetter) {        
+        initializer.run();
+
+        JComponent target = componentGetter.get();
 
         int X = (1280 - 1000) / 2; 
         int Y = (720 - 500) / 2;
 
-        i.Customer.setBounds(X, Y, 1000, 500);
-        i.Customer.setVisible(true);
+        target.setBounds(X, Y, 1000, 500);
+        target.setVisible(true);
 
-        frame.getContentPane().add(i.Customer);
+        frame.getContentPane().add(target);
 
         componentAnim anim = new componentAnim(
-            i.Customer, 
+            target, 
             X, Y - 100, 
             X, Y, 
             scrollPane
         );
         anim.start();
     }
+
+
     
     
     /*//////////////////////////////////////////////////////////////

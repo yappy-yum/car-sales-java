@@ -6,7 +6,7 @@ public class Profile {
     
     public static class userProfile {
         public enum Status {
-            ADMIN,
+            OWNER,
             MANAGER,
             SALESMAN,
             CUSTOMER

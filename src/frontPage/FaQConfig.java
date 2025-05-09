@@ -178,7 +178,7 @@ public class FaQConfig {
                 setFaQConfig.BUTTON_X, setFaQConfig.BUTTON_Y, 
                 setFaQConfig.BUTTON_WIDTH, setFaQConfig.BUTTON_HEIGHT, 
                 new roundedBorder(20, textColor, fillColor), 
-                textColor
+                textColor, new Font("Arial", Font.BOLD, 20)
             );
         }
         

@@ -50,6 +50,15 @@ git clone https://github.com/yappy-yum/car-sales-java
 **1. File Path**
 - Head over to `Helper.fileSystem.filePath` and look for `FILE_PATH`, ensures that the file path is relevant to your devices
 
+**2. .env file**
+- Create a `.env` file and add the following data:
+
+```bash
+OWNER_USERNAME=<username>
+OWNER_PASSWORD=<password>
+```
+replace `<username>` and `<password>` with any username and password respectively for owner login 
+
 </details>
 
 <details>
@@ -71,6 +80,10 @@ git clone https://github.com/yappy-yum/car-sales-java
 > ```
 > make deploy
 > ```
+
+## 🚨 Known Issue
+
+1. The program initialization may take longer time because three hashes need to be executed for the owner details during startup.
 
 ## 🔎 Scope
 
@@ -126,11 +139,11 @@ src/
 
 1. External Libraries
 - [JavaFX](https://openjfx.io)
-- [Argon2](https://central.sonatype.com/artifact/de.mkammerer/argon2-jvm/2.8/overview) (since its a normal java project, the latest version of Argon2 that support such project without POM file would be 2.8)
-    - [jna used by Argon2](https://central.sonatype.com/artifact/net.java.dev.jna/jna/5.17.0/overview)
-    - [additional platform support jna](https://central.sonatype.com/artifact/net.java.dev.jna/jna-platform/5.17.0)
+- [Argon2](https://central.sonatype.com/artifact/de.mkammerer/argon2-jvm/2.8/overview), [jna used by Argon2](https://central.sonatype.com/artifact/net.java.dev.jna/jna/5.17.0/overview), [additional platform support jna](https://central.sonatype.com/artifact/net.java.dev.jna/jna-platform/5.17.0)
+- [dotenv-java](https://central.sonatype.com/artifact/io.github.cdimascio/dotenv-java/3.2.0/overview)
 
 2. Custom Fonts
 - [Montserrat](https://fonts.google.com/specimen/Montserrat) by Julieta Ulanovsky, Sol Matas, Juan Pablo del Peral, Jacques Le Bailly
 - [Nordin Slab Rounded Drawn](https://www.fontspace.com/search?q=Nordin%20Slab%20Rounded%20Drawn%20by%20craftsupplyco) by craftsupplyco
 - [Rosetta](https://www.fontspace.com/new/fonts) by craftsupplyco
+- [Beautiful People](https://www.fontspace.com/search?q=Beautiful%20People%20by%20Billy%20Argel%20Fonts)

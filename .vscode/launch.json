@@ -6,7 +6,7 @@
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}",
-            "vmArgs": "-cp \"lib/argon2/*;bin\""
+            "vmArgs": "-cp \"lib/argon2/*;lib/dotenv/dotenv-java-3.2.0.jar;bin\""
         },
         {
             "type": "java",
@@ -14,7 +14,7 @@
             "request": "launch",
             "mainClass": "App",
             "projectName": "car-sales-java_ad07ba69",
-            "vmArgs": "-cp \"lib/argon2/*;bin\" --module-path ./lib/javafx-sdk-24/lib --add-modules javafx.controls,javafx.fxml,javafx.media"
+            "vmArgs": "-cp \"lib/argon2/*;lib/dotenv/dotenv-java-3.2.0.jar;bin\" --module-path ./lib/javafx-sdk-24/lib --add-modules javafx.controls,javafx.fxml,javafx.media"
         },
         {
             "type": "java",

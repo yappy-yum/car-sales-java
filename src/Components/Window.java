@@ -29,7 +29,7 @@ public class Window {
         _init();
         
         i.frame.setVisible(true);  
-        i.frontPage = new FrontPage(i);           
+        i.frontPage = new FrontPage(i, this);           
     }
     
    /*//////////////////////////////////////////////////////////////
@@ -112,15 +112,18 @@ public class Window {
      */
     public void _reloadEverything() {              
         i.frame.getContentPane().removeAll();
-        i.frame.remove(i.scrollPane);
-        i.frame.remove(i.component);
-        i.frame.remove(i.Customer);
+        if (i.scrollPane != null) i.frame.remove(i.scrollPane);
+        if (i.component != null) i.frame.remove(i.component);
+        if (i.Customer != null) i.frame.remove(i.Customer);
+        if (i.AboutUs != null) i.frame.remove(i.AboutUs);
+        if (i.TaC != null) i.frame.remove(i.TaC);
+        if (i.Job != null) i.frame.remove(i.Job);
         
         i.switchThemeComp.clearEverything();
         _init();
             
         i.frame.setVisible(true);
-        i.frontPage = new FrontPage(i); 
+        i.frontPage = new FrontPage(i, this); 
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -133,6 +136,8 @@ public class Window {
         i.switchThemeComp = null;
         i.frontPage = null;
         i.Customer = null;
+        i.AboutUs = null;
+        i.TaC = null;
 
         i.switchThemeComp = new SwitchThemeComp(i);
         i.component = new Components(i, this);

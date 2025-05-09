@@ -5,10 +5,35 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import LoginSystem.Argon2.Argon;
+import io.github.cdimascio.dotenv.Dotenv;
 
 public class storage {
 
     Argon.Hash argon = new Argon().new Hash();
+
+    /*//////////////////////////////////////////////////////////////
+                              constructor
+    //////////////////////////////////////////////////////////////*/
+    
+    public storage() {
+        // Dotenv dotenv = Dotenv.load();
+
+        // Users.put(
+        //     dotenv.get("OWNER_USERNAME"), 
+        //     new Profile.userProfile(
+        //         Profile.userProfile.Status.OWNER, 
+        //         dotenv.get("OWNER_FIRST_NAME"), 
+        //         dotenv.get("OWNER_LAST_NAME"), 
+        //         dotenv.get("OWNER_GENDER"),
+        //         Integer.parseInt(dotenv.get("OWNER_PHONE_NUMBER")), 
+        //         Integer.parseInt(dotenv.get("OWNER_AGE")), 
+        //         dotenv.get("OWNER_USERNAME"), 
+        //         argon.HashIt(dotenv.get("OWNER_PASSWORD")), 
+        //         argon.HashIt(dotenv.get("OWNER_FAV_TEXT")),
+        //         argon.HashIt(dotenv.get("OWNER_FAV_NUMBER"))
+        //     )
+        // );
+    }
 
     /*//////////////////////////////////////////////////////////////
                              users details

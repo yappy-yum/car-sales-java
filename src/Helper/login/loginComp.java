@@ -86,9 +86,8 @@ public class loginComp {
             150, 320, 
             200, 50, 
             new roundedBorder(20, Color.BLACK, null), 
-            Color.BLACK
+            Color.BLACK, fontSystem.SLAB.deriveFont(40f)
         );
-        button.setFont(fontSystem.SLAB.deriveFont(40f));
         button.setVisible(true);
 
         return button;
@@ -110,9 +109,8 @@ public class loginComp {
             205, 420,
             90, 50,
             new roundedBorder(20, Color.BLACK, null),
-            Color.BLACK
+            Color.BLACK, fontSystem.SLAB.deriveFont(30f)
         );
-        button.setFont(fontSystem.SLAB.deriveFont(30f));
         button.setVisible(true);
 
         return button;
@@ -171,9 +169,9 @@ public class loginComp {
                 "i", 
                 X, Y, 
                 30, 30, 
-                null, Color.BLACK
+                null, Color.BLACK,
+                new Font("Arial", Font.BOLD, 17)
             );
-            button.setFont(new Font("Arial", Font.BOLD, 17));
             button.setVisible(false);
 
             textArea = createComp.createJTextArea(
@@ -227,9 +225,9 @@ public class loginComp {
             _text, 
             X, Y, 
             300, 50, 
-            null, Color.BLACK
+            null, Color.BLACK,
+            new Font("SansSerif", Font.PLAIN, fontSize)
         );
-        button.setFont(new Font("SansSerif", Font.PLAIN, fontSize));
 
         button.addActionListener( _ -> {
             method.run();

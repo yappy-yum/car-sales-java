@@ -84,4 +84,16 @@ public class fontSystem {
         }
     }
 
+    public static final Font BEAUTIFUL_PEOPLE;
+    static {
+        try {
+            BEAUTIFUL_PEOPLE = Font.createFont(
+                Font.TRUETYPE_FONT, 
+                new File(FILE_PATH.concat("BeautifulPeoplePersonalUse-dE0g.ttf"))
+            );
+        } catch (Exception e) {
+            throw new RuntimeException("you're a failure :D", e);
+        }
+    }
+
 }

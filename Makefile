@@ -17,6 +17,7 @@ JFX_LIB = lib/javafx-sdk-24.0.1/lib
 JFX_MODULES = --module-path "$(JFX_LIB)" --add-modules javafx.controls,javafx.fxml,javafx.media,javafx.swing
 
 ARGON_LIBS = lib/argon2/argon2-jvm-2.8.jar;lib/argon2/jna-5.17.0.jar;lib/argon2/jna-platform-5.17.0.jar
+DOTENV_LIB = lib/dotenv/dotenv-java-3.2.0.jar
 
 deploy:
-	$(CREATE_BIN) && $(JAVAC) -d bin -cp "lib/argon2/*;src" $(JFX_MODULES) src/App.java && $(JAVA) $(JFX_MODULES) -cp "bin;$(ARGON_LIBS)" App
+	$(CREATE_BIN) && $(JAVAC) -d bin -cp "lib/argon2/*;$(DOTENV_LIB);src" $(JFX_MODULES) src/App.java && $(JAVA) $(JFX_MODULES) -cp "bin;$(ARGON_LIBS);$(DOTENV_LIB)" App

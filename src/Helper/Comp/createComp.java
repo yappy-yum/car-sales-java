@@ -141,7 +141,7 @@ public class createComp {
         int X, int Y,
         int width, int height,
         Border border, 
-        Color textColor
+        Color textColor, Font font
     ) {
         JButton button = new JButton(_text);
 
@@ -151,6 +151,7 @@ public class createComp {
         button.setFocusable(false);
         button.setContentAreaFilled(false);
         button.setOpaque(false);
+        button.setFont(font);
 
         return button;
     }
