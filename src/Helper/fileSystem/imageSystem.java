@@ -79,7 +79,20 @@ public class imageSystem {
     //////////////////////////////////////////////////////////////*/
      
     public static final ImageIcon PASSWORD_SHOW = new ImageIcon(FILE_PATH.concat("password/show.png"));
-    public static final ImageIcon PASSWORD_HIDE = new ImageIcon(FILE_PATH.concat("password/hide.png"));    
+    public static final ImageIcon PASSWORD_HIDE = new ImageIcon(FILE_PATH.concat("password/hide.png"));   
+    
+    /*//////////////////////////////////////////////////////////////
+                             text edit icon
+    //////////////////////////////////////////////////////////////*/    
+    
+    public static final ImageIcon BOLD = new ImageIcon(FILE_PATH.concat("textAnnotate/Bold.png"));
+    public static final ImageIcon RALIC = new ImageIcon(FILE_PATH.concat("textAnnotate/Ralic.png"));
+    public static final ImageIcon UNDERLINE = new ImageIcon(FILE_PATH.concat("textAnnotate/underline.png"));
+
+    public static final ImageIcon LEFT_TEXT = new ImageIcon(FILE_PATH.concat("textAnnotate/left.png"));
+    public static final ImageIcon CENTER_TEXT = new ImageIcon(FILE_PATH.concat("textAnnotate/center.png"));
+    public static final ImageIcon RIGHT_TEXT = new ImageIcon(FILE_PATH.concat("textAnnotate/right.png"));
+    public static final ImageIcon JUSTIFY_TEXT = new ImageIcon(FILE_PATH.concat("textAnnotate/justify.png"));
 
     /*//////////////////////////////////////////////////////////////
                             scale image size

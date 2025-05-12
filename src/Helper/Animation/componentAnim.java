@@ -1,5 +1,6 @@
 package Helper.Animation;
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -34,6 +35,7 @@ public class componentAnim {
     private boolean isExiting = false;
     private JScrollPane scrollPane;
     private boolean lastState = false;
+    private ChangeListener viewportListener;
     private Runnable onComplete; // 🔥 Add this field to store callback
 
 
@@ -116,8 +118,21 @@ public class componentAnim {
         }
     }
     
+    // private void setupViewportListener() {
+    //     scrollPane.getViewport().addChangeListener(_ -> {
+    //         if (isFullyVisible(targetComponent)) {
+    //             if (!targetComponent.isVisible()) {
+    //                 start(() -> {}); // ✅ Only show when fully visible
+    //             }
+    //         } else if (isFullyOutOfView(targetComponent)) {
+    //             if (targetComponent.isVisible()) {
+    //                 exit(); // ✅ Only hide when completely gone
+    //             }
+    //         }
+    //     });
+    // }
     private void setupViewportListener() {
-        scrollPane.getViewport().addChangeListener(_ -> {
+        viewportListener = _ -> {
             if (isFullyVisible(targetComponent)) {
                 if (!targetComponent.isVisible()) {
                     start(() -> {}); // ✅ Only show when fully visible
@@ -127,8 +142,10 @@ public class componentAnim {
                     exit(); // ✅ Only hide when completely gone
                 }
             }
-        });
+        };
+        scrollPane.getViewport().addChangeListener(viewportListener);
     }
+
     
     public void setDuration(int milliseconds) {
         duration = milliseconds;
@@ -156,5 +173,22 @@ public class componentAnim {
         // ✅ Fully visible only if completely inside viewport
         return viewportBounds.contains(compBounds);
     }
+
+    public void dispose() {
+        if (animationTimer != null) {
+            animationTimer.stop();
+        }
+
+        if (viewportListener != null && scrollPane != null) {
+            scrollPane.getViewport().removeChangeListener(viewportListener);
+        }
+
+        // Nullify references to help GC
+        targetComponent = null;
+        scrollPane = null;
+        onComplete = null;
+        viewportListener = null;
+    }
+
     
 }

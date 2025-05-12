@@ -7,7 +7,7 @@ import Helper.Comp.createJFX;
 import Helper.Comp.createScroll;
 import Helper.fileSystem.videoSystem;
 import LoginSystem.isLogin;
-import LoginSystem.LoginPage.Customer;
+import LoginSystem.LoginPage.Customer.Customer;
 import frontPage.FaQConfig;
 import frontPage.isDarkTheme;
 
@@ -146,11 +146,13 @@ public class Components extends JPanel {
         Switch.texts.add(text);
         add(text);
         
-        new componentAnim(
-            text, 
-            startX, startY, 
-            targetX, targetY, 
-            scrollPane
+        i.compAnimStorage.addAnim(
+            new componentAnim(
+                text, 
+                startX, startY, 
+                targetX, targetY, 
+                scrollPane
+            )
         );
     }
 
@@ -192,11 +194,13 @@ public class Components extends JPanel {
         Switch.TButtons.add(button);
         add(button);
 
-        new componentAnim(
-            button, 
-            startX, startY, 
-            targetX, targetY, 
-            scrollPane
+        i.compAnimStorage.addAnim(
+            new componentAnim(
+                button, 
+                startX, startY, 
+                targetX, targetY, 
+                scrollPane
+            )
         );
 
         return button; 
@@ -231,11 +235,13 @@ public class Components extends JPanel {
         Switch.IButtons.add(button);
         add(button);
         
-        new componentAnim(
-            button, 
-            startX, startY, 
-            targetX, targetY, 
-            scrollPane
+        i.compAnimStorage.addAnim(
+            new componentAnim(
+                button, 
+                startX, startY, 
+                targetX, targetY, 
+                scrollPane
+            )
         );
         
         return button;
@@ -278,11 +284,13 @@ public class Components extends JPanel {
         Switch.TLabels.add(label);
         add(label);
 
-        new componentAnim(
-            label, 
-            startX, startY, 
-            targetX, targetY, 
-            scrollPane
+        i.compAnimStorage.addAnim(
+            new componentAnim(
+                label, 
+                startX, startY, 
+                targetX, targetY, 
+                scrollPane
+            )
         );
     }
     
@@ -314,11 +322,13 @@ public class Components extends JPanel {
         Switch.ILabels.add(label);
         add(label);
 
-        new componentAnim(
-            label, 
-            startX, startY, 
-            targetX, targetY, 
-            scrollPane    
+        i.compAnimStorage.addAnim(
+            new componentAnim(
+                label, 
+                startX, startY, 
+                targetX, targetY, 
+                scrollPane
+            )
         );
     }
 
@@ -355,6 +365,8 @@ public class Components extends JPanel {
                         createScroll.mouseScroll(fJfxPanel, scrollPane);
         
                         _videoAnim(fJfxPanel, x, y, player);
+
+                        i.storeVid.store(player);
         
                         // Force the JFXPanel to update
                         Platform.runLater(() -> {
@@ -385,6 +397,7 @@ public class Components extends JPanel {
             scrollPane, 
             () -> { fJfxPanel.setVisible(true); player.play(); }
         );
+        i.videoAnimStorage.addAnim(animation);
     
         scrollPane.getViewport().addChangeListener(_ -> {
             if (animation.isFullyVisible()) {
@@ -424,7 +437,7 @@ public class Components extends JPanel {
         Switch.TButtons.add(toggleButton);
 
 
-        new componentAnim(boxPanel, x, y - 100, x, y, scrollPane);
+        i.compAnimStorage.addAnim(new componentAnim(boxPanel, x, y - 100, x, y, scrollPane));
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -436,7 +449,8 @@ public class Components extends JPanel {
             case 0: 
                 _startDropDown(
                     () -> i.Customer = new Customer(i, window),
-                    () -> i.Customer
+                    () -> i.Customer,
+                    1000, 500
                 ); 
                 break;
         
@@ -444,7 +458,10 @@ public class Components extends JPanel {
         }
     }
 
-    public void _startDropDown(Runnable initializer, Supplier<JComponent> componentGetter) {        
+    public void _startDropDown(
+        Runnable initializer, Supplier<JComponent> componentGetter,
+        int width, int height
+    ) {        
         initializer.run();
 
         JComponent target = componentGetter.get();
@@ -452,7 +469,7 @@ public class Components extends JPanel {
         int X = (1280 - 1000) / 2; 
         int Y = (720 - 500) / 2;
 
-        target.setBounds(X, Y, 1000, 500);
+        target.setBounds(X, Y, width, height);
         target.setVisible(true);
 
         frame.getContentPane().add(target);
@@ -464,6 +481,7 @@ public class Components extends JPanel {
             scrollPane
         );
         anim.start();
+        i.compAnimStorage.addAnim(anim);
     }
 
 

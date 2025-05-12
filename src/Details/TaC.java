@@ -49,7 +49,7 @@ public class TaC extends JPanel {
         JLabel textLabel = createComp.createJLabel(
             "Terms & Conditions", 
             400, 20, 
-            200, 50, 
+            300, 50, 
             new Font("Arial", Font.BOLD, 25), 
             Color.BLACK
         );
@@ -58,7 +58,8 @@ public class TaC extends JPanel {
     }
 
     void _addText() {
-        String htmlText = """
+        String htmlText = 
+        """
             <html>
             <body style='text-align: justify; font-family: Arial; font-size: 15px; margin: 5px;'>
                 <p>

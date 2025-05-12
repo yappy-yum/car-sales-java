@@ -6,6 +6,8 @@ import javax.swing.JScrollPane;
 
 import Helper.Comp.createScroll;
 import Helper.fileSystem.imageSystem;
+import StoreAnimation.compAnimStorage;
+import StoreAnimation.videoAnimStorage;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
@@ -107,7 +109,7 @@ public class Window {
     //////////////////////////////////////////////////////////////*/    
 
     /**
-     * reload all components, especially when user has successfully login
+     * reload all components, especially when user clikc close button
      * 
      */
     public void _reloadEverything() {              
@@ -118,9 +120,16 @@ public class Window {
         if (i.AboutUs != null) i.frame.remove(i.AboutUs);
         if (i.TaC != null) i.frame.remove(i.TaC);
         if (i.Job != null) i.frame.remove(i.Job);
-        
-        i.switchThemeComp.clearEverything();
+        if (i.switchThemeComp != null) i.switchThemeComp.clearEverything();
+        if (i.compAnimStorage != null) i.compAnimStorage.disposeAnim();
+        if (i.videoAnimStorage != null) i.videoAnimStorage.disposeAnim();
+        if (i.storeVid != null) new Thread(() -> i.storeVid.clearAll()).start(); // may slower during clearance, therefore push it to background
+
         _init();
+
+        // not needed since the JVM actually knows and collect all unused objects
+        // and this will actually makes the program lagger too
+        // System.gc();
             
         i.frame.setVisible(true);
         i.frontPage = new FrontPage(i, this); 
@@ -138,7 +147,14 @@ public class Window {
         i.Customer = null;
         i.AboutUs = null;
         i.TaC = null;
+        i.Job = null;
+        i.compAnimStorage = null;
+        i.videoAnimStorage = null;
+        i.storeVid = null;
 
+        i.storeVid = new storeVid();
+        i.compAnimStorage = new compAnimStorage();
+        i.videoAnimStorage = new videoAnimStorage();
         i.switchThemeComp = new SwitchThemeComp(i);
         i.component = new Components(i, this);
     

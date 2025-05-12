@@ -18,6 +18,10 @@ import Helper.RoundedBorder.roundedBorderFactory;
 import Helper.fileSystem.imageSystem;
 
 public class loginFill {
+
+    /*//////////////////////////////////////////////////////////////
+                        Label & Long JTextField
+    //////////////////////////////////////////////////////////////*/    
     
     public static class createLabelAndLongJTextField {
         public JLabel label;
@@ -50,14 +54,14 @@ public class loginFill {
             textField.setVisible(false);
         }
 
-        public void setUnEditable() {
-            textField.setEditable(false);
-        }
-
-        public void setEditable() {
-            textField.setEditable(true);
+        public void _setEditable(boolean bool) {
+            textField.setEditable(bool);
         }
     }
+    
+    /*//////////////////////////////////////////////////////////////
+                        Label & Short JTextField
+    //////////////////////////////////////////////////////////////*/    
 
     public static class createLabelAndShortJTextField {
         public JLabel label;
@@ -94,6 +98,10 @@ public class loginFill {
             textField.setEditable(false);
         }
     }
+
+    /*//////////////////////////////////////////////////////////////
+                      Label & Long JPasswordField
+    //////////////////////////////////////////////////////////////*/    
 
     public static class createLabelAndLongJPasswordField {
         public JLabel label;
@@ -149,15 +157,15 @@ public class loginFill {
 
         }
 
-        public void setUnEditable() {
-            passwordField.setEditable(false);
-        }
-
-        public void setEditable() {
-            passwordField.setEditable(true);
+        public void _setEditable(boolean bool) {
+            passwordField.setEditable(bool);
         }
 
     }
+
+    /*//////////////////////////////////////////////////////////////
+                      Label & Short JPasswordField
+    //////////////////////////////////////////////////////////////*/    
 
     public static class createLabelAndShortJPasswordField {
         public JLabel label;
@@ -212,15 +220,15 @@ public class loginFill {
             });
         }
 
-        public void setUnEditable() {
-            passwordField.setEditable(false);
-        }
-
-        public void setEditable() {
-            passwordField.setEditable(true);
+        public void _setEditable(boolean bool) {
+            passwordField.setEditable(bool);
         }
 
     }
+
+    /*//////////////////////////////////////////////////////////////
+                                 Gender
+    //////////////////////////////////////////////////////////////*/    
 
     public static class createGender {
         public JToggleButton[] gender = new JToggleButton[3];
@@ -303,26 +311,75 @@ public class loginFill {
             return null;
         }
 
-        public void makeUnclickable() {
+        public void _setClickable(boolean bool) {
             for (JToggleButton i : gender) {
-                i.setEnabled(false);
+                i.setEnabled(bool);
             }
-            _setUnEditable();
+            _setEditable(bool);
         }
+        void _setEditable(boolean bool) {
+            others.setEditable(bool);
+        }
+    }
 
-        public void _makeclickable() {
-            for (JToggleButton i : gender) {
-                i.setEnabled(true);
+    public static class createRole {
+        public JToggleButton[] role = new JToggleButton[2];
+        public JLabel[] label = new JLabel[2];
+
+        ButtonGroup roleGroup = new ButtonGroup();
+        String[] normalRole = {"Manager", "Salesman"};
+
+        public createRole(int X, int Y) {
+
+            for (int i = 0; i < normalRole.length; i++) {
+                final int index = i;
+
+                // create toggle button
+                role[i] = createComp.createJToggleButton(
+                    new Font("SansSerif", Font.BOLD, 30),
+                    normalRole[i]
+                );
+                role[i].setBounds(X + 50 + (i * 150), Y, 100, 40);
+                roleGroup.add(role[i]);
+
+                // set toggle button action
+                role[i].addActionListener( _ -> {
+                    Enumeration<AbstractButton> buttons = roleGroup.getElements();
+
+                    while (buttons.hasMoreElements()) {
+                        AbstractButton b = buttons.nextElement();
+                        b.setText("⚪");
+                    }
+                    role[index].setText("⚫");
+                });
+
+                // create label
+                label[i] = createComp.createJLabel(
+                    normalRole[i], 
+                    X + 10 + (i * 150), Y - 30,
+                    100, 100, 
+                    new Font("Arial", Font.BOLD, 15), 
+                    Color.BLACK
+                );
+            
             }
-            _setEditable();
+
         }
 
-        void _setUnEditable() {
-            others.setEditable(false);
+        public String getSelectedRole() {
+            if (role[0].isSelected()) {
+                return role[0].getActionCommand();
+            } else if (role[1].isSelected()) {
+                return role[1].getActionCommand();
+            }
+
+            return null;
         }
 
-        void _setEditable() {
-            others.setEditable(true);
+        public void _setClickable(boolean bool) {
+            for (JToggleButton i : role) {
+                i.setEnabled(bool);
+            }
         }
     }
 

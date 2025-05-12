@@ -3,6 +3,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "RichTextEditor",
+            "request": "launch",
+            "mainClass": "LoginSystem.LoginPage.Job.RichTextEditor",
+            "projectName": "car-sales-java_ad07ba69"
+        },
+        {
+            "type": "java",
+            "name": "RichTextEditor",
+            "request": "launch",
+            "mainClass": "Helper.login.RichTextEditor",
+            "projectName": "car-sales-java_ad07ba69"
+        },
+        {
+            "type": "java",
+            "name": "RichTextEditor",
+            "request": "launch",
+            "mainClass": "RichTextEditor",
+            "projectName": "car-sales-java_ad07ba69"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}",

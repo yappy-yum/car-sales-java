@@ -7,7 +7,7 @@ import Helper.RoundedBorder.roundedBorderFactory;
 import Helper.fileSystem.fontSystem;
 import Helper.fileSystem.imageSystem;
 import Helper.fileSystem.videoSystem;
-import LoginSystem.LoginPage.Job;
+import LoginSystem.LoginPage.Job.Job;
 import javafx.embed.swing.JFXPanel;
 
 import java.awt.Font;
@@ -546,7 +546,8 @@ public class FrontPage {
             _ -> { 
                 i.component._startDropDown(
                     initializer,
-                    componentGetter
+                    componentGetter,
+                    1000, 500
                 ); 
             }
         );

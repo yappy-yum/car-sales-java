@@ -8,8 +8,10 @@ import Details.TaC;
 import LoginSystem.isLogin;
 import LoginSystem.storage;
 import LoginSystem.Argon2.Argon;
-import LoginSystem.LoginPage.Customer;
-import LoginSystem.LoginPage.Job;
+import LoginSystem.LoginPage.Customer.Customer;
+import LoginSystem.LoginPage.Job.Job;
+import StoreAnimation.compAnimStorage;
+import StoreAnimation.videoAnimStorage;
 import frontPage.FrontPage;
 import frontPage.isDarkTheme;
 
@@ -24,11 +26,15 @@ public class initializer {
     public JScrollPane scrollPane;
     public Components component;
     public SwitchThemeComp switchThemeComp;
+    public storeVid storeVid;
     public FrontPage frontPage;
     public Customer Customer;
     public AboutUs AboutUs;
     public TaC TaC;
     public Job Job;
+
+    public compAnimStorage compAnimStorage;
+    public videoAnimStorage videoAnimStorage;
 
     public initializer() {
         new Window(this);

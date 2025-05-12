@@ -105,4 +105,22 @@ public class videoAnim {
         Rectangle compBounds = videoPanel.getBounds();
         return viewportBounds.intersects(compBounds);
     }
+
+    /**
+     * Dispose of this video animation instance.
+     * This method cleans up resources used by the animation (e.g., timer).
+     */
+    public void dispose() {
+        // Stop the animation timer if it's still running
+        if (animationTimer != null) {
+            animationTimer.stop();
+        }
+
+        // Clear references to avoid memory leaks
+        videoPanel = null;
+        scrollPane = null;
+        onComplete = null;
+
+    }
+        
 }

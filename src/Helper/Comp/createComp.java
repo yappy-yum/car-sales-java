@@ -1,6 +1,7 @@
 package Helper.Comp;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 
 import javax.swing.ImageIcon;
@@ -8,10 +9,16 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.JToggleButton;
 import javax.swing.border.Border;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.StyledDocument;
+
+import Helper.RoundedBorder.roundedBorder;
 
 public class createComp {
 
@@ -274,5 +281,54 @@ public class createComp {
 
         return panel;
     }
+
+    /*//////////////////////////////////////////////////////////////
+                                CV text
+    //////////////////////////////////////////////////////////////*/
+    
+    /**
+     * create CV text area
+     * 
+     * <p>
+     * 
+     * everything is hard coded
+     * 
+     * 
+     * @return created CV text area
+     * 
+     */
+    public static class CVFill {
+        public JTextPane textPane = new JTextPane();
+        public JScrollPane scrollPane = new JScrollPane(textPane);
+
+        public CVFill() {
+            textPane.setOpaque(false);
+            textPane.setBorder(new roundedBorder(10, Color.BLACK, null));
+            textPane.setEditable(true);
+            textPane.setFont(new Font("Arial", Font.PLAIN, 15));
+            textPane.setPreferredSize(new Dimension(400, 110));
+            textPane.setEditorKit(new wordWrap());
+
+            scrollPane.setBounds(580, 300, 400, 110);
+            scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+            scrollPane.setOpaque(false);
+            scrollPane.getViewport().setOpaque(false);
+            scrollPane.setBorder(null);
+            scrollPane.setFocusable(false);
+        }
+
+    }   
+    
+    public static boolean isStyledDocumentEmpty(StyledDocument styledDocument) {
+        try {
+            return styledDocument
+                        .getText(0, styledDocument.getLength())
+                        .trim()
+                        .isEmpty();
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+            return true;
+        }
+    }    
 
 }

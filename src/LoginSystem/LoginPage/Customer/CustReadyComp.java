@@ -1,4 +1,4 @@
-package LoginSystem.LoginPage;
+package LoginSystem.LoginPage.Customer;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -96,19 +96,19 @@ public class CustReadyComp {
     //////////////////////////////////////////////////////////////*/    
 
     public JLabel[] RegisterFirstErrorMessage = {
-        loginComp.createErrorMessage("First name and Last name must only contain characters", 505, 410),
-        loginComp.createErrorMessage("Username has used", 505, 410),
-        loginComp.createErrorMessage("Phone number is not valid", 505, 410),
-        loginComp.createErrorMessage("Phone number is used", 505, 410),
-        loginComp.createErrorMessage("only the age between 18 - 60", 505, 410)
+        loginComp.createErrorMessage("First name and Last name must only contain characters", 20, 50),
+        loginComp.createErrorMessage("Username has used", 20, 50),
+        loginComp.createErrorMessage("Phone number is not valid", 20, 50),
+        loginComp.createErrorMessage("Phone number is used", 20, 50),
+        loginComp.createErrorMessage("only the age between 18 - 60", 20, 50)
     };
 
     public JLabel[] RegisterSecondErrorMessage = {
-        loginComp.createErrorMessage("Gender is not selected", 505, 410),
-        loginComp.createErrorMessage("'Others' gender is selected, but did not explicitly named your gender", 505, 410),
-        loginComp.createErrorMessage("Password is weak, hower 'i' for more", 505, 410),
-        loginComp.createErrorMessage("favourite text must contain only characters", 505, 410),
-        loginComp.createErrorMessage("favourite number must contain only numbers", 505, 410)
+        loginComp.createErrorMessage("Gender is not selected", 20, 50),
+        loginComp.createErrorMessage("'Others' gender is selected, but did not explicitly named your gender", 20, 50),
+        loginComp.createErrorMessage("Password is weak, hower 'i' for more", 20, 50),
+        loginComp.createErrorMessage("favourite text must contain only characters", 20, 50),
+        loginComp.createErrorMessage("favourite number must contain only numbers", 20, 50)
     };
 
     /*//////////////////////////////////////////////////////////////
@@ -116,8 +116,8 @@ public class CustReadyComp {
     //////////////////////////////////////////////////////////////*/  
 
     public JLabel[] LoginErrorMessage = {
-        loginComp.createErrorMessage("incorrect username or/and password", 30, 410),
-        loginComp.createErrorMessage("incorrect phone number or/and favourite text or/and number", 30, 410)
+        loginComp.createErrorMessage("incorrect username or/and password", 20, 50),
+        loginComp.createErrorMessage("incorrect phone number or/and favourite text or/and number", 20, 50)
     };
 
     /*//////////////////////////////////////////////////////////////
@@ -125,8 +125,8 @@ public class CustReadyComp {
     //////////////////////////////////////////////////////////////*/
      
     public JLabel[] successLabel = {
-        loginComp.createSuccessMessage("◀ Register Success, click 'Close' to reload and login again", 510, 410),
-        loginComp.createSuccessMessage("Login Success, click 'Close' to reload and login again ▶", 30, 380)
+        loginComp.createSuccessMessage("Register Success, click 'Close' to reload and login again", 20, 50),
+        loginComp.createSuccessMessage("Login Success, click 'Close' to reload and login again", 20, 50)
     }; 
     
     public JLabel[] loadingLabel = {
@@ -203,42 +203,23 @@ public class CustReadyComp {
                             set clickability
     //////////////////////////////////////////////////////////////*/    
      
-    public void _makeclickable() {
-        RegisterGender._makeclickable();
-        RegisterPassword.setEditable();
-        RegisterFavNum.setEditable();
-        RegisterFavText.setEditable();
+    public void _setClickable(boolean bool) {
+        RegisterGender._setClickable(bool);
+        RegisterPassword._setEditable(bool);
+        RegisterFavNum._setEditable(bool);
+        RegisterFavText._setEditable(bool);
 
-        register.setEnabled(true);
-        login1.setEnabled(true);
-        login2.setEnabled(true);
-        alternative1.setEnabled(true);
-        alternative2.setEnabled(true);
+        register.setEnabled(bool);
+        login1.setEnabled(bool);
+        login2.setEnabled(bool);
+        alternative1.setEnabled(bool);
+        alternative2.setEnabled(bool);
 
-        LoginUsername.setEditable();
-        LoginPassword.setEditable();        
+        LoginUsername._setEditable(bool);
+        LoginPassword._setEditable(bool);        
 
-        LRButton.setEnabled(true);
-        close.setEnabled(true);
-    }
-
-    public void _makeUnclickable() {
-        RegisterGender.makeUnclickable();
-        RegisterPassword.setUnEditable();
-        RegisterFavNum.setUnEditable();
-        RegisterFavText.setUnEditable();
-
-        register.setEnabled(false);
-        login1.setEnabled(false);
-        login2.setEnabled(false);
-        alternative1.setEnabled(false);
-        alternative2.setEnabled(false);
-
-        LoginUsername.setUnEditable();
-        LoginPassword.setUnEditable();
-
-        LRButton.setEnabled(false);
-        close.setEnabled(false);
-    }        
+        LRButton.setEnabled(bool);
+        close.setEnabled(bool);
+    }    
 
 }

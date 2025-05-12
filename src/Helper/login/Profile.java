@@ -1,6 +1,6 @@
-package LoginSystem;
+package Helper.login;
 
-import javax.swing.JTextField;
+import javax.swing.text.StyledDocument;
 
 public class Profile {
     
@@ -53,7 +53,7 @@ public class Profile {
         }
         public Approval approval;
 
-        public JTextField CV;
+        public StyledDocument CV;
 
         public String firstName, lastName;
         public String username, password;
@@ -64,7 +64,7 @@ public class Profile {
         public int phoneNumber;
 
         public CV(
-            Status status, Approval approval, JTextField CV,
+            Status status, Approval approval, StyledDocument CV,
             String firstName, String lastName, 
             String username, String password,
             String favText, String favNum, 

@@ -1,4 +1,4 @@
-package LoginSystem.LoginPage;
+package LoginSystem.LoginPage.Customer;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -18,18 +18,21 @@ import Helper.blur;
 import Helper.Animation.componentAnim;
 import Helper.RoundedBorder.roundedBorder;
 import Helper.fileSystem.imageSystem;
+import Helper.login.Profile;
 import Helper.login.loginComp;
-import LoginSystem.Profile;
 import LoginSystem.storage;
+import LoginSystem.LoginPage.PromptMessage;
 
 public class Customer extends JPanel {
     
     JScrollPane pane;
+    initializer i;
     blur blur;
     Window window;
     Components component;
     storage storage;
     CustReadyComp readyComp;
+    PromptMessage message;
 
     Profile.userProfile user = new Profile.userProfile(
         null, null, null, 
@@ -49,6 +52,7 @@ public class Customer extends JPanel {
         this.storage = i.storage;
         this.window = w;
         this.readyComp = new CustReadyComp(this);
+        this.i = i;
 
         background();
     }
@@ -118,11 +122,7 @@ public class Customer extends JPanel {
                 blur.removeBlur();
                 remove(half);
                 readyComp = null;
-                SwingUtilities.invokeLater(
-                    () -> {
-                        window._reloadEverything();
-                    }
-                );
+                SwingUtilities.invokeLater(() -> { window._reloadEverything(); });
             }
         );
     }   
@@ -152,6 +152,8 @@ public class Customer extends JPanel {
         componentAnim anim = new componentAnim(half, X, Y, (X + shift), Y, pane);
         anim.setDuration(1500);
         anim.start();
+        i.compAnimStorage.addAnim(anim);
+        
     }  
 
     /*//////////////////////////////////////////////////////////////
@@ -195,8 +197,6 @@ public class Customer extends JPanel {
      */
     protected void CheckFirstRegister() {
 
-        Arrays.stream(readyComp.RegisterFirstErrorMessage).forEach(i -> ((Component) i).setVisible(false));
-
         String FirstName = new String();
         String lastName = new String();
         String username = new String();
@@ -212,23 +212,23 @@ public class Customer extends JPanel {
         System.out.println("checking first register");
 
         if (!FirstName.matches("[a-zA-Z]+") || !lastName.matches("[a-zA-Z]+")) {
-            readyComp.RegisterFirstErrorMessage[0].setVisible(true);
+            _promptMessage(readyComp.RegisterFirstErrorMessage[0]);
             return;
         }
         if (username.trim().isEmpty() || !storage.isUsernameUnique(username)) {
-            readyComp.RegisterFirstErrorMessage[1].setVisible(true);
+            _promptMessage(readyComp.RegisterFirstErrorMessage[1]);
             return;
         }
         if (!phoneNumber.chars().allMatch(Character::isDigit) || !(phoneNumber.matches("^01[0-46-9][0-9]{7,8}$") || phoneNumber.matches("^0[3-9][0-9]{7,8}$"))) {
-            readyComp.RegisterFirstErrorMessage[2].setVisible(true);
+            _promptMessage(readyComp.RegisterFirstErrorMessage[2]);
             return;
         }
         if (!storage.isPhoneNumberUnique(Integer.parseInt(phoneNumber))) {
-            readyComp.RegisterFirstErrorMessage[3].setVisible(true);
+            _promptMessage(readyComp.RegisterFirstErrorMessage[3]);
             return;
         }
-        if (age.trim().isEmpty() || !age.chars().allMatch(Character::isDigit) || Integer.parseInt(age) < 0 || Integer.parseInt(age) > 120) {
-            readyComp.RegisterFirstErrorMessage[4].setVisible(true);
+        if (age.trim().isEmpty() || !age.chars().allMatch(Character::isDigit) || Integer.parseInt(age) < 18 || Integer.parseInt(age) > 60) {
+            _promptMessage(readyComp.RegisterFirstErrorMessage[4]);
             return;
         }
 
@@ -249,7 +249,6 @@ public class Customer extends JPanel {
      * 
      */
     protected void CheckSecondRegister() {
-        Arrays.stream(readyComp.RegisterSecondErrorMessage).forEach(i -> ((Component) i).setVisible(false));
 
         String gender = new String();
         String password = new String();
@@ -262,23 +261,23 @@ public class Customer extends JPanel {
         favNum = String.valueOf(readyComp.RegisterFavNum.passwordField.getPassword());
 
         if (gender == null || gender.trim() == "") {
-            readyComp.RegisterSecondErrorMessage[0].setVisible(true);
+            _promptMessage(readyComp.RegisterSecondErrorMessage[0]);
             return;
         }
         if (readyComp.RegisterGender.isOthersSelectedButEmpty()) {
-            readyComp.RegisterSecondErrorMessage[1].setVisible(true);
+            _promptMessage(readyComp.RegisterSecondErrorMessage[1]);
             return;
         }
         if (!storage.isYourPasswordStrong(password)) {
-            readyComp.RegisterSecondErrorMessage[2].setVisible(true);
+            _promptMessage(readyComp.RegisterSecondErrorMessage[2]);
             return;
         }
         if (favText.trim().isEmpty() || !favText.matches("[a-zA-Z]+")) {
-            readyComp.RegisterSecondErrorMessage[3].setVisible(true);
+            _promptMessage(readyComp.RegisterSecondErrorMessage[3]);
             return;
         }
         if (favNum.trim().isEmpty() || !favNum.chars().allMatch(Character::isDigit)) {
-            readyComp.RegisterSecondErrorMessage[4].setVisible(true);
+            _promptMessage(readyComp.RegisterSecondErrorMessage[4]);
             return;
         }
 
@@ -297,7 +296,7 @@ public class Customer extends JPanel {
      * 
      */
     protected void _register() {
-        readyComp._makeUnclickable();
+        readyComp._setClickable(false);
         readyComp.loadingLabel[0].setVisible(true);
 
         new Thread(() -> {
@@ -308,8 +307,8 @@ public class Customer extends JPanel {
                 System.out.println("Password: " + storage.Users.get(user.username).password);
                 System.out.println("Favourite Texts: " + storage.Users.get(user.username).favText);
                 System.out.println("Favourite Number: " + storage.Users.get(user.username).favNum);
+                _promptMessage(readyComp.successLabel[0]);
                 readyComp.loadingLabel[0].setVisible(false);
-                readyComp.successLabel[0].setVisible(true);
                 readyComp.close.setEnabled(true);
             });
         }).start();
@@ -328,7 +327,7 @@ public class Customer extends JPanel {
     protected void FillLogin() {
         readyComp._setSecondLoginVisible(false);
         readyComp._setFirstLoginVisible(true);
-        readyComp._makeclickable();
+        readyComp._setClickable(true);
     }   
     
     /**
@@ -337,9 +336,7 @@ public class Customer extends JPanel {
      * 
      */
     protected void CheckFirstLogin() {
-        readyComp._makeUnclickable();
-
-        Arrays.stream(readyComp.LoginErrorMessage).forEach(i -> ((Component) i).setVisible(false));
+        readyComp._setClickable(false);
 
         String _username = "";
         String _password = "";
@@ -356,11 +353,11 @@ public class Customer extends JPanel {
 
             SwingUtilities.invokeLater(() -> {
                 if (!chechLogin) {
-                    readyComp.LoginErrorMessage[0].setVisible(true);
+                    _promptMessage(readyComp.LoginErrorMessage[0]);
                     readyComp.loadingLabel[1].setVisible(false);
-                    readyComp._makeclickable();
+                    readyComp._setClickable(true);
                 } else {
-                    readyComp.successLabel[1].setVisible(true);
+                    _promptMessage(readyComp.successLabel[1]);
                     readyComp.loadingLabel[1].setVisible(false);
                     readyComp.close.setEnabled(true);
                 }
@@ -381,12 +378,11 @@ public class Customer extends JPanel {
     protected void fullLogin() {
         readyComp._setFirstLoginVisible(false);
         readyComp._setSecondLoginVisible(true);
-        readyComp._makeclickable();
+        readyComp._setClickable(true);
     }  
     
     protected void checkSecondLogin() {
-        Arrays.stream(readyComp.LoginErrorMessage).forEach(i -> ((Component) i).setVisible(false)); 
-        readyComp._makeUnclickable();
+        readyComp._setClickable(false);
 
         String _phoneNumber = "";
         String _favText = "";
@@ -406,11 +402,11 @@ public class Customer extends JPanel {
 
             SwingUtilities.invokeLater(() -> {
                 if (!chechLogin) {
-                    readyComp.LoginErrorMessage[1].setVisible(true);
+                    _promptMessage(readyComp.LoginErrorMessage[1]);
                     readyComp.loadingLabel[1].setVisible(false);
-                    readyComp._makeclickable();
+                    readyComp._setClickable(true);
                 } else {
-                    readyComp.successLabel[1].setVisible(true);
+                    _promptMessage(readyComp.successLabel[1]);
                     readyComp.loadingLabel[1].setVisible(false);
                     readyComp.close.setEnabled(true);
                 }
@@ -489,11 +485,32 @@ public class Customer extends JPanel {
         // error && success message
         Arrays.stream(readyComp.RegisterFirstErrorMessage).forEach(i -> add((Component) i));
         Arrays.stream(readyComp.RegisterSecondErrorMessage).forEach(i -> add((Component) i));
-        Arrays.stream(readyComp.LoginErrorMessage).forEach(i -> add((Component) i));
-        Arrays.stream(readyComp.successLabel).forEach(i -> add((Component) i));
         Arrays.stream(readyComp.loadingLabel).forEach(i -> add((Component) i));
-        Arrays.stream(readyComp.LoginErrorMessage).forEach(i -> add((Component) i));
 
         Fill();
     }  
+
+    /*//////////////////////////////////////////////////////////////
+                             Prompt Message
+    //////////////////////////////////////////////////////////////*/    
+
+    public void _removeMessage() { remove(message); message = null; }
+
+    void _promptMessage(JLabel text) {
+        message = new PromptMessage(i, text, this);
+        message.setBounds(300, 150, 550, 180);
+        message.setVisible(true);
+
+        i.frame.getContentPane().add(message);
+
+        componentAnim anim = new componentAnim(
+            message, 
+            350, 150, 
+            350, 250, 
+            i.scrollPane
+        );
+        anim.start();
+        i.compAnimStorage.addAnim(anim);
+    }
+
 }
