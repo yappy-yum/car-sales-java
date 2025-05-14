@@ -92,8 +92,13 @@ src/
 ├── Components/
 │   ├── Components.java
 |   ├── initializer.java
+|   ├── storeVid.java
 |   ├── SwitchThemeComp.java
 │   └── Window.java
+|
+├── Details/
+│   ├── AboutUs.java
+│   └── TaC.java
 |
 ├── frontPage/
 │   ├── FaQConfig.java
@@ -107,15 +112,18 @@ src/
 │   ├── Comp/
 │   │   ├── createComp.java
 │   │   ├── createJFX.java
-│   │   └── ScrollHelper.java
+│   │   ├── createScroll.java
+│   │   └── wordWrap.java
 │   ├── fileSystem/
 │   │   ├── filePath.java
 │   │   ├── fontSystem.java
 │   │   ├── imageSystem.java
 │   │   └── videoSystem.java
 │   ├── login/
+│   │   ├── annotateButton.java
 │   │   ├── loginComp.java
-│   │   └── loginFill.java
+│   │   ├── loginFill.java
+│   │   └── Profile.java
 │   ├── RoundedBorder/
 │   |   ├── roundedBorder.java
 │   |   └── roundedBorderFactory.java
@@ -126,8 +134,13 @@ src/
 │   │   ├── Argon.java
 │   │   └── testArgon.java
 │   ├── LoginPage/
-│   │   ├── Customer.java
-│   │   ├── CustReadyComp.java
+│   │   ├── Customer/
+│   │   |   ├── Customer.java
+│   │   |   └── CustReadyComp.java
+│   │   ├── Job/
+│   │   |   ├── Job.java
+│   │   |   └── JobReadyComp.java
+|   |   └── PromptMessage.java
 │   ├── isLogin.java
 │   ├── Profile.java
 │   └── storage.java

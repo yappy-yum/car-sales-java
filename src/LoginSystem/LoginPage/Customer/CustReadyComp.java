@@ -24,7 +24,7 @@ public class CustReadyComp {
                               constructor
     //////////////////////////////////////////////////////////////*/    
      
-    CustReadyComp(Customer C) {         
+    public CustReadyComp(Customer C) {         
         this.FirstRegisterButton = loginComp.createFillNext("Register ▶", 770, 440, 20, C::CheckFirstRegister);
         this.register = loginComp.createFillNext("Register", 770, 440, 20, C::CheckSecondRegister); 
         this.login1 = loginComp.createFillNext("Login ▶", 270, 440, 20, C::CheckFirstLogin);

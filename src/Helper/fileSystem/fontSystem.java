@@ -84,12 +84,17 @@ public class fontSystem {
         }
     }
 
-    public static final Font BEAUTIFUL_PEOPLE;
+    /**
+     * 
+     * https://fonts.google.com/specimen/Tagesschrift
+     * 
+     */
+    public static final Font TAGES;
     static {
         try {
-            BEAUTIFUL_PEOPLE = Font.createFont(
+            TAGES = Font.createFont(
                 Font.TRUETYPE_FONT, 
-                new File(FILE_PATH.concat("BeautifulPeoplePersonalUse-dE0g.ttf"))
+                new File(FILE_PATH.concat("Tagesschrift-Regular.ttf"))
             );
         } catch (Exception e) {
             throw new RuntimeException("you're a failure :D", e);

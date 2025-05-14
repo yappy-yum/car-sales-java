@@ -3,10 +3,12 @@ import Components.Window;
 import Components.initializer;
 import Details.AboutUs;
 import Details.TaC;
+import Details.checkProfile;
 import Helper.RoundedBorder.roundedBorderFactory;
 import Helper.fileSystem.fontSystem;
 import Helper.fileSystem.imageSystem;
 import Helper.fileSystem.videoSystem;
+import Helper.login.Profile;
 import LoginSystem.LoginPage.Job.Job;
 import javafx.embed.swing.JFXPanel;
 
@@ -24,6 +26,7 @@ public class FrontPage {
     
     initializer i;
     Window window;
+    String loginIconTexts;
 
     /*//////////////////////////////////////////////////////////////
                         light/dark theme button
@@ -43,7 +46,7 @@ public class FrontPage {
      * <p> load dark theme icon </p>
      * 
      */
-    private final ImageIcon DARK_BUTTON = imageSystem.DARK_BUTTON;    
+    private final ImageIcon DARK_BUTTON = imageSystem.DARK_BUTTON;
 
     /*//////////////////////////////////////////////////////////////
                          big header highlights
@@ -102,6 +105,13 @@ public class FrontPage {
     public FrontPage(initializer i, Window window) {
         this.i = i;
         this.window = window;
+        
+        this.loginIconTexts = 
+            !i.isLogin.isLogin ? 
+                "Register/Login for more" : 
+                (i.isLogin.currentProfile.department == Profile.Department.CUSTOMER)
+                    ? "Click here to look for cars"
+                    : "Click here check profiles";
 
         SwingUtilities.invokeLater(this::_initializeFrontPage); 
     }
@@ -190,8 +200,17 @@ public class FrontPage {
 
     void topRight() {
 
-        _helpAddLoginIcon("Register/Login", 1050, 20);
-        _helpAddThemeIcon(985, 20);
+        if (!i.isLogin.isLogin) {
+            _helpAddLoginIcon("Register/Login", 1050, 20);
+            _helpAddThemeIcon(985, 20);
+        } 
+        if (i.isLogin.isLogin) {
+            _setLoginPfp();
+            _helpAddThemeIcon(1070, 20);
+            _helpAddVerifyStatusFrontPage(i.isLogin.currentProfile.isVerified);
+            _helpAddLoginIcon(loginIconTexts, 960, 290);
+            
+        }
 
     }
 
@@ -281,7 +300,7 @@ public class FrontPage {
             710, 110
         );
 
-        _helpAddLoginIcon("Register/Login for more", 960, (870 + 600) - 70);
+        _helpAddLoginIcon(loginIconTexts, 960, (870 + 600) - 70);
         _helpAddShortVideoAndLogo(
             BENTLEY_CLIP, BENTLEY_LOGO, 
             870, 890, 
@@ -297,7 +316,7 @@ public class FrontPage {
             1520, 110
         );
 
-        _helpAddLoginIcon("Register/Login for more", 960, (1680 + 600) - 70);
+        _helpAddLoginIcon(loginIconTexts, 960, (1680 + 600) - 70);
         _helpAddShortVideoAndLogo(
             BUGATTI_CLIP, BUGATTI_LOGO, 
             1680, 1670, 
@@ -313,7 +332,7 @@ public class FrontPage {
             2330, 145
         );
 
-        _helpAddLoginIcon("Register/Login for more", 960, (2490 + 600) - 60);
+        _helpAddLoginIcon(loginIconTexts, 960, (2490 + 600) - 60);
         _helpAddShortVideoAndLogo(
             ROLLS_ROYCE_CLIP, ROLLS_ROYCE_LOGO, 
             2490, 2500, 
@@ -329,7 +348,7 @@ public class FrontPage {
             3140, 145
         );
 
-        _helpAddLoginIcon("Register/Login for more", 960, (3300 + 600) - 70);
+        _helpAddLoginIcon(loginIconTexts, 960, (3300 + 600) - 70);
         _helpAddShortVideoAndLogo(
             MERCEDES_CLIP, MERCEDES_LOGO, 
             3300, 3320, 
@@ -385,7 +404,7 @@ public class FrontPage {
             4665, 35
         );
 
-        _helpAddLoginIcon("Reguster/Login for more", 50, 4750);
+        _helpAddLoginIcon(loginIconTexts, 50, 4750);
         
     }
 
@@ -553,12 +572,31 @@ public class FrontPage {
         );
     }
 
+    void _setLoginPfp() {
+        i.component.addJButton(
+            imageSystem._scaleImage(
+                i.isLogin.currentProfile.pfp, 
+                50, 50
+            ),
+            1150, 70, 
+            1150, 20, 
+            50, 50
+        ).addActionListener( 
+            _ -> {
+                i.component._startDropDown(
+                    () -> { i.checkProfile = new checkProfile(i, window); },
+                    () -> i.checkProfile, 
+                    1000, 500);
+            }
+        );
+    } 
+
     /*//////////////////////////////////////////////////////////////
                helper: add actionListener for theme icon
     //////////////////////////////////////////////////////////////*/       
     
     void _helpAddThemeIcon(int targetX, int targetY) {
-        JButton themeButton = i.component.addJButton(
+        i.component.addJButton(
             imageSystem._scaleImage(
                 i.isDarkTheme.isDarkTheme ? LIGHT_BUTTON : DARK_BUTTON, 
                 50, 50
@@ -566,11 +604,21 @@ public class FrontPage {
             targetX, targetY + 90, 
             targetX, targetY, 
             50, 50
-        );
-        themeButton.addActionListener( _ -> {
+        ).addActionListener( _ -> {
             i.isDarkTheme.switchTheme();
             i.component.switchTheme();
         });
+    }
+
+    void _helpAddVerifyStatusFrontPage(boolean isVerified) {
+        i.component.addJLabel(
+            isVerified ? "Verified" : "Unverified", 
+            1140, 100,
+            1140, 70, 
+            80, 50, 
+            new Font("SansSerif", Font.BOLD, 15),
+            i.isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLACK
+        );
     }
 
     

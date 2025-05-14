@@ -12,6 +12,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 import Components.Components;
+import Components.SwitchThemeComp;
 import Components.Window;
 import Components.initializer;
 import Helper.blur;
@@ -25,20 +26,22 @@ import LoginSystem.LoginPage.PromptMessage;
 
 public class Customer extends JPanel {
     
+    SwitchThemeComp S;
     JScrollPane pane;
     initializer i;
     blur blur;
     Window window;
     Components component;
     storage storage;
-    CustReadyComp readyComp;
+    CustReadyComp readyComp = new CustReadyComp(this);
     PromptMessage message;
 
     Profile.userProfile user = new Profile.userProfile(
-        null, null, null, 
+        null, false, null, null, 
         null, 0, 0, 
         null, null, 
-        null, null
+        null, null, 
+        imageSystem._scaleImage(imageSystem.PROFILE, 50, 50)
     );
 
     /*//////////////////////////////////////////////////////////////
@@ -51,8 +54,8 @@ public class Customer extends JPanel {
         this.component = i.component;
         this.storage = i.storage;
         this.window = w;
-        this.readyComp = new CustReadyComp(this);
         this.i = i;
+        this.S = i.switchThemeComp;
 
         background();
     }
@@ -232,7 +235,7 @@ public class Customer extends JPanel {
             return;
         }
 
-        user.status = Profile.userProfile.Status.CUSTOMER;
+        user.department = Profile.Department.CUSTOMER;
         user.firstName = FirstName;
         user.lastName = lastName;
         user.username = username;
@@ -344,19 +347,20 @@ public class Customer extends JPanel {
         _username = readyComp.LoginUsername.textField.getText();
         _password = String.valueOf(readyComp.LoginPassword.passwordField.getPassword());
 
-        final String username = _username;
-        final String password = _password;
+        user.username = _username;
+        user.password = _password;
 
         readyComp.loadingLabel[1].setVisible(true);
         new Thread(() -> {
-            boolean chechLogin = storage.login(username, password);
+            boolean checkLogin = storage.login(user.username, user.password);
 
             SwingUtilities.invokeLater(() -> {
-                if (!chechLogin) {
+                if (!checkLogin) {
                     _promptMessage(readyComp.LoginErrorMessage[0]);
                     readyComp.loadingLabel[1].setVisible(false);
                     readyComp._setClickable(true);
                 } else {
+                    _setLogin();
                     _promptMessage(readyComp.successLabel[1]);
                     readyComp.loadingLabel[1].setVisible(false);
                     readyComp.close.setEnabled(true);
@@ -398,14 +402,15 @@ public class Customer extends JPanel {
 
         readyComp.loadingLabel[1].setVisible(true);
         new Thread(() -> {
-            boolean chechLogin = storage.login(phoneNumber, favText, favNum);
+            boolean checkLogin = storage.login(phoneNumber, favText, favNum);
 
             SwingUtilities.invokeLater(() -> {
-                if (!chechLogin) {
+                if (!checkLogin) {
                     _promptMessage(readyComp.LoginErrorMessage[1]);
                     readyComp.loadingLabel[1].setVisible(false);
                     readyComp._setClickable(true);
                 } else {
+                    _setLogin();
                     _promptMessage(readyComp.successLabel[1]);
                     readyComp.loadingLabel[1].setVisible(false);
                     readyComp.close.setEnabled(true);
@@ -487,8 +492,82 @@ public class Customer extends JPanel {
         Arrays.stream(readyComp.RegisterSecondErrorMessage).forEach(i -> add((Component) i));
         Arrays.stream(readyComp.loadingLabel).forEach(i -> add((Component) i));
 
+        _addToDummy();
+
+    } 
+    
+    /**
+     * 1.2 add all the components to the JPanel
+     * 
+     */
+    protected void _addToDummy() {
+        // first page register
+        S.dummy.add(readyComp.FirstPageRegisterLabel);
+        S.dummy.add(readyComp.RegisterFirstName.label);
+        S.dummy.add(readyComp.RegisterFirstName.textField);
+        S.dummy.add(readyComp.RegisterLastName.label);
+        S.dummy.add(readyComp.RegisterLastName.textField);
+        S.dummy.add(readyComp.RegisterUsername.label);
+        S.dummy.add(readyComp.RegisterUsername.textField);
+        S.dummy.add(readyComp.RegisterPhoneNum.label);
+        S.dummy.add(readyComp.RegisterPhoneNum.textField);
+        S.dummy.add(readyComp.RegisterAge.label);
+        S.dummy.add(readyComp.RegisterAge.textField);
+        S.dummy.add(readyComp.FirstRegisterButton);
+
+        // second page register
+        S.dummy.add(readyComp.RegisterGender.gender[0]);
+        S.dummy.add(readyComp.RegisterGender.gender[1]);
+        S.dummy.add(readyComp.RegisterGender.gender[2]);
+        S.dummy.add(readyComp.RegisterGender.label[0]);
+        S.dummy.add(readyComp.RegisterGender.label[1]);
+        S.dummy.add(readyComp.RegisterGender.label[2]);
+        S.dummy.add(readyComp.RegisterGender.others);
+        S.dummy.add(readyComp.RegisterPasswordInstructor.button);
+        S.dummy.add(readyComp.RegisterPasswordInstructor.textArea);
+        S.dummy.add(readyComp.RegisterPasswordInstructor.textBackground);
+        S.dummy.add(readyComp.RegisterPassword.label);
+        S.dummy.add(readyComp.RegisterPassword.button);
+        S.dummy.add(readyComp.RegisterPassword.passwordField);
+        S.dummy.add(readyComp.RegisterFavText.label);
+        S.dummy.add(readyComp.RegisterFavText.button);
+        S.dummy.add(readyComp.RegisterFavText.passwordField);
+        S.dummy.add(readyComp.RegisterFavNum.label);
+        S.dummy.add(readyComp.RegisterFavNum.button);
+        S.dummy.add(readyComp.RegisterFavNum.passwordField);
+        S.dummy.add(readyComp.passwordInstruct);
+        S.dummy.add(readyComp.register);
+
+        // first page login
+        S.dummy.add(readyComp.FirstPageLoginLabel);
+        S.dummy.add(readyComp.LoginUsername.label);
+        S.dummy.add(readyComp.LoginUsername.textField);
+        S.dummy.add(readyComp.LoginPassword.label);
+        S.dummy.add(readyComp.LoginPassword.button);
+        S.dummy.add(readyComp.LoginPassword.passwordField);
+        S.dummy.add(readyComp.login1);
+        S.dummy.add(readyComp.alternative1);
+
+        // second page login
+        S.dummy.add(readyComp.LoginPhoneNumber.label);
+        S.dummy.add(readyComp.LoginPhoneNumber.textField);
+        S.dummy.add(readyComp.LoginFavNum.label);
+        S.dummy.add(readyComp.LoginFavNum.button);
+        S.dummy.add(readyComp.LoginFavNum.passwordField);
+        S.dummy.add(readyComp.LoginFavText.label);
+        S.dummy.add(readyComp.LoginFavText.button);
+        S.dummy.add(readyComp.LoginFavText.passwordField);
+        S.dummy.add(readyComp.login2);
+        S.dummy.add(readyComp.alternative2);
+
+        // error && success message
+        Arrays.stream(readyComp.RegisterFirstErrorMessage).forEach(i -> S.dummy.add((Component) i));
+        Arrays.stream(readyComp.RegisterSecondErrorMessage).forEach(i -> S.dummy.add((Component) i));
+        Arrays.stream(readyComp.loadingLabel).forEach(i -> S.dummy.add((Component) i));
+
         Fill();
-    }  
+
+    }     
 
     /*//////////////////////////////////////////////////////////////
                              Prompt Message
@@ -511,6 +590,22 @@ public class Customer extends JPanel {
         );
         anim.start();
         i.compAnimStorage.addAnim(anim);
+    }
+
+    void _setLogin() {
+        i.isLogin.isLogin = true;
+
+        Profile.seeProfile _user = new Profile.seeProfile(
+            null, false, 
+            null, null, 
+            null, 0, 
+            0, null, null
+        );
+
+        if (user.username != null) _user = storage.searchUser(user.username);
+        if (user.phoneNumber != 0) _user = storage.searchUser(user.phoneNumber);
+
+        i.isLogin.currentProfile = _user;
     }
 
 }

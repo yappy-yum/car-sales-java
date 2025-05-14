@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.ImageIcon;
+
+import Helper.fileSystem.imageSystem;
 import Helper.login.Profile;
 import LoginSystem.Argon2.Argon;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -17,23 +20,19 @@ public class storage {
     //////////////////////////////////////////////////////////////*/
     
     public storage() {
-        // Dotenv dotenv = Dotenv.load();
+        Dotenv dotenv = Dotenv.load();
 
-        // Users.put(
-        //     dotenv.get("OWNER_USERNAME"), 
-        //     new Profile.userProfile(
-        //         Profile.userProfile.Status.OWNER, 
-        //         dotenv.get("OWNER_FIRST_NAME"), 
-        //         dotenv.get("OWNER_LAST_NAME"), 
-        //         dotenv.get("OWNER_GENDER"),
-        //         Integer.parseInt(dotenv.get("OWNER_PHONE_NUMBER")), 
-        //         Integer.parseInt(dotenv.get("OWNER_AGE")), 
-        //         dotenv.get("OWNER_USERNAME"), 
-        //         argon.HashIt(dotenv.get("OWNER_PASSWORD")), 
-        //         argon.HashIt(dotenv.get("OWNER_FAV_TEXT")),
-        //         argon.HashIt(dotenv.get("OWNER_FAV_NUMBER"))
-        //     )
-        // );
+        Users.put(
+            dotenv.get("OWNER_USERNAME"), 
+            new Profile.userProfile(
+                Profile.Department.OWNER, true,
+                null, null, null, 0, 0,
+                dotenv.get("OWNER_USERNAME"), 
+                argon.HashIt(dotenv.get("OWNER_PASSWORD")), 
+                null, null, 
+                imageSystem._scaleImage(imageSystem.PROFILE, 50, 50)
+            )
+        );
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -78,10 +77,11 @@ public class storage {
         Users.put(
             user.username, 
             new Profile.userProfile(
-                user.status, user.firstName, user.lastName, 
+                user.department, false, user.firstName, user.lastName, 
                 user.gender, user.phoneNumber, user.age,
                 user.username, hashedPassword, 
-                hashedFavText, hashedFavNum
+                hashedFavText, hashedFavNum, 
+                imageSystem._scaleImage(imageSystem.PROFILE, 50, 50)
             )
         );
         return true;
@@ -95,7 +95,7 @@ public class storage {
         Job.put(
             employee.username, 
             new Profile.CV(
-                employee.status, employee.approval, 
+                employee.department, employee.approval, 
                 employee.CV, employee.firstName, employee.lastName, 
                 employee.username, hashedPassword,
                 hashedFavText, hashedFavNum, 
@@ -156,6 +156,12 @@ public class storage {
     }
 
     /*//////////////////////////////////////////////////////////////
+                            verify customer
+    //////////////////////////////////////////////////////////////*/
+    
+    public void setVerified(String username) { Users.get(username).isVerified = true; }
+
+    /*//////////////////////////////////////////////////////////////
                              change details
     //////////////////////////////////////////////////////////////*/
     
@@ -168,10 +174,9 @@ public class storage {
      * @param newFavText user's new favourite text
      * @param newFavNum user's new favourite number
      * @param newPhoneNumber user's new phone number
-     * @return true if change is successful
      * 
      */
-    public boolean changeDetails(
+    public void changeDetails(
         String oldUsername, String newUsername,
         String newPassword,
         String newFavText, int newFavNum,
@@ -187,13 +192,12 @@ public class storage {
         Users.put(
             newUsername, 
             new Profile.userProfile(
-                profile.status, profile.firstName, profile.lastName, 
+                profile.department, profile.isVerified, profile.firstName, profile.lastName, 
                 profile.gender, newPhoneNumber, profile.age,
                 newUsername, hashedPassword, 
-                hashedFavText, hashedFavNum
+                hashedFavText, hashedFavNum, profile.pfp
             )
         );
-        return true;
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -203,24 +207,26 @@ public class storage {
     public void setApproval(String username, boolean approval) {
         Profile.CV job = Job.get(username);
         
-        if (approval) {
-            job.approval = Profile.CV.Approval.APPROVED;
-            Profile.userProfile.Status status = 
-                job.status == Profile.CV.Status.MANAGER 
-                    ? Profile.userProfile.Status.MANAGER 
-                    : Profile.userProfile.Status.SALESMAN;
-    
-            Users.put(username, new Profile.userProfile(
-                status,
-                job.firstName, job.lastName, job.gender, job.phoneNumber, job.age,
-                username, job.password,
-                job.favText, job.favNum
-            ));
+        if (approval) {    
+            Users.put(
+                username, 
+                new Profile.userProfile(
+                    job.department, true,
+                    job.firstName, job.lastName, job.gender, job.phoneNumber, job.age,
+                    username, job.password,
+                    job.favText, job.favNum, null
+                )
+            );
         } else if (!approval) {
             Users.remove(username);
         }
     }
+
+    /*//////////////////////////////////////////////////////////////
+                                set PFP
+    //////////////////////////////////////////////////////////////*/
     
+    public void setPFP(String username, ImageIcon pfp) { Users.get(username).pfp = pfp; }
 
     /*//////////////////////////////////////////////////////////////
                         check profile uniqueness
@@ -236,6 +242,32 @@ public class storage {
         return 
             Users.values().stream().noneMatch(profile -> profile.phoneNumber == phoneNumber) &&
             Job.values().stream().noneMatch(profile -> profile.phoneNumber == phoneNumber);
+    }
+
+    /*//////////////////////////////////////////////////////////////
+                              Search User
+    //////////////////////////////////////////////////////////////*/
+    
+    public Profile.seeProfile searchUser(String username) {
+        Profile.userProfile profile = Users.get(username);
+        Profile.seeProfile seeProfile = new Profile.seeProfile(
+            profile.department, profile.isVerified, 
+            profile.firstName, profile.lastName, 
+            profile.gender, profile.phoneNumber, profile.age,
+            profile.username, profile.pfp
+        );
+        return seeProfile;
+    }
+
+    public Profile.seeProfile searchUser(int phoneNumber) {
+        Profile.userProfile profile = Users.values().stream().filter(i -> i.phoneNumber == phoneNumber).findFirst().get();
+        Profile.seeProfile seeProfile = new Profile.seeProfile(
+            profile.department, profile.isVerified, 
+            profile.firstName, profile.lastName, 
+            profile.gender, profile.phoneNumber, profile.age,
+            profile.username, profile.pfp
+        );
+        return seeProfile;
     }
 
     /*//////////////////////////////////////////////////////////////

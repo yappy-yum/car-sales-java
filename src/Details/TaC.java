@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import Components.SwitchThemeComp;
 import Components.Window;
 import Components.initializer;
 import Helper.blur;
@@ -21,11 +22,13 @@ public class TaC extends JPanel {
     blur blur;
     initializer i;
     Window window;
+    SwitchThemeComp S;
     
     public TaC(initializer i, Window window) {
         this.blur = new blur(i.frame);
         this.i = i;
         this.window = window;
+        this.S = i.switchThemeComp;
 
         _background();
         _addHeader();
@@ -55,6 +58,7 @@ public class TaC extends JPanel {
         );
         textLabel.setVisible(true);
         add(textLabel);
+        S.dummy.add(textLabel);
     }
 
     void _addText() {
@@ -90,6 +94,7 @@ public class TaC extends JPanel {
         editorPane.setFocusable(false);
 
         add(editorPane);
+        S.dummy.add(editorPane);
     }
 
     void _addX() {
@@ -112,6 +117,7 @@ public class TaC extends JPanel {
             }
         );
         add(closeButton);
+        S.dummy.add(closeButton);
     }
 
 

@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import Components.SwitchThemeComp;
 import Components.initializer;
 import Helper.blur;
 import Helper.Comp.createComp;
@@ -20,11 +21,13 @@ public class PromptMessage extends JPanel {
     blur blur;
     JLabel text;
     Object classToInteractWith;
+    SwitchThemeComp S;
 
     public PromptMessage(initializer i, JLabel text, Object classToInteractWith) {
         this.blur = new blur(i.frame);
         this.text = text;
         this.classToInteractWith = classToInteractWith;
+        this.S = i.switchThemeComp;
 
         _background();
         _addHeader();
@@ -45,7 +48,7 @@ public class PromptMessage extends JPanel {
         );
     }
 
-    void _addMessage() { add(text); text.setVisible(true); }
+    void _addMessage() { S.dummy.add(text); add(text); text.setVisible(true); }
 
     void _addX() {
 
@@ -74,6 +77,7 @@ public class PromptMessage extends JPanel {
             }
         );
         add(closeButton);
+        S.dummy.add(closeButton);
 
     }
 
@@ -87,6 +91,7 @@ public class PromptMessage extends JPanel {
         );
         header.setVisible(true);
         add(header);
+        S.dummy.add(header);
     }
 
 }

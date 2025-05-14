@@ -114,13 +114,14 @@ public class Window {
      */
     public void _reloadEverything() {              
         i.frame.getContentPane().removeAll();
+        if (i.switchThemeComp != null) i.switchThemeComp.clearEverything();
+        if (i.checkProfile != null) i.frame.remove(i.checkProfile);
         if (i.scrollPane != null) i.frame.remove(i.scrollPane);
         if (i.component != null) i.frame.remove(i.component);
         if (i.Customer != null) i.frame.remove(i.Customer);
         if (i.AboutUs != null) i.frame.remove(i.AboutUs);
         if (i.TaC != null) i.frame.remove(i.TaC);
         if (i.Job != null) i.frame.remove(i.Job);
-        if (i.switchThemeComp != null) i.switchThemeComp.clearEverything();
         if (i.compAnimStorage != null) i.compAnimStorage.disposeAnim();
         if (i.videoAnimStorage != null) i.videoAnimStorage.disposeAnim();
         if (i.storeVid != null) new Thread(() -> i.storeVid.clearAll()).start(); // may slower during clearance, therefore push it to background
@@ -151,6 +152,7 @@ public class Window {
         i.compAnimStorage = null;
         i.videoAnimStorage = null;
         i.storeVid = null;
+        i.checkProfile = null;
 
         i.storeVid = new storeVid();
         i.compAnimStorage = new compAnimStorage();

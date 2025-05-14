@@ -11,6 +11,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.StyledDocument;
 
+import Components.SwitchThemeComp;
 import Components.Window;
 import Components.initializer;
 import Helper.blur;
@@ -24,11 +25,12 @@ import LoginSystem.LoginPage.PromptMessage;
 
 public class Job extends JPanel {
 
+    SwitchThemeComp S;
     JButton submitButton;
     JButton closeButton;
     blur blur;
     Window window;
-    JobReadyComp readyComp = new JobReadyComp();
+    JobReadyComp readyComp;
     PromptMessage message;
     initializer i;
     Argon.Hash argon = new Argon().new Hash();
@@ -49,6 +51,8 @@ public class Job extends JPanel {
         this.window = window;
         this.blur = new blur(i.frame);
         this.i = i;
+        this.readyComp = new JobReadyComp(i);
+        this.S = i.switchThemeComp;
 
         _background();
         _addComp();
@@ -132,7 +136,63 @@ public class Job extends JPanel {
 
         // text annotation
         Arrays.stream(readyComp.annotateIcon).forEach(i -> add(i));
+        _addToDummy();
     }
+
+    void _addToDummy() {
+        // header
+        S.dummy.add(readyComp.header);
+
+        // Name
+        S.dummy.add(readyComp.FirstName.label);
+        S.dummy.add(readyComp.FirstName.textField);
+        S.dummy.add(readyComp.LastName.label);
+        S.dummy.add(readyComp.LastName.textField);
+        S.dummy.add(readyComp.Username.label);
+        S.dummy.add(readyComp.Username.textField);
+        
+        // Personal Data
+        S.dummy.add(readyComp.PhoneNum.label);
+        S.dummy.add(readyComp.PhoneNum.textField);
+        S.dummy.add(readyComp.Age.label);
+        S.dummy.add(readyComp.Age.textField);
+        S.dummy.add(readyComp.Gender.gender[0]);
+        S.dummy.add(readyComp.Gender.gender[1]);
+        S.dummy.add(readyComp.Gender.gender[2]);
+        S.dummy.add(readyComp.Gender.label[0]);
+        S.dummy.add(readyComp.Gender.label[1]);
+        S.dummy.add(readyComp.Gender.label[2]);
+        S.dummy.add(readyComp.Gender.others);
+
+        // Roles
+        S.dummy.add(readyComp.RolesLabel);
+        S.dummy.add(readyComp.Roles.role[0]);
+        S.dummy.add(readyComp.Roles.role[1]);
+        S.dummy.add(readyComp.Roles.label[0]);
+        S.dummy.add(readyComp.Roles.label[1]);
+
+        // Passwords
+        S.dummy.add(readyComp.PasswordInstructor.button);
+        S.dummy.add(readyComp.PasswordInstructor.textArea);
+        S.dummy.add(readyComp.PasswordInstructor.textBackground);
+        S.dummy.add(readyComp.Password.label);
+        S.dummy.add(readyComp.Password.button);
+        S.dummy.add(readyComp.Password.passwordField);
+        S.dummy.add(readyComp.FavNum.label);
+        S.dummy.add(readyComp.FavNum.button);
+        S.dummy.add(readyComp.FavNum.passwordField);
+        S.dummy.add(readyComp.FavText.label);
+        S.dummy.add(readyComp.FavText.button);
+        S.dummy.add(readyComp.FavText.passwordField);
+
+        // CV
+        S.dummy.add(readyComp.CVLabel);
+        S.dummy.add(readyComp.CVScroll);
+        S.dummy.add(readyComp.loadingLabel);
+
+        // text annotation
+        Arrays.stream(readyComp.annotateIcon).forEach(i -> S.dummy.add(i));
+    }    
 
     void _addX() {
         closeButton = createComp.createJButton(
@@ -153,6 +213,7 @@ public class Job extends JPanel {
                 );
             }
         );
+        S.dummy.add(closeButton);
         add(closeButton);
     }
 
@@ -174,6 +235,7 @@ public class Job extends JPanel {
                 _checkDetails();
             } 
         );
+        S.dummy.add(submitButton);
         add(submitButton);
     }
 
@@ -269,8 +331,8 @@ public class Job extends JPanel {
         closeButton.setEnabled(false);
         readyComp.loadingLabel.setVisible(true);
         new Thread(() -> {
-            CV.status = _role.equals("Manager") ? Profile.CV.Status.MANAGER : Profile.CV.Status.SALESMAN;
-            CV.approval = Profile.CV.Approval.PENDING;
+            CV.department = _role.equals("Manager") ? Profile.Department.MANAGER : Profile.Department.SALESMAN;
+            CV.approval = Profile.Approval.PENDING;
             CV.CV = _cv;
             CV.firstName = _FirstName;
             CV.lastName = _lastName;
@@ -312,7 +374,6 @@ public class Job extends JPanel {
 
     void _addTextAnnotate() {
         Arrays.stream(readyComp.Roles.role).forEach(i -> i.setVisible(true));
-
     }
 
 }

@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import Components.SwitchThemeComp;
 import Components.Window;
 import Components.initializer;
 import Helper.blur;
@@ -21,17 +22,27 @@ public class AboutUs extends JPanel {
     blur blur;
     initializer i;
     Window window;
+    SwitchThemeComp S;
+
+    /*//////////////////////////////////////////////////////////////
+                              constructor
+    //////////////////////////////////////////////////////////////*/    
     
     public AboutUs(initializer i, Window window) {
         this.blur = new blur(i.frame);
         this.i = i;
         this.window = window;
+        this.S = i.switchThemeComp;
 
         _background();
         _addHeader();
         _addText();
         _addX();
     }
+
+    /*//////////////////////////////////////////////////////////////
+                           JPanel Background
+    //////////////////////////////////////////////////////////////*/    
 
     void _background() {
         setOpaque(false);
@@ -45,6 +56,10 @@ public class AboutUs extends JPanel {
         );
     }
 
+    /*//////////////////////////////////////////////////////////////
+                                 Header
+    //////////////////////////////////////////////////////////////*/    
+
     void _addHeader() {
         JLabel textLabel = createComp.createJLabel(
             "About Us", 
@@ -55,6 +70,7 @@ public class AboutUs extends JPanel {
         );
         textLabel.setVisible(true);
         add(textLabel);
+        S.dummy.add(textLabel);
     }
 
     void _addText() {
@@ -89,6 +105,7 @@ public class AboutUs extends JPanel {
         editorPane.setFocusable(false);
 
         add(editorPane);
+        S.dummy.add(editorPane);
     }
 
     void _addX() {
@@ -111,6 +128,7 @@ public class AboutUs extends JPanel {
             }
         );
         add(closeButton);
+        S.dummy.add(closeButton);
     }
 
 

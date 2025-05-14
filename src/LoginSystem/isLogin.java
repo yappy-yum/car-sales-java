@@ -1,5 +1,7 @@
 package LoginSystem;
 
+import Helper.login.Profile;
+
 /**
  * a global centralize class that determine the login status
  * 
@@ -16,18 +18,11 @@ public class isLogin {
     public boolean isLogin = false;
 
     /**
-     * help to switch the current login status
      * 
-     * <p>
-     * 
-     * <b> 
-     * can only be called when user has successfully login 
-     * to their account
-     * <b>
+     * current login profile, which will be displayed on window
+     * when someone checks the profile information
      * 
      */
-    public void setLogin() {
-        isLogin = !isLogin;
-    }
+    public Profile.seeProfile currentProfile;
 
 }

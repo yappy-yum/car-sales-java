@@ -8,12 +8,16 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 
+import Components.initializer;
 import Helper.Comp.createComp;
 import Helper.login.annotateButton;
 import Helper.login.loginComp;
 import Helper.login.loginFill;
 
 public class JobReadyComp {
+
+    initializer i;
+    public JobReadyComp(initializer i) { this.i = i; }
     
     /*//////////////////////////////////////////////////////////////
                                  header

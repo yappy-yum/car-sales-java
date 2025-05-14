@@ -1,7 +1,11 @@
 package Components;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -22,15 +26,18 @@ public class SwitchThemeComp {
                           store all components
     //////////////////////////////////////////////////////////////*/    
 
-    ArrayList<JTextArea> texts = new ArrayList<>();
+    public ArrayList<JTextArea> texts = new ArrayList<>();
 
-    ArrayList<JButton> TButtons = new ArrayList<>();
-    ArrayList<JButton> IButtons = new ArrayList<>();
+    public ArrayList<JButton> TButtons = new ArrayList<>();
+    public ArrayList<JButton> IButtons = new ArrayList<>();
 
-    ArrayList<JLabel> TLabels = new ArrayList<>();
-    ArrayList<JLabel> ILabels = new ArrayList<>();
+    public ArrayList<JLabel> TLabels = new ArrayList<>();
+    public ArrayList<JLabel> ILabels = new ArrayList<>();
 
-    ArrayList<JPanel> JPanels = new ArrayList<>();
+    public ArrayList<JPanel> JPanels = new ArrayList<>();
+
+    // dummy storage for others components
+    public ArrayList<Object> dummy = new ArrayList<>();
 
     /*//////////////////////////////////////////////////////////////
                               constructor
@@ -53,6 +60,10 @@ public class SwitchThemeComp {
 
         _switchJPanels();
     }  
+
+    /*//////////////////////////////////////////////////////////////
+                               JTextArea
+    //////////////////////////////////////////////////////////////*/    
     
     /**
      * 
@@ -80,6 +91,10 @@ public class SwitchThemeComp {
             }
         }        
     }
+
+    /*//////////////////////////////////////////////////////////////
+                              Text Button
+    //////////////////////////////////////////////////////////////*/    
 
     /**
      * 
@@ -124,6 +139,10 @@ public class SwitchThemeComp {
         }        
     }
 
+    /*//////////////////////////////////////////////////////////////
+                              Image Button
+    //////////////////////////////////////////////////////////////*/    
+
     /**
      * 
      * adjust {@link #IButtons}
@@ -136,11 +155,15 @@ public class SwitchThemeComp {
             // light & dark theme
             ImageIcon lightButton = imageSystem._scaleImage(imageSystem.LIGHT_BUTTON, 50, 50);
             ImageIcon darkButton = imageSystem._scaleImage(imageSystem.DARK_BUTTON, 50, 50);
-            if (button.getWidth() == 50 && button.getHeight() == 50) {
+            if (button.getX() < 1090) {
                 button.setIcon(isDarkTheme.isDarkTheme ? lightButton : darkButton);
             }
         }        
     }
+
+    /*//////////////////////////////////////////////////////////////
+                               Text Label
+    //////////////////////////////////////////////////////////////*/    
 
     /**
      * 
@@ -171,6 +194,10 @@ public class SwitchThemeComp {
         }        
     }
 
+    /*//////////////////////////////////////////////////////////////
+                              Image Label
+    //////////////////////////////////////////////////////////////*/    
+
     /**
      * 
      * adjust {@link #ILabels}
@@ -188,6 +215,10 @@ public class SwitchThemeComp {
             }
         }
     }
+
+    /*//////////////////////////////////////////////////////////////
+                                 JPanel
+    //////////////////////////////////////////////////////////////*/    
 
     /**
      * 
@@ -211,14 +242,43 @@ public class SwitchThemeComp {
     /*//////////////////////////////////////////////////////////////
                                clear data
     //////////////////////////////////////////////////////////////*/
-    
+
     public void clearEverything() {
+        Set<Container> touchedParents = new HashSet<>();
+
+        // Batch-remove JTextAreas
+        for (JTextArea text : texts) safelyRemoveAndTrack(text, touchedParents);
+        for (JButton btn : TButtons) safelyRemoveAndTrack(btn, touchedParents);
+        for (JButton btn : IButtons) safelyRemoveAndTrack(btn, touchedParents);
+        for (JLabel lbl : TLabels) safelyRemoveAndTrack(lbl, touchedParents);
+        for (JLabel lbl : ILabels) safelyRemoveAndTrack(lbl, touchedParents);
+        for (JPanel panel : JPanels) safelyRemoveAndTrack(panel, touchedParents);
+        for (Object dummyObj : dummy) safelyRemoveAndTrack(dummyObj, touchedParents);
+
+        // Repaint/revalidate only once per affected container
+        for (Container parent : touchedParents) {
+            parent.revalidate();
+            parent.repaint();
+        }
+
+        // Clear lists
         texts.clear();
         TButtons.clear();
         IButtons.clear();
         TLabels.clear();
         ILabels.clear();
         JPanels.clear();
+        dummy.clear();
     }
+
+    // Track parent for batch repaint/revalidate
+    private void safelyRemoveAndTrack(Object obj, Set<Container> touchedParents) {
+        if (obj instanceof Component comp && comp.getParent() != null) {
+            Container parent = comp.getParent();
+            parent.remove(comp);
+            touchedParents.add(parent);
+        }
+    }
+
 
 }

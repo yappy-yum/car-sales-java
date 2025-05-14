@@ -5,6 +5,7 @@ import javax.swing.JScrollPane;
 
 import Details.AboutUs;
 import Details.TaC;
+import Details.checkProfile;
 import LoginSystem.isLogin;
 import LoginSystem.storage;
 import LoginSystem.Argon2.Argon;
@@ -30,6 +31,7 @@ public class initializer {
     public FrontPage frontPage;
     public Customer Customer;
     public AboutUs AboutUs;
+    public checkProfile checkProfile;
     public TaC TaC;
     public Job Job;
 
