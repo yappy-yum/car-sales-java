@@ -107,8 +107,9 @@ public class componentAnim {
     }
 
     // ✅ Overload `start()` to allow calls without a callback
-    public void start() {
+    public componentAnim start() {
         start(() -> {}); // Calls the existing start() method with an empty callback
+        return this;
     }
 
     public void exit() {

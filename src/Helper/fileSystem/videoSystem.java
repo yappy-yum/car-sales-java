@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import javax.swing.JTextArea;
 
-import Helper.RoundedBorder.roundedBorder;
+import Helper.Config.roundedBorder;
 import javafx.application.Platform;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;

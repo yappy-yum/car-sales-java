@@ -1,4 +1,4 @@
-package Helper.RoundedBorder;
+package Helper.Config;
 
 import java.awt.Color;
 import java.awt.Component;

@@ -25,11 +25,17 @@ public class storage {
         Users.put(
             dotenv.get("OWNER_USERNAME"), 
             new Profile.userProfile(
-                Profile.Department.OWNER, true,
-                null, null, null, 0, 0,
+                Profile.Department.OWNER, 
+                true,
+                null, 
+                null, 
+                null, 
+                0, 
+                0,
                 dotenv.get("OWNER_USERNAME"), 
                 argon.HashIt(dotenv.get("OWNER_PASSWORD")), 
-                null, null, 
+                null, 
+                null, 
                 imageSystem._scaleImage(imageSystem.PROFILE, 50, 50)
             )
         );
@@ -309,7 +315,19 @@ public class storage {
             Symbols.find() &&
             Spaces.find();
     }
+
+    /*//////////////////////////////////////////////////////////////
+                                New Year
+    //////////////////////////////////////////////////////////////*/    
     
+    public void _incAge() {
+        for (Profile.userProfile profile : Users.values()) {
+            profile.age++;
+        }
+        for (Profile.CV profile : Job.values()) {
+            profile.age++;
+        }
+    }
 
 
 }

@@ -14,7 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
 import Helper.Comp.createComp;
-import Helper.RoundedBorder.roundedBorderFactory;
+import Helper.Config.roundedBorder;
 import Helper.fileSystem.imageSystem;
 
 public class loginFill {
@@ -44,7 +44,7 @@ public class loginFill {
                 X + 120, Y, 
                 300, 40, 
                 new Font("Arial", Font.BOLD, 18), 
-                roundedBorderFactory.create(
+                new roundedBorder(
                     10, 
                     Color.BLACK,
                     null
@@ -84,7 +84,7 @@ public class loginFill {
                 X + 190, Y, 
                 230, 40, 
                 new Font("Arial", Font.BOLD, 18), 
-                roundedBorderFactory.create(
+                new roundedBorder(
                     10, 
                     Color.BLACK,
                     null
@@ -130,7 +130,7 @@ public class loginFill {
                 300, 40, 
                 '*', Color.BLACK, 
                 new Font(null, Font.BOLD, 15), 
-                roundedBorderFactory.create(
+                new roundedBorder(
                     10, 
                     Color.BLACK, 
                     null
@@ -194,7 +194,7 @@ public class loginFill {
                 230, 40, 
                 '*', Color.BLACK, 
                 new Font(null, Font.BOLD, 15), 
-                roundedBorderFactory.create(
+                new roundedBorder(
                     10, 
                     Color.BLACK, 
                     null
@@ -284,7 +284,7 @@ public class loginFill {
                 X + 290, Y, 
                 155, 40, 
                 new Font("Arial", Font.BOLD, 18), 
-                roundedBorderFactory.create(
+                new roundedBorder(
                     10, 
                     Color.BLACK,
                     null

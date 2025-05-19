@@ -17,7 +17,7 @@ import Components.Window;
 import Components.initializer;
 import Helper.blur;
 import Helper.Animation.componentAnim;
-import Helper.RoundedBorder.roundedBorder;
+import Helper.Config.roundedBorder;
 import Helper.fileSystem.imageSystem;
 import Helper.login.Profile;
 import Helper.login.loginComp;
@@ -125,7 +125,7 @@ public class Customer extends JPanel {
                 blur.removeBlur();
                 remove(half);
                 readyComp = null;
-                SwingUtilities.invokeLater(() -> { window._reloadEverything(); });
+                SwingUtilities.invokeLater(() -> { window._loadFrontPage(); });
             }
         );
     }   
@@ -582,14 +582,14 @@ public class Customer extends JPanel {
 
         i.frame.getContentPane().add(message);
 
-        componentAnim anim = new componentAnim(
-            message, 
-            350, 150, 
-            350, 250, 
-            i.scrollPane
+        i.compAnimStorage.addAnim(
+            new componentAnim(
+                message, 
+                350, 150, 
+                350, 250, 
+                i.scrollPane
+            ).start()
         );
-        anim.start();
-        i.compAnimStorage.addAnim(anim);
     }
 
     void _setLogin() {

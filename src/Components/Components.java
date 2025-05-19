@@ -2,36 +2,30 @@ package Components;
 
 import Helper.Animation.videoAnim;
 import Helper.Animation.componentAnim;
-import Helper.Comp.createComp;
 import Helper.Comp.createJFX;
 import Helper.Comp.createScroll;
+import Helper.Comp.helpStoreComp;
 import Helper.fileSystem.videoSystem;
+import Helper.login.Profile;
 import LoginSystem.isLogin;
 import LoginSystem.LoginPage.Customer.Customer;
 import frontPage.FaQConfig;
 import frontPage.isDarkTheme;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.Collections;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
 
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -62,7 +56,7 @@ public class Components extends JPanel {
         this.window = w;
 
         setLayout(null);
-        setPreferredSize(new Dimension(1280, 5700));
+        Switch.dummy.add(this);
 
     }
 
@@ -107,230 +101,6 @@ public class Components extends JPanel {
         G2D.setPaint(gradient);
         G2D.fillRect(0, 0, getWidth(), getHeight());
     }       
-
-    /*//////////////////////////////////////////////////////////////
-                             add JTextArea
-    //////////////////////////////////////////////////////////////*/    
-    
-    /**
-     * adding texts into JTextArea data type, usually long text
-     * 
-     * @param _text texts to be added into JTextArea
-     * @param startX X coordinate of animation start from
-     * @param startY Y coordinate of animation start from
-     * @param targetX X coordinate of animation to
-     * @param targetY Y coordinate of animation to
-     * @param width the length width of the JTextArea
-     * @param height the length height of the JTextArea
-     * @param font the type font to be used for the text
-     * @param border JTextArea box border
-     * @param textColor text color
-     * 
-     */
-    public void addJTextArea(
-        String _text, 
-        int startX, int startY,
-        int targetX, int targetY,
-        int width, int height,
-        Font font, Border border,
-        Color textColor
-    ) {
-        JTextArea text = createComp.createJTextArea(
-            _text, 
-            startX, startY, 
-            width, height, 
-            font, border, 
-            textColor
-        );
-        
-        Switch.texts.add(text);
-        add(text);
-        
-        i.compAnimStorage.addAnim(
-            new componentAnim(
-                text, 
-                startX, startY, 
-                targetX, targetY, 
-                scrollPane
-            )
-        );
-    }
-
-    /*//////////////////////////////////////////////////////////////
-                              add JButton
-    //////////////////////////////////////////////////////////////*/
-     
-    /**
-     * 
-     * adding texts into JButton data type, usually clickable
-     * 
-     * @param _text texts to be added into JButton
-     * @param startX X coordinate of animation start from
-     * @param startY Y coordinate of animation start from
-     * @param targetX X coordinate of animation to
-     * @param targetY Y coordinate of animation to
-     * @param width the length width of the JButton
-     * @param height the length height of the JButton
-     * @param border the border of the JButton
-     * @param textColor text color
-     * @return a JButton, usually when there'a an additional action required
-     * `
-     */
-    public JButton addJButton(
-        String _text, 
-        int startX, int startY,
-        int targetX, int targetY,
-        int width, int height,
-        Border border, 
-        Color textColor, Font font
-    ) {
-        JButton button = createComp.createJButton(
-            _text, 
-            startX, startY, 
-            width, height, 
-            border, textColor, font
-        );
-
-        Switch.TButtons.add(button);
-        add(button);
-
-        i.compAnimStorage.addAnim(
-            new componentAnim(
-                button, 
-                startX, startY, 
-                targetX, targetY, 
-                scrollPane
-            )
-        );
-
-        return button; 
-    }   
-    
-    /**
-     * 
-     * adding image/icon into JButton, usually clickable
-     * 
-     * @param icon image/icon to be added into JButton
-     * @param startX X coordinate of animation start from
-     * @param startY Y coordinate of animation start from
-     * @param targetX X coordinate of animation to
-     * @param targetY Y coordinate of animation to
-     * @param width the length width of the JButton
-     * @param height the length height of the JButton
-     * @return a JButton, usually when there's an additional action required
-     * 
-     */
-    public JButton addJButton(
-        ImageIcon icon,
-        int startX, int startY,
-        int targetX, int targetY,
-        int width, int height
-    ) {
-        JButton button = createComp.createJButton(
-            icon, 
-            startX, startY, 
-            width, height
-        );
-        
-        Switch.IButtons.add(button);
-        add(button);
-        
-        i.compAnimStorage.addAnim(
-            new componentAnim(
-                button, 
-                startX, startY, 
-                targetX, targetY, 
-                scrollPane
-            )
-        );
-        
-        return button;
-    }
-
-    /*//////////////////////////////////////////////////////////////
-                               add JLabel
-    //////////////////////////////////////////////////////////////*/
-     
-    /**
-     * 
-     * adding texts into JLabel, usually short text.
-     * 
-     * @param _text texts to be added into JLabel
-     * @param startX X coordinate of animation start from
-     * @param startY Y coordinate of animation start from
-     * @param targetX X coordinate of animation to
-     * @param targetY Y coordinate of animation to
-     * @param width the length width of the JLabel
-     * @param height the length height of the JLabel
-     * @param font the type font to be used for the text
-     * @param darkColor text color when light theme
-     * @param lightColor text color when dark theme
-     * 
-     */
-    public void addJLabel(
-        String _text,
-        int startX, int startY,
-        int targetX, int targetY,
-        int width, int height,
-        Font font, Color textColor
-    ) {        
-        JLabel label = createComp.createJLabel(
-            _text, 
-            startX, startY, 
-            width, height, 
-            font, textColor
-        );
-        
-        Switch.TLabels.add(label);
-        add(label);
-
-        i.compAnimStorage.addAnim(
-            new componentAnim(
-                label, 
-                startX, startY, 
-                targetX, targetY, 
-                scrollPane
-            )
-        );
-    }
-    
-    /**
-     * 
-     * adding image/icon into JLabel, normal image/icon
-     * 
-     * @param icon image/icon to be added into JLabel
-     * @param startX X coordinate of animation start from
-     * @param startY Y coordinate of animation start from
-     * @param targetX X coordinate of animation to
-     * @param targetY Y coordinate of animation to
-     * @param width the length width of the JLabel
-     * @param height the length height of the JLabel
-     * 
-     */
-    public void addJLabel(
-        ImageIcon icon,
-        int startX, int startY,
-        int targetX, int targetY,
-        int width, int height
-    ) {
-        JLabel label = createComp.createJLabel(
-            icon, 
-            startX, startY, 
-            width, height
-        );
-        
-        Switch.ILabels.add(label);
-        add(label);
-
-        i.compAnimStorage.addAnim(
-            new componentAnim(
-                label, 
-                startX, startY, 
-                targetX, targetY, 
-                scrollPane
-            )
-        );
-    }
 
     /*//////////////////////////////////////////////////////////////
                             add short wejeo
@@ -447,55 +217,22 @@ public class Components extends JPanel {
     public void initializeProfile() {
         switch (isLogin.isLogin ? 1 : 0) {
             case 0: 
-                _startDropDown(
+                helpStoreComp._startDropDown(
+                    i,
                     () -> i.Customer = new Customer(i, window),
                     () -> i.Customer,
                     1000, 500
                 ); 
                 break;
         
-            case 1: System.out.println("viewing profile"); break;
+            case 1: 
+                if (isLogin.currentProfile.department == Profile.Department.CUSTOMER) {
+                    System.out.println("Customer buys items");
+                }
+                else if (isLogin.currentProfile.isVerified) {
+                    window._loadSecondPage();
+                }
         }
-    }
-
-    public void _startDropDown(
-        Runnable initializer, Supplier<JComponent> componentGetter,
-        int width, int height
-    ) {        
-        initializer.run();
-
-        JComponent target = componentGetter.get();
-
-        int X = (1280 - 1000) / 2; 
-        int Y = (720 - 500) / 2;
-
-        target.setBounds(X, Y, width, height);
-        target.setVisible(true);
-
-        frame.getContentPane().add(target);
-
-        componentAnim anim = new componentAnim(
-            target, 
-            X, Y - 100, 
-            X, Y, 
-            scrollPane
-        );
-        anim.start();
-        i.compAnimStorage.addAnim(anim);
-    }
-
-
-    
-    
-    /*//////////////////////////////////////////////////////////////
-                           switch color theme
-    //////////////////////////////////////////////////////////////*/
-     
-    public void switchTheme() {
-        repaint();
-        revalidate();
-
-        Switch.switchTheme();
-    }  
+    }    
 
 }

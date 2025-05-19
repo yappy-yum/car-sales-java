@@ -13,8 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import Helper.RoundedBorder.roundedBorder;
-import Helper.RoundedBorder.roundedBorderFactory;
+import Helper.Config.roundedBorder;
 import Helper.fileSystem.imageSystem;
 import frontPage.isDarkTheme;
 
@@ -81,7 +80,7 @@ public class SwitchThemeComp {
                 text.setForeground(isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE);
                 if (text.getBorder() != null) {
                     text.setBorder(
-                        roundedBorderFactory.create(
+                        new roundedBorder(
                         20,    
                         isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE,
                         imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)
@@ -111,7 +110,7 @@ public class SwitchThemeComp {
                 );
                 if (button.getBorder() != null) {
                     button.setBorder(
-                        roundedBorderFactory.create(
+                        new roundedBorder(
                             40,    
                             (
                                 (isDarkTheme.isDarkTheme) ? 

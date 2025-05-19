@@ -2,10 +2,13 @@ package Components;
 import frontPage.FrontPage;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import Helper.Comp.PanelHelper;
 import Helper.Comp.createScroll;
 import Helper.fileSystem.imageSystem;
+import SecondPage.UI;
 import StoreAnimation.compAnimStorage;
 import StoreAnimation.videoAnimStorage;
 
@@ -28,7 +31,7 @@ public class Window {
         
         _initializeWindow();
         _initializeCursor();
-        _init();
+        _initFrontPage();
         
         i.frame.setVisible(true);  
         i.frontPage = new FrontPage(i, this);           
@@ -94,14 +97,12 @@ public class Window {
      * @param scrollPane a scroll bar component to be applied hardware control to
      * 
      */
-    void _initializeScrollControl(Components component) {
+    void _initializeScrollControl(JPanel component) {
         i.scrollPane = new JScrollPane(component);
         i.scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         createScroll.keyboardScroll(i.scrollPane);
         createScroll.mouseScroll(i.scrollPane);
-        
-        component.addScroll(i.scrollPane);
     }    
 
     /*//////////////////////////////////////////////////////////////
@@ -112,22 +113,11 @@ public class Window {
      * reload all components, especially when user clikc close button
      * 
      */
-    public void _reloadEverything() {              
-        i.frame.getContentPane().removeAll();
-        if (i.switchThemeComp != null) i.switchThemeComp.clearEverything();
-        if (i.checkProfile != null) i.frame.remove(i.checkProfile);
-        if (i.scrollPane != null) i.frame.remove(i.scrollPane);
-        if (i.component != null) i.frame.remove(i.component);
-        if (i.Customer != null) i.frame.remove(i.Customer);
-        if (i.AboutUs != null) i.frame.remove(i.AboutUs);
-        if (i.TaC != null) i.frame.remove(i.TaC);
-        if (i.Job != null) i.frame.remove(i.Job);
-        if (i.compAnimStorage != null) i.compAnimStorage.disposeAnim();
-        if (i.videoAnimStorage != null) i.videoAnimStorage.disposeAnim();
-        if (i.storeVid != null) new Thread(() -> i.storeVid.clearAll()).start(); // may slower during clearance, therefore push it to background
+    public void _loadFrontPage() {              
+        _throw();
+        _initFrontPage();
 
-        _init();
-
+        // @audit
         // not needed since the JVM actually knows and collect all unused objects
         // and this will actually makes the program lagger too
         // System.gc();
@@ -136,11 +126,52 @@ public class Window {
         i.frontPage = new FrontPage(i, this); 
     }
 
+    public void _loadSecondPage() {
+        _throw();
+        _initSecondPage();
+        
+        i.frame.setVisible(true);
+    }
+
     /*//////////////////////////////////////////////////////////////
                              helper method
     //////////////////////////////////////////////////////////////*/    
 
-    void _init() {
+    void _initFrontPage() {
+        _nullify();
+
+        i.storeVid = new storeVid();
+        i.compAnimStorage = new compAnimStorage();
+        i.videoAnimStorage = new videoAnimStorage();
+        i.switchThemeComp = new SwitchThemeComp(i);
+        i.component = new Components(i, this);
+    
+        _initializeScrollControl(i.component);
+        i.component.addScroll(i.scrollPane);
+
+        i.frame.getContentPane().removeAll();
+        i.frame.getContentPane().setLayout(new BorderLayout());
+        i.frame.getContentPane().add(i.scrollPane, BorderLayout.CENTER);
+    }
+
+    void _initSecondPage() {
+        _nullify();
+
+        i.switchThemeComp = new SwitchThemeComp(i);
+        i.compAnimStorage = new compAnimStorage();
+        i.UI = new UI(i, this);
+
+        _initializeScrollControl(i.UI);
+        i.UI._setScroll(i.scrollPane);
+        PanelHelper.resizeHeightToFit(i.UI);
+
+        i.frame.getContentPane().removeAll();
+        i.frame.getContentPane().setLayout(new BorderLayout());
+        i.frame.getContentPane().add(i.scrollPane, BorderLayout.CENTER);
+        
+    }
+
+    void _nullify() {
         i.scrollPane = null;
         i.component = null;
         i.switchThemeComp = null;
@@ -153,18 +184,28 @@ public class Window {
         i.videoAnimStorage = null;
         i.storeVid = null;
         i.checkProfile = null;
+        i.UI = null;
+        i.CustomerDB = null;
+        i.SalesmanDB = null;
+        i.SalesmanDB = null;
+        i.ManagerDB = null;
+        i.InventoryDB = null;
+    }
 
-        i.storeVid = new storeVid();
-        i.compAnimStorage = new compAnimStorage();
-        i.videoAnimStorage = new videoAnimStorage();
-        i.switchThemeComp = new SwitchThemeComp(i);
-        i.component = new Components(i, this);
-    
-        _initializeScrollControl(i.component);
-
+    void _throw() {
         i.frame.getContentPane().removeAll();
-        i.frame.getContentPane().setLayout(new BorderLayout());
-        i.frame.getContentPane().add(i.scrollPane, BorderLayout.CENTER);
+        if (i.switchThemeComp != null) i.switchThemeComp.clearEverything();
+        if (i.checkProfile != null) i.frame.remove(i.checkProfile);
+        if (i.scrollPane != null) i.frame.remove(i.scrollPane);
+        if (i.UI != null) i.frame.remove(i.UI);
+        if (i.component != null) i.frame.remove(i.component);
+        if (i.Customer != null) i.frame.remove(i.Customer);
+        if (i.AboutUs != null) i.frame.remove(i.AboutUs);
+        if (i.TaC != null) i.frame.remove(i.TaC);
+        if (i.Job != null) i.frame.remove(i.Job);
+        if (i.compAnimStorage != null) i.compAnimStorage.disposeAnim();
+        if (i.videoAnimStorage != null) i.videoAnimStorage.disposeAnim();
+        if (i.storeVid != null) new Thread(() -> i.storeVid.clearAll()).start(); // @audit may slower during clearance, therefore push it to background
     }
 
 }

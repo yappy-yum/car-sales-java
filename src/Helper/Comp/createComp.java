@@ -3,6 +3,9 @@ package Helper.Comp;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.function.Consumer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -10,15 +13,22 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.JToggleButton;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 
-import Helper.RoundedBorder.roundedBorder;
+import Helper.Config.roundedBorder;
+import Helper.Config.tableRenderConfig;
+import Helper.fileSystem.imageSystem;
 
 public class createComp {
 
@@ -186,6 +196,7 @@ public class createComp {
         button.setContentAreaFilled(false);
         button.setOpaque(false);
         button.setBorder(null);
+        button.setBackground(null);
 
         return button;
     }
@@ -330,5 +341,105 @@ public class createComp {
             return true;
         }
     }    
+
+    /*//////////////////////////////////////////////////////////////
+                                 JTable
+    //////////////////////////////////////////////////////////////*/
+    
+    public static class createJTable {
+
+        public JTable table;
+        public DefaultTableModel tableModel;
+
+        public JLabel logo;
+        public JButton text;
+
+        public createJTable(
+            String[] columnTitles, 
+            int X, int Y,
+            int fixedWidth, 
+            Color GridColor, Color textColor, 
+            Color titleFillColor, Color cellFillColor,
+            Font font, 
+            Consumer<String> profile,
+            ImageIcon logo, String text
+        ) {
+            // text and logo
+            if (logo != null && text != null) {
+                System.out.println("executed");
+                this.logo = createJLabel(logo, X, Y - 170, 100, 300);
+                this.text = createJButton(text, X + 100, Y - 60, 170, 50, new roundedBorder(10, Color.BLACK, imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)), textColor, font);
+            }
+
+            tableModel = new DefaultTableModel(columnTitles, 0);
+
+            // basic JTable config
+            table = new JTable(tableModel);
+            table.setFillsViewportHeight(true);
+            table.setOpaque(false);
+            table.setForeground(textColor);
+            table.setGridColor(GridColor);
+            table.setFont(font);
+            table.setEnabled(false);
+            table.setRowHeight(30);
+
+            
+            // Force header height to match row height (e.g. 30)
+            JTableHeader header = new JTableHeader(table.getColumnModel()) {
+                @Override
+                public Dimension getPreferredSize() {
+                    return new Dimension(fixedWidth, 30);
+                }
+            };
+            table.setTableHeader(header);
+
+            header.setOpaque(false);
+            header.setBackground(titleFillColor);
+            header.setEnabled(false);
+            header.setSize(fixedWidth, header.getPreferredSize().height);
+            header.setLocation(X, Y);
+            header.setFont(font);   
+            header.setPreferredSize(new Dimension(fixedWidth, 30));
+
+            table.setLocation(X, Y + header.getHeight());
+
+            // For height, use preferred height based on rows
+            table.setSize(fixedWidth, table.getPreferredSize().height);
+
+            // Center header text
+            DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) header.getDefaultRenderer();
+            headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+            // Data cell background
+            table.setDefaultRenderer(
+                Object.class, 
+                tableRenderConfig.createCenterAlignedRenderer(textColor, cellFillColor)
+            );
+
+            // check profiles
+            table.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent i) { 
+                    int row = table.rowAtPoint(i.getPoint());
+
+                    if (row >= 0) {
+                        Object value = table.getValueAt(row, 0);
+                        profile.accept(value.toString());
+                    }
+                }
+            });
+
+
+        }
+
+        public void addRow(Object[] rowData) {
+            tableModel.addRow(rowData);
+            int fixedWidth = table.getWidth();
+            int newHeight = table.getPreferredSize().height;
+            table.setSize(fixedWidth, newHeight);
+        }
+    }
+
+
 
 }

@@ -4,7 +4,9 @@ import Components.initializer;
 import Details.AboutUs;
 import Details.TaC;
 import Details.checkProfile;
-import Helper.RoundedBorder.roundedBorderFactory;
+import Helper.Comp.PanelHelper;
+import Helper.Comp.helpStoreComp;
+import Helper.Config.roundedBorder;
 import Helper.fileSystem.fontSystem;
 import Helper.fileSystem.imageSystem;
 import Helper.fileSystem.videoSystem;
@@ -136,6 +138,8 @@ public class FrontPage {
         frontTexts();
         FaQ();
         buttom();
+
+        _setPanelHeight();
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -147,7 +151,8 @@ public class FrontPage {
         int centerX = i.component.getWidth() / 2;
 
         // first sub-header
-        i.component.addJLabel(
+        helpStoreComp.addJLabel(
+            i, i.component,
             "the", 
             centerX - 40, 40, 
             centerX - 40, 30, 
@@ -159,7 +164,8 @@ public class FrontPage {
         // big header
         Color DARK_GREEN = new Color(13, 15, 14);
         Color LIGHT_GREEN = new Color(59, 245, 99);
-        i.component.addJLabel(
+        helpStoreComp.addJLabel(
+            i, i.component,
             "ONLY PLACE",
             centerX - 280, 100,
             centerX - 280, 80,
@@ -169,7 +175,8 @@ public class FrontPage {
         );
 
         // a highlight for big-header
-        i.component.addJLabel(
+        helpStoreComp.addJLabel(
+            i, i.component,
             imageSystem._reduceImageTransparency(
                 imageSystem._scaleImage(
                     i.isDarkTheme.isDarkTheme ? YELLOW_HIGHLIGHT : GREY_HIGHLIGHT, 
@@ -183,7 +190,8 @@ public class FrontPage {
         );        
 
         // second sub-header
-        i.component.addJLabel(
+        helpStoreComp.addJLabel(
+            i, i.component,
             "car lovers will ever need",
             centerX - 200, 290,
             centerX - 200, 200,
@@ -221,7 +229,8 @@ public class FrontPage {
     void topLeft() {
 
         // company logo
-        i.component.addJLabel(
+        helpStoreComp.addJLabel(
+            i, i.component,
             imageSystem._scaleImage(
                 COMPANY_LOGO, 
                 120, 120
@@ -232,7 +241,8 @@ public class FrontPage {
         );
 
         // query statement
-        i.component.addJLabel(
+        helpStoreComp.addJLabel(
+            i, i.component,
             "Visit our showroom at:",
             50, 120,
             50, 90,
@@ -242,7 +252,8 @@ public class FrontPage {
         );
 
         // address
-        i.component.addJTextArea(
+        helpStoreComp.addJTextArea(
+            i, i.component,
             """
             Lot 45-2, Jalan Bukit Pantai,
             59100 Bangsar,
@@ -252,7 +263,7 @@ public class FrontPage {
             15, 130, 
             230, 100, 
             new Font("Calibri", Font.BOLD, 15), 
-            roundedBorderFactory.create(
+            new roundedBorder(
                 20, 
                 i.isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE, 
                 imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)
@@ -414,7 +425,8 @@ public class FrontPage {
 
     void FaQ() {
 
-        i.component.addJLabel(
+        helpStoreComp.addJLabel(
+            i, i.component,
             "FAQ", 
             80, 4970, 
             80, 4930, 
@@ -482,7 +494,8 @@ public class FrontPage {
     //////////////////////////////////////////////////////////////*/    
     
     void _helpAddText(String _text, int targetY, int height) {
-        i.component.addJTextArea(
+        helpStoreComp.addJTextArea(
+            i, i.component,
             _text, 
             30, targetY + 90,
             30, targetY, 
@@ -505,7 +518,8 @@ public class FrontPage {
         logo = imageSystem._scaleImage(logo, logoWidth, logoHeight);
         
         // add logo
-        i.component.addJLabel(
+        helpStoreComp.addJLabel(
+            i, i.component,
             logo, 
             40, logoTargetY + 90, 
             40, logoTargetY, 
@@ -529,12 +543,13 @@ public class FrontPage {
     //////////////////////////////////////////////////////////////*/
 
     void _helpAddLoginIcon(String loginText, int targetX, int targetY) {
-        JButton loginButton = i.component.addJButton(
+        JButton loginButton = helpStoreComp.addJButton(
+            i, i.component,
             loginText, 
             targetX, targetY + 90, 
             targetX, targetY, 
             loginText.length() > 20 ? 270 : 180, 50, 
-            roundedBorderFactory.create(
+            new roundedBorder(
                 40, 
                 (
                     (i.isDarkTheme.isDarkTheme) ?
@@ -554,7 +569,8 @@ public class FrontPage {
     }
 
     void _helpTextButton(String _text, int targetX, int targetY, Runnable initializer, Supplier<JComponent> componentGetter) {
-        i.component.addJButton(
+        helpStoreComp.addJButton(
+            i, i.component,
             _text, 
             targetX, targetY + 50, 
             targetX, targetY, 
@@ -563,7 +579,8 @@ public class FrontPage {
             new Font("SansSerif", Font.BOLD, 20) 
         ).addActionListener( 
             _ -> { 
-                i.component._startDropDown(
+                helpStoreComp._startDropDown(
+                    i,
                     initializer,
                     componentGetter,
                     1000, 500
@@ -573,7 +590,8 @@ public class FrontPage {
     }
 
     void _setLoginPfp() {
-        i.component.addJButton(
+        helpStoreComp.addJButton(
+            i, i.component,
             imageSystem._scaleImage(
                 i.isLogin.currentProfile.pfp, 
                 50, 50
@@ -583,10 +601,12 @@ public class FrontPage {
             50, 50
         ).addActionListener( 
             _ -> {
-                i.component._startDropDown(
+                helpStoreComp._startDropDown(
+                    i,
                     () -> { i.checkProfile = new checkProfile(i, window); },
                     () -> i.checkProfile, 
-                    1000, 500);
+                    1000, 500
+                );
             }
         );
     } 
@@ -596,7 +616,8 @@ public class FrontPage {
     //////////////////////////////////////////////////////////////*/       
     
     void _helpAddThemeIcon(int targetX, int targetY) {
-        i.component.addJButton(
+        helpStoreComp.addJButton(
+            i, i.component,
             imageSystem._scaleImage(
                 i.isDarkTheme.isDarkTheme ? LIGHT_BUTTON : DARK_BUTTON, 
                 50, 50
@@ -604,14 +625,12 @@ public class FrontPage {
             targetX, targetY + 90, 
             targetX, targetY, 
             50, 50
-        ).addActionListener( _ -> {
-            i.isDarkTheme.switchTheme();
-            i.component.switchTheme();
-        });
+        ).addActionListener( _ -> { i.isDarkTheme.switchTheme(i.component, i.switchThemeComp); });
     }
 
     void _helpAddVerifyStatusFrontPage(boolean isVerified) {
-        i.component.addJLabel(
+        helpStoreComp.addJLabel(
+            i, i.component,
             isVerified ? "Verified" : "Unverified", 
             1140, 100,
             1140, 70, 
@@ -622,5 +641,7 @@ public class FrontPage {
     }
 
     
+    void _setPanelHeight() { PanelHelper.resizeHeightToFit(i.component); }
+
 
 }

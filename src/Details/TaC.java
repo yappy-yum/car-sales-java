@@ -14,7 +14,7 @@ import Components.Window;
 import Components.initializer;
 import Helper.blur;
 import Helper.Comp.createComp;
-import Helper.RoundedBorder.roundedBorder;
+import Helper.Config.roundedBorder;
 import Helper.fileSystem.imageSystem;
 
 public class TaC extends JPanel {
@@ -109,11 +109,7 @@ public class TaC extends JPanel {
         closeButton.addActionListener(
             _ -> {
                 blur.removeBlur();
-                SwingUtilities.invokeLater(
-                    () -> {
-                        window._reloadEverything();
-                    }
-                );
+                SwingUtilities.invokeLater(() -> { window._loadFrontPage(); } );
             }
         );
         add(closeButton);

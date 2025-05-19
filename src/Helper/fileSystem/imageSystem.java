@@ -61,6 +61,12 @@ public class imageSystem {
     public static final ImageIcon MAYBACH = new ImageIcon(FILE_PATH.concat("car_logo/Maybach.png"));
     public static final ImageIcon MERCEDES = new ImageIcon(FILE_PATH.concat("car_logo/Mercedes.png"));
     public static final ImageIcon ROLLS_ROYCE = new ImageIcon(FILE_PATH.concat("car_logo/RollsRoyce.png")); 
+
+    /*//////////////////////////////////////////////////////////////
+                               Car Images
+    //////////////////////////////////////////////////////////////*/
+    
+    public static final ImageIcon ROLLS_ROYCE_PHANTOM = new ImageIcon(FILE_PATH.concat("cars/Rolls_Royce.jpg"));
     
     /*//////////////////////////////////////////////////////////////
                            mouse cursor icon
@@ -72,7 +78,19 @@ public class imageSystem {
                               profile icon
     //////////////////////////////////////////////////////////////*/
      
+    /**
+     * 
+     * used to represent users pfp icon if user has no pfp 
+     * 
+     */
     public static final ImageIcon PROFILE = new ImageIcon(FILE_PATH.concat("profile/profileIcon.png"));  
+
+    /**
+     * 
+     * used to represent users icon for search table data
+     * 
+     */
+    public static final ImageIcon SEARCH = new ImageIcon(FILE_PATH.concat("profile/search.png"));
     
     /*//////////////////////////////////////////////////////////////
                           password show & hide

@@ -14,7 +14,7 @@ import Components.Window;
 import Components.initializer;
 import Helper.blur;
 import Helper.Comp.createComp;
-import Helper.RoundedBorder.roundedBorder;
+import Helper.Config.roundedBorder;
 import Helper.fileSystem.imageSystem;
 
 public class AboutUs extends JPanel {
@@ -122,7 +122,7 @@ public class AboutUs extends JPanel {
                 blur.removeBlur();
                 SwingUtilities.invokeLater(
                     () -> {
-                        window._reloadEverything();
+                        window._loadFrontPage();
                     }
                 );
             }

@@ -1,5 +1,9 @@
 package frontPage;
 
+import javax.swing.JPanel;
+
+import Components.SwitchThemeComp;
+
 /**
  * a global centralize class that determine the background theme
  * 
@@ -27,6 +31,13 @@ public class isDarkTheme {
      * <b>
      * 
      */
-    public void switchTheme() { isDarkTheme = !isDarkTheme; }
+    public void switchTheme(JPanel panel, SwitchThemeComp s) {
+        isDarkTheme = !isDarkTheme; 
+
+        panel.repaint();
+        panel.revalidate();
+
+        s.switchTheme();
+    }
 
 }
