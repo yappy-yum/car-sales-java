@@ -28,6 +28,7 @@ public class compAnimStorage {
             if (anim != null) {
                 anim.dispose();
             }
+            anim = null;
         }
         animations.clear();
     }

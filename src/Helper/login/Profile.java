@@ -136,4 +136,22 @@ public class Profile {
         
     }
 
+    /*//////////////////////////////////////////////////////////////
+                            Confidential ID
+    //////////////////////////////////////////////////////////////*/
+    
+    public static class confidential {
+
+        public String hashedFace, hashedID;
+        public byte[] encryptedFace, encryptedID;
+
+        public confidential(String hashedFace, String hashedID, byte[] encryptedFace, byte[] encryptedID) {
+            this.hashedFace = hashedFace;
+            this.hashedID = hashedID;
+            this.encryptedFace = encryptedFace;
+            this.encryptedID = encryptedID;
+        }
+
+    }
+
 }

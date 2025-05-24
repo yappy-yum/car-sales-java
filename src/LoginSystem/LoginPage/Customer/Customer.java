@@ -17,6 +17,7 @@ import Components.Window;
 import Components.initializer;
 import Helper.blur;
 import Helper.Animation.componentAnim;
+import Helper.Comp.PanelHelper;
 import Helper.Config.roundedBorder;
 import Helper.fileSystem.imageSystem;
 import Helper.login.Profile;
@@ -58,6 +59,7 @@ public class Customer extends JPanel {
         this.S = i.switchThemeComp;
 
         background();
+        S.dummy.add(this);
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -123,7 +125,8 @@ public class Customer extends JPanel {
         readyComp.close.addActionListener( 
             _ -> {
                 blur.removeBlur();
-                remove(half);
+                PanelHelper.clear(half);
+                PanelHelper.clear(this);
                 readyComp = null;
                 SwingUtilities.invokeLater(() -> { window._loadFrontPage(); });
             }
@@ -303,6 +306,7 @@ public class Customer extends JPanel {
         readyComp.loadingLabel[0].setVisible(true);
 
         new Thread(() -> {
+            if (user.pfp == null) user.pfp = imageSystem._scaleImage(user.pfp, 50, 50);
             storage.customerRegister(user);
 
             SwingUtilities.invokeLater(() -> {
@@ -441,7 +445,7 @@ public class Customer extends JPanel {
         add(readyComp.RegisterAge.label);
         add(readyComp.RegisterAge.textField);
         add(readyComp.FirstRegisterButton);
-
+ 
         // second page register
         add(readyComp.RegisterGender.gender[0]);
         add(readyComp.RegisterGender.gender[1]);

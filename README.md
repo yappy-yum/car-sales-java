@@ -2,8 +2,9 @@
 
 a simple car sales management system built using only Java language
 
-> **⚠️ Disclaimer:** <br>
-> This project is solely for demonstration purposes only. The code has not been properly audited or tested for production use. Use it at your own risk.
+> **⚠️ Disclaimer:**  
+> 1. This project is intended for **demonstration purposes only**. The code provided has not undergone thorough auditing or testing for production environments. **Use it at your own risk.**  
+> 2. The `files/sample` directory contains fictional content including user faces, documents, and CVs. All names, email addresses, phone numbers, institution names, etc are **entirely fictional** and are used solely for illustrative and educational purposes as part of this program.
 
 ## 🎯 Requirements
 
@@ -86,9 +87,65 @@ replace `<username>` and `<password>` with any username and password respectivel
 
 ## 🚨 Known Issue
 
-1. The program initialization may take longer time because three hashes need to be executed for the owner details during startup.
+<details>
+<summary>1. Slow Startup on Initialization</summary>
+
+- During program startup, three Argon2 data hashes are executed for the owner profile.
+- This may cause a slight delay during initialization — this is expected behavior and not a bug.
+
+</details>
+
+<details>
+<summary>2. Occasional Ignorable Exceptions</summary>
+
+- The following exceptions may appear **intermittently** under rare conditions, like during reloads, particularly rendering or background threading 
+- These can be **safely ignored** as they do not affect core functionality.
+
+```bash
+java.util.concurrent.RejectedExecutionException: Task com.sun.javafx.tk.quantum.PaintRenderJob@1af0d9dd[Not completed, task = java.util.concurrent.Executors$RunnableAdapter@12693f2a[Wrapped task = com.sun.javafx.tk.quantum.UploadingPainter@4fef1452]] rejected from com.sun.javafx.tk.quantum.QuantumRenderer@218458a4[Terminated, pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 1525]
+        at java.base/java.util.concurrent.ThreadPoolExecutor$AbortPolicy.rejectedExecution(ThreadPoolExecutor.java:2081)
+        at java.base/java.util.concurrent.ThreadPoolExecutor.reject(ThreadPoolExecutor.java:841)
+        at java.base/java.util.concurrent.ThreadPoolExecutor.execute(ThreadPoolExecutor.java:1376)
+        at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:123)
+        at javafx.graphics@24.0.1/com.sun.javafx.tk.quantum.QuantumRenderer.submitRenderJob(QuantumRenderer.java:210)
+        at javafx.graphics@24.0.1/com.sun.javafx.tk.quantum.QuantumToolkit.addRenderJob(QuantumToolkit.java:504)
+        at javafx.graphics@24.0.1/com.sun.javafx.tk.quantum.EmbeddedScene.repaint(EmbeddedScene.java:193)
+        at javafx.graphics@24.0.1/com.sun.javafx.tk.quantum.PaintCollector.renderAll(PaintCollector.java:442)
+        at javafx.graphics@24.0.1/com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:593)
+        at javafx.graphics@24.0.1/com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:572)
+        at javafx.graphics@24.0.1/com.sun.javafx.tk.quantum.QuantumToolkit.pulseFromQueue(QuantumToolkit.java:565)
+        at javafx.graphics@24.0.1/com.sun.javafx.tk.quantum.QuantumToolkit.lambda$runToolkit$6(QuantumToolkit.java:346)
+        at javafx.graphics@24.0.1/com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+        at javafx.graphics@24.0.1/com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+        at javafx.graphics@24.0.1/com.sun.glass.ui.win.WinApplication.lambda$runLoop$0(WinApplication.java:168)
+        at java.base/java.lang.Thread.run(Thread.java:1570)
+```
+
+```bash
+Exception in thread "JavaFX Application Thread" java.lang.NullPointerException: Cannot invoke "com.sun.javafx.tk.quantum.SceneState.update()" because "this.sceneState" is null
+        at javafx.graphics@24.0.1/com.sun.javafx.tk.quantum.GlassScene.updateSceneState(GlassScene.java:253)
+        at javafx.graphics@24.0.1/com.sun.javafx.tk.quantum.EmbeddedScene.lambda$setPixelScaleFactors$1(EmbeddedScene.java:158)
+        at javafx.graphics@24.0.1/com.sun.javafx.tk.quantum.QuantumToolkit.runWithRenderLock(QuantumToolkit.java:442)
+        at javafx.graphics@24.0.1/com.sun.javafx.tk.quantum.EmbeddedScene.lambda$setPixelScaleFactors$2(EmbeddedScene.java:157)
+        at javafx.graphics@24.0.1/com.sun.javafx.application.PlatformImpl.lambda$runLater$4(PlatformImpl.java:419)
+        at javafx.graphics@24.0.1/com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+        at javafx.graphics@24.0.1/com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+        at javafx.graphics@24.0.1/com.sun.glass.ui.win.WinApplication.lambda$runLoop$0(WinApplication.java:168)
+        at java.base/java.lang.Thread.run(Thread.java:1570)
+```
+
+```java
+Exception in thread "Thread-24041" java.lang.NullPointerException: Cannot invoke "Components.storeVid.clearAll()" because "this.i.storeVid" is null
+        at Components.Window.lambda$_throw$0(Window.java:212)
+        at java.base/java.lang.Thread.run(Thread.java:1570)
+```
+
+</details>
 
 ## 🔎 Scope
+
+<details>
+<summary>java `src` structure</summary>
 
 ```javascript
 src/
@@ -177,18 +234,18 @@ src/
 └── App.java
 ```
 
+</details>
+
 ## 🙏 Attribution
 
 1. External Libraries
 - [JavaFX](https://openjfx.io)
 - [Argon2](https://central.sonatype.com/artifact/de.mkammerer/argon2-jvm/2.8/overview), [jna used by Argon2](https://central.sonatype.com/artifact/net.java.dev.jna/jna/5.17.0/overview), [additional platform support jna](https://central.sonatype.com/artifact/net.java.dev.jna/jna-platform/5.17.0)
 - [dotenv-java](https://central.sonatype.com/artifact/io.github.cdimascio/dotenv-java/3.2.0/overview)
+- [junit](https://central.sonatype.com/artifact/org.junit.platform/junit-platform-console-standalone?smo=true)
 
 2. Custom Fonts
 - [Montserrat](https://fonts.google.com/specimen/Montserrat) by Julieta Ulanovsky, Sol Matas, Juan Pablo del Peral, Jacques Le Bailly
 - [Nordin Slab Rounded Drawn](https://www.fontspace.com/search?q=Nordin%20Slab%20Rounded%20Drawn%20by%20craftsupplyco) by craftsupplyco
 - [Rosetta](https://www.fontspace.com/new/fonts) by craftsupplyco
 - [Beautiful People](https://www.fontspace.com/search?q=Beautiful%20People%20by%20Billy%20Argel%20Fonts)
-
-> ❝ *Talk is cheap. Show me the code.*  
-> — Linus Torvalds

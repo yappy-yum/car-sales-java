@@ -5,23 +5,24 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 import Helper.fileSystem.imageSystem;
 import Helper.login.Profile;
 import LoginSystem.Argon2.Argon;
+import LoginSystem.SecureImage.ImageHandler;
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class storage {
 
     Argon.Hash argon = new Argon().new Hash();
+    Dotenv dotenv = Dotenv.load();
 
     /*//////////////////////////////////////////////////////////////
                               constructor
     //////////////////////////////////////////////////////////////*/
     
     public storage() {
-        Dotenv dotenv = Dotenv.load();
-
         Users.put(
             dotenv.get("OWNER_USERNAME"), 
             new Profile.userProfile(
@@ -39,6 +40,142 @@ public class storage {
                 imageSystem._scaleImage(imageSystem.PROFILE, 50, 50)
             )
         );
+
+        Users.put(
+            "Catherine", 
+            new Profile.userProfile(
+                Profile.Department.CUSTOMER, 
+                true,
+                "Catherine",
+                "Yap",
+                "Female", 
+                Integer.parseInt("0120987654"),
+                20, 
+                "Catherine",
+                "Catherine Password",
+                null, 
+                null, 
+                imageSystem._scaleImage(imageSystem.PROFILE, 50, 50)
+            )
+        );
+
+        Users.put(
+            "Caleb", 
+            new Profile.userProfile(
+                Profile.Department.CUSTOMER, 
+                false,
+                "Caleb",
+                "Tan",
+                "Male", 
+                Integer.parseInt("0125556754"),
+                20, 
+                "Caleb",
+                argon.HashIt("123"),
+                null, 
+                null, 
+                imageSystem._scaleImage(imageSystem.PROFILE, 50, 50)
+            )
+        );
+        _encryptImage(
+            "Caleb", 
+            imageSystem._scaleImage(imageSystem.CALEB_FACE, 200, 200), 
+            imageSystem._scaleImage(imageSystem.CALEB_DOCS, 200, 200)
+        );
+
+        Users.put(
+            "Camila", 
+            new Profile.userProfile(
+                Profile.Department.CUSTOMER, 
+                false,
+                "Camila",
+                "Tay",
+                "Female", 
+                Integer.parseInt("0125556754"),
+                20, 
+                "Camila",
+                "Camila Password",
+                null, 
+                null, 
+                imageSystem._scaleImage(imageSystem.PROFILE, 50, 50)
+            )
+        );
+        _encryptImage(
+            "Camila", 
+            imageSystem._scaleImage(imageSystem.CAMILA_FACE, 200, 200), 
+            imageSystem._scaleImage(imageSystem.CAMILA_DOCS, 200, 200)
+        );
+
+        Users.put(
+            "Bob", 
+            new Profile.userProfile(
+                Profile.Department.CUSTOMER, 
+                true,
+                "Bobby",
+                "Yeoh",
+                "Male", 
+                Integer.parseInt("0120387659"),
+                20, 
+                "Bob",
+                "Bob Password",
+                null, 
+                null, 
+                imageSystem._scaleImage(imageSystem.PROFILE, 50, 50)
+            )
+        );
+
+        Users.put(
+            "Jann", 
+            new Profile.userProfile(
+                Profile.Department.MANAGER, 
+                true,
+                "Jannist",
+                "Tan",
+                "Female", 
+                Integer.parseInt("0190683659"),
+                20, 
+                "Jann",
+                "Jann Password",
+                null, 
+                null, 
+                imageSystem._scaleImage(imageSystem.PROFILE, 50, 50)
+            )
+        );
+
+        Users.put(
+            "Alice", 
+            new Profile.userProfile(
+                Profile.Department.SALESMAN, 
+                true,
+                "Aliciest",
+                "Yeoh",
+                "Female", 
+                Integer.parseInt("0190673600"),
+                20, 
+                "Alice",
+                "Alice Password",
+                null, 
+                null, 
+                imageSystem._scaleImage(imageSystem.PROFILE, 50, 50)
+            )
+        );
+
+        Users.put(
+            "May", 
+            new Profile.userProfile(
+                Profile.Department.SALESMAN, 
+                true,
+                "Maylie",
+                "Yap",
+                "No Gender", 
+                Integer.parseInt("0190000600"),
+                20, 
+                "May",
+                "May Password",
+                null, 
+                null, 
+                imageSystem._scaleImage(imageSystem.PROFILE, 50, 50)
+            )
+        );
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -49,6 +186,16 @@ public class storage {
      * store all the users detail
      */
     public HashMap<String, Profile.userProfile> Users = new HashMap<String, Profile.userProfile>();
+
+    /**
+     * store all the confidential of the customer, such as docs id and face for verification
+     * 
+     * <p> <b>
+     * 
+     * will gets deleted when verification successfull
+     * 
+     */
+    public HashMap<String, Profile.confidential> CustomerVerification = new HashMap<String, Profile.confidential>();
 
     /**
      * store all the CV details for salesman and manager
@@ -153,19 +300,29 @@ public class storage {
         String favText, String favNum
     ) {
         return 
-            Users.values().stream().anyMatch(
-                profile ->
-                    profile.phoneNumber == phoneNumber &&
-                    argon.verify(favText, profile.favText) &&
-                    argon.verify(String.valueOf(favNum), profile.favNum)
-            );
+            Users
+                .values()
+                .stream()
+                .anyMatch(
+                    profile ->
+                        profile.phoneNumber == phoneNumber &&
+                        argon.verify(favText, profile.favText) &&
+                        argon.verify(String.valueOf(favNum), profile.favNum)
+                );
     }
 
     /*//////////////////////////////////////////////////////////////
                             verify customer
     //////////////////////////////////////////////////////////////*/
     
-    public void setVerified(String username) { Users.get(username).isVerified = true; }
+    public void setVerified(String username) { 
+        Users.get(username).isVerified = true; 
+        rejectVerification(username);
+    }
+
+    public void rejectVerification(String username) { 
+        CustomerVerification.remove(username); 
+    }
 
     /*//////////////////////////////////////////////////////////////
                              change details
@@ -213,19 +370,17 @@ public class storage {
     public void setApproval(String username, boolean approval) {
         Profile.CV job = Job.get(username);
         
-        if (approval) {    
-            Users.put(
-                username, 
-                new Profile.userProfile(
-                    job.department, true,
-                    job.firstName, job.lastName, job.gender, job.phoneNumber, job.age,
-                    username, job.password,
-                    job.favText, job.favNum, null
-                )
-            );
-        } else if (!approval) {
-            Users.remove(username);
-        }
+        if (approval) Users.put(
+                            username, 
+                            new Profile.userProfile(
+                                job.department, true,
+                                job.firstName, job.lastName, job.gender, job.phoneNumber, job.age,
+                                username, job.password,
+                                job.favText, job.favNum, 
+                                imageSystem._scaleImage(imageSystem.PROFILE, 50, 50)
+                            )
+                        );
+        Job.remove(username);
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -321,12 +476,100 @@ public class storage {
     //////////////////////////////////////////////////////////////*/    
     
     public void _incAge() {
-        for (Profile.userProfile profile : Users.values()) {
-            profile.age++;
+        for (Profile.userProfile profile : Users.values()) profile.age++;
+        for (Profile.CV profile : Job.values()) profile.age++;
+    }
+
+    /*//////////////////////////////////////////////////////////////
+                           Encrypt & Decrypt
+    //////////////////////////////////////////////////////////////*/    
+
+    public void _encryptImage(String username, ImageIcon Face, ImageIcon DocID) {
+
+        try {
+
+            Object[] hashedFace = ImageHandler.hashImage(Face, dotenv.get("DECRYPT_PASSWORD"));
+            Object[] hashedDocID = ImageHandler.hashImage(DocID, dotenv.get("DECRYPT_PASSWORD"));
+            CustomerVerification.put(
+                username, 
+                new Profile.confidential(
+                    (String) hashedFace[0], 
+                    (String) hashedDocID[0], 
+                    (byte[]) hashedFace[1], 
+                    (byte[]) hashedDocID[1]
+                )
+            );
+
+        } 
+        catch (Exception o) {
+
+            o.printStackTrace();
+            JOptionPane.showMessageDialog(
+                null, 
+                "Error encrypting image: " + o.getMessage()
+            );
+
         }
-        for (Profile.CV profile : Job.values()) {
-            profile.age++;
+
+    }
+
+    public ImageIcon _decryptFaceImage(String username, String password) {
+
+        try {
+            
+            Profile.confidential profile = CustomerVerification.get(username);
+
+            String hash = profile.hashedFace;
+            byte[] encrypted = profile.encryptedFace;
+
+            return ImageHandler.getImage(hash, password, encrypted);
+
         }
+        catch (Exception o) {
+
+            o.printStackTrace();
+            JOptionPane.showMessageDialog(
+                null, 
+                "Error decrypting face image: " + o.getMessage()
+            );
+            return null;
+
+        }
+
+    }
+
+    public ImageIcon _decryptDocsImage(String username, String password) {
+
+        try {
+            
+            Profile.confidential profile = CustomerVerification.get(username);
+
+            String hash = profile.hashedID;
+            byte[] encrypted = profile.encryptedID;
+
+            return ImageHandler.getImage(hash, password, encrypted);
+
+        }
+        catch (Exception o) {
+
+            o.printStackTrace();
+            JOptionPane.showMessageDialog(
+                null, 
+                "Error decrypting face image: " + o.getMessage()
+            );
+            return null;
+
+        }
+
+    }
+
+    /*//////////////////////////////////////////////////////////////
+                        Delete User Confidential
+    //////////////////////////////////////////////////////////////*/    
+
+    public void _deleteConfidential(boolean isApproved, String username) 
+    {
+        CustomerVerification.remove(username);
     }
 
 

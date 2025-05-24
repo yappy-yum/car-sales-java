@@ -12,6 +12,7 @@ import javax.swing.SwingUtilities;
 import Components.SwitchThemeComp;
 import Components.initializer;
 import Helper.blur;
+import Helper.Comp.PanelHelper;
 import Helper.Comp.createComp;
 import Helper.Config.roundedBorder;
 import Helper.fileSystem.imageSystem;
@@ -34,7 +35,13 @@ public class PromptMessage extends JPanel {
         _addMessage();
         _addX();
 
+        S.dummy.add(this);
+
     }
+
+    /*//////////////////////////////////////////////////////////////
+                               Background
+    //////////////////////////////////////////////////////////////*/    
 
     void _background() {
         setOpaque(false);
@@ -63,7 +70,7 @@ public class PromptMessage extends JPanel {
         closeButton.addActionListener(
             _ -> {
                 blur.removeBlur();
-                remove(this);
+                PanelHelper.clear(this);
                 SwingUtilities.invokeLater(() -> { 
                     try {
                         classToInteractWith

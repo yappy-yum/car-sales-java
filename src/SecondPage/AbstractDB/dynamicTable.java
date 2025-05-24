@@ -11,26 +11,35 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import Components.Window;
 import Components.initializer;
-import Helper.Comp.createComp;
 import Helper.Comp.createDynamicTable;
 import Helper.Comp.createComp.createJTable;
-import Helper.Config.SearchDynTable;
 import Helper.login.Profile;
 import Inventory.stockDetails;
 
+/**
+ * @deprecated
+ * 
+ * @author yappy-yum
+ * 
+ */
 public abstract class dynamicTable {
 
     initializer i;
-    JPanel panel;
+    public JPanel panel;
+    public Window w;
 
     public JLabel label;
     public JTextField searchBar;
     public JLabel searchIcon;
+    public int columnToFetchDataForProfileView;
+    public int intProfileSetUp;
 
     public List<createJTable> tables = new ArrayList<>();
     public List<TableRowSorter<DefaultTableModel>> sorters = new ArrayList<>();
@@ -46,12 +55,15 @@ public abstract class dynamicTable {
                               constructor
     //////////////////////////////////////////////////////////////*/
     
-    public dynamicTable(initializer i, JPanel panel, String title, Profile.Department department, String[] columnTitles) {
+    public dynamicTable(initializer i, Window w, JPanel panel, String title, Profile.Department department, String[] columnTitles, int columnToFetchDataForProfileView, int intProfileSetUp) {
         this.i = i;
+        this.w = w;
         this.panel = panel;
         this.title = title;
         this.department = department;
         this.columnTitles = columnTitles;
+        this.columnToFetchDataForProfileView = columnToFetchDataForProfileView;
+        this.intProfileSetUp = intProfileSetUp;
 
         _initTable();
         _config();
@@ -61,58 +73,48 @@ public abstract class dynamicTable {
                              create JTable
     //////////////////////////////////////////////////////////////*/
     
-    void _initTable() {
+    createDynamicTable.createMultiTable _initTable() {
         createDynamicTable.createMultiTable multiTable = new createDynamicTable.createMultiTable(
+            i, 
+            w, 
+            panel,
             i.stockInventory.carLogo, 
             20, 
-            390, 
+            200, 
             columnTitles, 
             1200, 
+            60,
             Color.CYAN, 
-            Color.WHITE, 
-            Color.PINK, 
+            Color.WHITE, Color.PINK, 
             new Color(0, 0, 0, 0), 
             new Font("Arial", Font.BOLD, 15), 
-            _ -> {}
+            columnToFetchDataForProfileView,
+            intProfileSetUp
         );
+
+        this.tables = multiTable.tables;
         this.logos = multiTable.logos;
         this.texts = multiTable.texts;
 
+        // Load data after tables are created
         _loadData(multiTable);
 
-        this.tables = multiTable.tables;
-        this.sorters = multiTable.sorters;
-        this.label = multiTable.labelForNullStock != null ? 
-                     multiTable.labelForNullStock : 
-                     createComp.createJLabel(
-                        title, 
-                        50, 200, 
-                        300, 100,
-                        new Font("Arial", Font.BOLD, 20),
-                        Color.WHITE
-                     );
-
-        SearchDynTable.createSearchBar searchBar = new SearchDynTable.createSearchBar(
-            multiTable, 
-            250, 230,
-            250, 43, 
-            Color.WHITE
-        );
-        this.searchBar = searchBar.searchField;
-        this.searchIcon = searchBar.searchIcon;
+        return multiTable;
     }
+
+    /*//////////////////////////////////////////////////////////////
+                               loads data
+    //////////////////////////////////////////////////////////////*/    
 
     void _loadData(createDynamicTable.createMultiTable multiTable) {
         int index = 0;
-
         for (Map.Entry<String, ImageIcon> entry : i.stockInventory.carLogo.entrySet()) {
             String logoName = entry.getKey();
 
             for (stockDetails.transactDetails car : i.stockInventory.carDetails) {
-
                 if (car.carDetails.logoName.equals(logoName)) {
                     
-                    multiTable.addRow(
+                    addRow(
                         index, 
                         new Object[] {
                             car.carDetails.carName,
@@ -124,12 +126,43 @@ public abstract class dynamicTable {
                     );
                     
                 }
-
             }
 
-            index ++ ;
+            index++;
         }
     }
+
+    /*//////////////////////////////////////////////////////////////
+                       reposition table location
+    //////////////////////////////////////////////////////////////*/    
+
+    public void repositionTables() {
+        int Y_OFFSET = 250; 
+        int ROW_HEIGHT = 30;
+        int HEADER_HEIGHT = 30;
+        int TABLE_GAP = 50;
+
+        for (int i = 0; i < tables.size(); i++) {
+            createJTable table = tables.get(i);
+            JTable jTable = table.table;
+            
+            int totalHeight = (jTable.getRowCount() * ROW_HEIGHT) + HEADER_HEIGHT;
+            
+            jTable.setSize(1200, totalHeight);
+            jTable.setLocation(20, Y_OFFSET);
+            
+            if (jTable.getTableHeader() != null) {
+                jTable.getTableHeader().setLocation(20, Y_OFFSET);
+                jTable.getTableHeader().setSize(1200, HEADER_HEIGHT);
+            }
+            
+            Y_OFFSET += totalHeight + TABLE_GAP;
+        }
+    }
+
+    /*//////////////////////////////////////////////////////////////
+                             add to JPanel
+    //////////////////////////////////////////////////////////////*/    
 
     void _config() {
         // panel
@@ -160,5 +193,18 @@ public abstract class dynamicTable {
         tables.forEach(t -> { if (t.table != null) t.table.setVisible(false); });
 
     }
-    
+
+    /*//////////////////////////////////////////////////////////////
+                              insert data
+    //////////////////////////////////////////////////////////////*/    
+
+    void addRow(int tableIndex, Object[] rowData) {
+        tables.get(tableIndex).addRow(rowData);
+        JTable table = tables.get(tableIndex).table;
+
+        int fixedWidth = table.getWidth();
+        int newHeight = table.getPreferredSize().height;
+        table.setSize(fixedWidth, newHeight);
+    }    
+
 }

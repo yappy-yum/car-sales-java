@@ -1,14 +1,15 @@
 package Helper.Comp;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.function.Consumer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -26,9 +27,13 @@ import javax.swing.table.JTableHeader;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 
+import Components.Window;
+import Components.initializer;
+import Details.checkProfile;
 import Helper.Config.roundedBorder;
 import Helper.Config.tableRenderConfig;
-import Helper.fileSystem.imageSystem;
+import SecondPage.password;
+import SecondPage.EmployeePage.unverifiedDB.VerifyEmployee;
 
 public class createComp {
 
@@ -351,94 +356,201 @@ public class createComp {
         public JTable table;
         public DefaultTableModel tableModel;
 
-        public JLabel logo;
-        public JButton text;
-
+        /**
+         * 
+         * 
+         * @param i
+         * @param w
+         * @param columnTitles
+         * @param X
+         * @param Y
+         * @param fixedWidth
+         * @param fixedHeight
+         * @param GridColor
+         * @param textColor
+         * @param titleFillColor
+         * @param cellFillColor
+         * @param font
+         * @param columnToFetchDataForProfileView
+         * @param intProfileSetUp 0 == user profile (unverified); 1 == user profile (verified); 2 == inventory; 3 == verify customer; 4 == job
+         * 
+         */
         public createJTable(
-            String[] columnTitles, 
+            initializer i,
+            Window w,
+            String[] columnTitles,
             int X, int Y,
-            int fixedWidth, 
-            Color GridColor, Color textColor, 
-            Color titleFillColor, Color cellFillColor,
-            Font font, 
-            Consumer<String> profile,
-            ImageIcon logo, String text
+            int fixedWidth,
+            int fixedHeight,
+            Color GridColor, 
+            Color textColor,
+            Color titleFillColor, 
+            Color cellFillColor,
+            Font font,
+            int columnToFetchDataForProfileView,
+            int intProfileSetUp
         ) {
-            // text and logo
-            if (logo != null && text != null) {
-                System.out.println("executed");
-                this.logo = createJLabel(logo, X, Y - 170, 100, 300);
-                this.text = createJButton(text, X + 100, Y - 60, 170, 50, new roundedBorder(10, Color.BLACK, imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)), textColor, font);
-            }
-
             tableModel = new DefaultTableModel(columnTitles, 0);
 
-            // basic JTable config
             table = new JTable(tableModel);
             table.setFillsViewportHeight(true);
             table.setOpaque(false);
             table.setForeground(textColor);
             table.setGridColor(GridColor);
             table.setFont(font);
-            table.setEnabled(false);
-            table.setRowHeight(30);
+            table.setEnabled(true);
+            table.setRowSelectionAllowed(false);
+            table.setColumnSelectionAllowed(false);
+            table.setCellSelectionEnabled(false);
+            table.setFocusable(false);
+            table.setSelectionBackground(cellFillColor);
+            table.setSelectionForeground(textColor);
 
-            
-            // Force header height to match row height (e.g. 30)
+            if (fixedHeight > 0) table.setRowHeight(fixedHeight);
+            else table.setRowHeight(50);
+
             JTableHeader header = new JTableHeader(table.getColumnModel()) {
                 @Override
-                public Dimension getPreferredSize() {
-                    return new Dimension(fixedWidth, 30);
-                }
+                public Dimension getPreferredSize() { return new Dimension(fixedWidth, 30); }
             };
             table.setTableHeader(header);
-
             header.setOpaque(false);
             header.setBackground(titleFillColor);
             header.setEnabled(false);
-            header.setSize(fixedWidth, header.getPreferredSize().height);
+            header.setSize(fixedWidth, 30);
             header.setLocation(X, Y);
-            header.setFont(font);   
+            header.setFont(font);
             header.setPreferredSize(new Dimension(fixedWidth, 30));
+            table.setLocation(X, Y + 30);
 
-            table.setLocation(X, Y + header.getHeight());
+            if (fixedHeight > 0) {
+                int rowCount = tableModel.getRowCount();
+                int totalHeight = 30 + (rowCount * fixedHeight);
+                table.setSize(fixedWidth, totalHeight);
+            } else {
+                table.setSize(fixedWidth, table.getPreferredSize().height);
+            }
 
-            // For height, use preferred height based on rows
-            table.setSize(fixedWidth, table.getPreferredSize().height);
-
-            // Center header text
             DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) header.getDefaultRenderer();
             headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
-            // Data cell background
-            table.setDefaultRenderer(
-                Object.class, 
-                tableRenderConfig.createCenterAlignedRenderer(textColor, cellFillColor)
-            );
+            if (table.getColumnModel().getColumnCount() > 0) {
+                table
+                    .getColumnModel()
+                    .getColumn(0)
+                    .setCellRenderer(new DefaultTableCellRenderer() {
+                        @Override
+                        public Component getTableCellRendererComponent(
+                            JTable table,
+                            Object value,
+                            boolean isSelected,
+                            boolean hasFocus,
+                            int row,
+                            int column
+                        ) {
+                            if (value instanceof ImageIcon) {
+                                JLabel label = new JLabel((ImageIcon) value);
+                                label.setHorizontalAlignment(SwingConstants.CENTER);
+                                label.setOpaque(true);
+                                label.setBackground(cellFillColor);
+                                return label;
+                            }
 
-            // check profiles
+                            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                            c.setForeground(textColor);
+                            c.setBackground(cellFillColor);
+
+                            ((JComponent) c).setOpaque(true);
+                            ((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
+                            
+                            return c;
+                        }
+                    });
+            }
+
+
+            // 🎨 All other cells
+            table.setDefaultRenderer(
+                Object.class,
+                tableRenderConfig.createCenterAlignedRenderer(textColor, cellFillColor)
+            );       
+
+            // 🖱️ Mouse callback
             table.addMouseListener(new MouseAdapter() {
                 @Override
-                public void mouseClicked(MouseEvent i) { 
-                    int row = table.rowAtPoint(i.getPoint());
+                public void mouseClicked(MouseEvent E) {
+                    int viewRow = table.rowAtPoint(E.getPoint());
+                    int viewCol = table.columnAtPoint(E.getPoint());
 
-                    if (row >= 0) {
-                        Object value = table.getValueAt(row, 0);
-                        profile.accept(value.toString());
+                    if (viewRow < 0 || viewCol < 0) return;
+
+                    String columnName = table.getColumnName(viewCol);
+                    if ("Approve".equals(columnName) || "Reject".equals(columnName)) return;
+
+                    int modelRow;
+                    try {
+                        modelRow = table.convertRowIndexToModel(viewRow);
+                    } catch (IndexOutOfBoundsException ex) {
+                        return; // 🔐 Row was deleted mid-click
+                    }
+
+                    String data = getFirstColumnValueAt(columnToFetchDataForProfileView, modelRow);
+
+                    if (data != null) {
+                        if (intProfileSetUp == 1) {
+                            helpStoreComp._startDropDown(
+                                i,
+                                () -> { i.checkProfile = new checkProfile(i, w, data); },
+                                () -> i.checkProfile,
+                                1000, 500
+                            );
+                        }
+
+                        if (intProfileSetUp == 3) {
+                            helpStoreComp._startDropDown(
+                                i,
+                                () -> { i.password = new password(i, w, data); },
+                                () -> i.password,
+                                500, 150
+                            );
+                        }
+
+                        if (intProfileSetUp == 4) {
+                            helpStoreComp._startDropDown(
+                                i,
+                                () -> { i.VerifyEmployee = new VerifyEmployee(i, w, data); },
+                                () -> i.VerifyEmployee,
+                                1000, 500
+                            );
+                        }                        
                     }
                 }
-            });
 
+            });
 
         }
 
         public void addRow(Object[] rowData) {
             tableModel.addRow(rowData);
             int fixedWidth = table.getWidth();
-            int newHeight = table.getPreferredSize().height;
-            table.setSize(fixedWidth, newHeight);
+            int rowHeight = table.getRowHeight();
+            int totalHeight = 30 + (tableModel.getRowCount() * rowHeight);
+            table.setSize(fixedWidth, totalHeight);
         }
+
+        public String getFirstColumnValueAt(int column, int row) {
+            if (row >= 0 && row < tableModel.getRowCount()) {
+                Object value = tableModel.getValueAt(row, column);
+                return value != null ? value.toString() : null;
+            }
+            return null;
+        }
+
     }
+
+
+
 
 
 

@@ -14,6 +14,7 @@ import Components.Window;
 import Components.initializer;
 import Helper.blur;
 import Helper.Animation.componentAnim;
+import Helper.Comp.PanelHelper;
 import Helper.Comp.createComp;
 import Helper.Config.roundedBorder;
 import Helper.fileSystem.imageSystem;
@@ -57,7 +58,6 @@ public class changeInformation extends JPanel {
     //////////////////////////////////////////////////////////////*/    
 
     public changeInformation(initializer i, Window window, Object classToInteractWith) {
-        System.out.println("clicked - 1");
         this.blur = new blur(i.frame);
         this.storage = i.storage;
         this.S = i.switchThemeComp;
@@ -71,6 +71,8 @@ public class changeInformation extends JPanel {
         _background();
         _addComp();
         _addCloseAndSubmit();
+
+        S.dummy.add(this);
     }    
 
     void _background() {
@@ -80,7 +82,8 @@ public class changeInformation extends JPanel {
             new roundedBorder(
                 20, 
                 Color.BLACK, 
-                imageSystem._reduceColorTransparency(Color.GRAY, 0.7f))
+                imageSystem._reduceColorTransparency(Color.GRAY, 0.7f)
+            )
         );
     }   
 
@@ -240,7 +243,7 @@ public class changeInformation extends JPanel {
         close.addActionListener(
             _ -> {
                 blur.removeBlur();
-                remove(this);
+                PanelHelper.clear(this);
                 SwingUtilities.invokeLater(() -> { 
                     try {
                         classToInteractWith

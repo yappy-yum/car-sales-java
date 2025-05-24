@@ -15,7 +15,9 @@ import Components.Window;
 import Components.initializer;
 import Helper.blur;
 import Helper.Animation.componentAnim;
+import Helper.Comp.PanelHelper;
 import Helper.Comp.createComp;
+import Helper.Comp.helpStoreComp;
 import Helper.Config.roundedBorder;
 import Helper.fileSystem.ImageUploader;
 import Helper.fileSystem.fontSystem;
@@ -32,25 +34,30 @@ public class checkProfile extends JPanel {
     Profile.seeProfile profile;
     changeInformation change;
     initializer i;
+    String user;
 
     /*//////////////////////////////////////////////////////////////
                               constructor
     //////////////////////////////////////////////////////////////*/    
 
-    public checkProfile(initializer i, Window window) {
+    public checkProfile(initializer i, Window window, String user) {
         this.blur = new blur(i.frame);
         this.storage = i.storage;
         this.window = window;
         this.S = i.switchThemeComp;
         this.profile = i.isLogin.currentProfile;
         this.i = i;
+        this.user = user;
 
         _background();
-        _changeInformation();
+        if (user == null) _changeInformation();
         _addX();
-        _logout();
+        _verify();
+        if (user == null) _logout();
         _addHeader();
         _addInformation();
+
+        S.dummy.add(this);
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -64,9 +71,14 @@ public class checkProfile extends JPanel {
             new roundedBorder(
                 20, 
                 Color.BLACK, 
-                imageSystem._reduceColorTransparency(Color.GRAY, 0.7f))
+                imageSystem._reduceColorTransparency(Color.GRAY, 0.7f)
+            )
         );
     }
+
+    /*//////////////////////////////////////////////////////////////
+                             X Close Button
+    //////////////////////////////////////////////////////////////*/    
 
     void _addX() {
         JButton closeButton = createComp.createJButton(
@@ -80,9 +92,11 @@ public class checkProfile extends JPanel {
         closeButton.addActionListener(
             _ -> {
                 blur.removeBlur();
+                PanelHelper.clear(this);
                 SwingUtilities.invokeLater(
                     () -> {
-                        window._loadFrontPage();
+                        if (user == null) window._loadFrontPage();
+                        if (user != null) window._loadSecondPage();
                     }
                 );
             }
@@ -118,28 +132,59 @@ public class checkProfile extends JPanel {
         _addRight();
     }
 
+    /*//////////////////////////////////////////////////////////////
+                               Left Info
+    //////////////////////////////////////////////////////////////*/    
+
     void _addLeftInfo() {
-        JTextArea LeftInfo = createComp.createJTextArea(
-            "First Name: " + profile.firstName + "\n\n" +
-            "Last Name: " + profile.lastName + "\n\n" +
-            "Username: " + profile.username + "\n\n" +
-            "Gender: " + profile.gender + "\n\n" +
-            "Age: " + profile.age + "\n\n" +
-            "Phone Number: " + 0 + profile.phoneNumber + "\n\n" +
-            "Gender: " + profile.gender, 
-            20, 100, 
-            500, 500, 
-            fontSystem.TAGES.deriveFont(25f), 
-            null, Color.BLACK
-        );
+        JTextArea LeftInfo;
+
+        if (user == null) {
+            LeftInfo = createComp.createJTextArea(
+                "First Name: " + profile.firstName + "\n\n" +
+                "Last Name: " + profile.lastName + "\n\n" +
+                "Username: " + profile.username + "\n\n" +
+                "Gender: " + profile.gender + "\n\n" +
+                "Age: " + profile.age + "\n\n" +
+                "Phone Number: " + 0 + profile.phoneNumber,
+                20, 100, 
+                500, 500, 
+                fontSystem.TAGES.deriveFont(25f), 
+                null, Color.BLACK
+            );
+        } else {
+            Profile.seeProfile userProf = storage.searchUser(user);
+
+            LeftInfo = createComp.createJTextArea(
+                "First Name: " + userProf.firstName + "\n\n" +
+                "Last Name: " + userProf.lastName + "\n\n" +
+                "Username: " + userProf.username + "\n\n" +
+                "Gender: " + userProf.gender + "\n\n" +
+                "Age: " + userProf.age + "\n\n" +
+                "Phone Number: " + 0 + userProf.phoneNumber,
+                20, 100, 
+                500, 500, 
+                fontSystem.TAGES.deriveFont(25f), 
+                null, Color.BLACK
+            );
+        }
+
         LeftInfo.setVisible(true);
         S.dummy.add(LeftInfo);
         add(LeftInfo);
     }
 
+    /*//////////////////////////////////////////////////////////////
+                               Right PFP
+    //////////////////////////////////////////////////////////////*/  
+
     void _RightPFP() {
+        ImageIcon pfp = user == null ?
+                        imageSystem._scaleImage(profile.pfp, 100, 100) :
+                        storage.searchUser(user).pfp;
+
         JButton RightPFP = createComp.createJButton(
-            imageSystem._scaleImage(profile.pfp, 100, 100), 
+            pfp, 
             600, 100, 
             100, 100
         );
@@ -147,27 +192,52 @@ public class checkProfile extends JPanel {
         S.dummy.add(RightPFP);
         add(RightPFP);
 
-        RightPFP.addActionListener( _ -> {
-            ImageIcon pfpSelected = ImageUploader.uploadImageIcon();
-            if (pfpSelected != null) i.storage.setPFP(profile.username, pfpSelected);
-            if (pfpSelected != null) i.isLogin.currentProfile.pfp = pfpSelected;
-            RightPFP.setIcon(imageSystem._scaleImage(pfpSelected, 100, 100));
-        });
+        if (user == null)    
+            RightPFP.addActionListener( _ -> {
+                ImageIcon pfpSelected = ImageUploader.uploadImageIcon();
+                if (pfpSelected != null) i.storage.setPFP(profile.username, pfpSelected);
+                if (pfpSelected != null) i.isLogin.currentProfile.pfp = pfpSelected;
+                RightPFP.setIcon(imageSystem._scaleImage(pfpSelected, 100, 100));
+            });
     }
 
+    /*//////////////////////////////////////////////////////////////
+                               Right Info
+    //////////////////////////////////////////////////////////////*/    
+
     void _addRight() {
-        JTextArea RightInfo = createComp.createJTextArea(
-            "Role: " + profile.department + "\n\n" +
-            "Status: " + (profile.isVerified ? "Verified" : "Not Verified"),
-            520, 280, 
-            450, 400, 
-            fontSystem.TAGES.deriveFont(25f), 
-            null, Color.BLACK
-        );
+        JTextArea RightInfo;
+
+        if (user == null) {
+            RightInfo = createComp.createJTextArea(
+                "Role: " + profile.department + "\n\n" +
+                "Status: " + (profile.isVerified ? "Verified" : "Not Verified"),
+                520, 280, 
+                450, 400, 
+                fontSystem.TAGES.deriveFont(25f), 
+                null, Color.BLACK
+            );
+        } else {
+            Profile.seeProfile userProf = storage.searchUser(user);
+
+            RightInfo = createComp.createJTextArea(
+                "Role: " + userProf.department + "\n\n" +
+                "Status: " + (userProf.isVerified ? "Verified" : "Not Verified"),
+                520, 280, 
+                450, 400, 
+                fontSystem.TAGES.deriveFont(25f), 
+                null, Color.BLACK
+            );
+        }
+
         RightInfo.setVisible(true);
         S.dummy.add(RightInfo);
         add(RightInfo);
     }
+
+    /*//////////////////////////////////////////////////////////////
+                               Edit Info
+    //////////////////////////////////////////////////////////////*/
 
     void _changeInformation() {
         JButton button = createComp.createJButton(
@@ -184,10 +254,14 @@ public class checkProfile extends JPanel {
         add(button);
     }
 
+    /*//////////////////////////////////////////////////////////////
+                                 Logout
+    //////////////////////////////////////////////////////////////*/    
+
     void _logout() {
         JButton button = createComp.createJButton(
             "Logout", 
-            550, 430, 
+            600, 430, 
             120, 50, 
             new roundedBorder(15, Color.BLACK, null), Color.BLACK,
             new Font("Arial", Font.BOLD, 20)
@@ -199,11 +273,8 @@ public class checkProfile extends JPanel {
                 i.isLogin.isLogin = false;
 
                 blur.removeBlur();
-                SwingUtilities.invokeLater(
-                    () -> {
-                        window._loadFrontPage();
-                    }
-                );
+                PanelHelper.clear(this);
+                SwingUtilities.invokeLater(() -> { window._loadFrontPage(); } );
             }
         );
 
@@ -211,10 +282,30 @@ public class checkProfile extends JPanel {
         S.dummy.add(button);
     }
 
-    public void _removeChanges() { remove(change); change = null; }
+    void _verify() {
+        if (i.isLogin.currentProfile.department == Profile.Department.CUSTOMER && !i.isLogin.currentProfile.isVerified) {
+            JButton button = createComp.createJButton(
+                "Verify", 
+                500, 430, 
+                90, 50, 
+                new roundedBorder(15, Color.BLACK, null), Color.BLACK,
+                new Font("Arial", Font.BOLD, 20)
+            );
+            button.setVisible(true);
+            button.addActionListener( _ -> { _promptVerify(); } );
+
+            add(button);  
+            S.dummy.add(button);          
+        }
+    }
+
+    /*//////////////////////////////////////////////////////////////
+                          Component Clearance
+    //////////////////////////////////////////////////////////////*/    
+
+    public void _removeChanges() { PanelHelper.clear(change); change = null; }
 
     void _promptChanges() {
-        System.out.println("clicked");
         change = new changeInformation(i, window, this);
         change.setBounds(400, 200, 500, 500);
         change.setVisible(true);
@@ -230,5 +321,16 @@ public class checkProfile extends JPanel {
             ).start()
         );
     }
+
+    public void _removeVerify() { PanelHelper.clear(i.Verify); }
+
+    void _promptVerify() {
+        helpStoreComp._startDropDown(
+            i, 
+            () -> i.Verify = new Verify(i, window, i.isLogin.currentProfile.username, this), 
+            () -> i.Verify, 
+            800, 400
+        );
+    }    
 
 }

@@ -24,4 +24,10 @@ public class PanelHelper {
         );
         panel.revalidate(); 
     }
+
+    public static void clear(JPanel panel) {
+        panel.removeAll();
+        panel.revalidate();
+        panel.repaint();
+    }
 }

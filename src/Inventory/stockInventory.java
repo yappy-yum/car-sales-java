@@ -18,7 +18,7 @@ public class stockInventory {
             new stockDetails.transactDetails(
                 new stockDetails.CarDetails(
                     stockDetails.CarStatus.AVAILABLE, 
-                    imageSystem._scaleImage(imageSystem.ROLLS_ROYCE, 80, 80), 
+                    imageSystem._scaleImage(imageSystem.ROLLS_ROYCE, 80, 60), 
                     imageSystem._scaleImage(imageSystem.ROLLS_ROYCE_PHANTOM, 80, 80), 
                     "Rolls Royce", 
                     "Rolls Royce Phantom", 
@@ -26,7 +26,7 @@ public class stockInventory {
                     null, 
                     "1000 x 980", 
                     400_000.00, 
-                    700_000.00, 
+                    800_000.00, 
                     900
                 ), 
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), 
@@ -42,7 +42,7 @@ public class stockInventory {
             new stockDetails.transactDetails(
                 new stockDetails.CarDetails(
                     stockDetails.CarStatus.AVAILABLE, 
-                    imageSystem._scaleImage(imageSystem.ROLLS_ROYCE, 80, 80), 
+                    imageSystem._scaleImage(imageSystem.ROLLS_ROYCE, 80, 60), 
                     imageSystem._scaleImage(imageSystem.ROLLS_ROYCE_PHANTOM, 80, 80), 
                     "Rolls Royce", 
                     "Rolls Royce Phantom", 
@@ -50,7 +50,7 @@ public class stockInventory {
                     null, 
                     "1000 x 980", 
                     400_000.00, 
-                    700_000.00, 
+                    900_000.00, 
                     900
                 ), 
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), 
@@ -66,7 +66,7 @@ public class stockInventory {
             new stockDetails.transactDetails(
                 new stockDetails.CarDetails(
                     stockDetails.CarStatus.AVAILABLE, 
-                    imageSystem._scaleImage(imageSystem.BENTLEY, 80, 80), 
+                    imageSystem._scaleImage(imageSystem.BENTLEY, 80, 60), 
                     imageSystem._scaleImage(imageSystem.BENTLEY, 80, 80), 
                     "Bentley", 
                     "Bently XYZ", 
@@ -74,7 +74,7 @@ public class stockInventory {
                     null, 
                     "1000 x 980", 
                     400_000.00, 
-                    700_000.00, 
+                    600_000.00, 
                     900
                 ), 
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), 
@@ -94,6 +94,10 @@ public class stockInventory {
     /**
      * store all the details of the car 
      * 
+     * <p>
+     * 
+     * List<> does not override duplicated data
+     * 
      * @see stockDetails.transactDetails
      * 
      */
@@ -101,6 +105,10 @@ public class stockInventory {
 
     /**
      * store all the available car logos
+     * 
+     * <p>
+     * 
+     * HashMap<> does override duplicated data
      * 
      */
     public HashMap<String, ImageIcon> carLogo = new HashMap<String, ImageIcon>();

@@ -17,6 +17,13 @@ import Helper.Comp.createComp;
 import Helper.Comp.createDynamicTable;
 import Helper.fileSystem.imageSystem;
 
+/**
+ * 
+ * @author yappy-yum
+ * 
+ * @deprecated
+ * 
+ */
 public class SearchDynTable {
     
     public static class createSearchBar {

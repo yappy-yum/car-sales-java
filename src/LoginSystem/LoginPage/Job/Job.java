@@ -16,6 +16,7 @@ import Components.Window;
 import Components.initializer;
 import Helper.blur;
 import Helper.Animation.componentAnim;
+import Helper.Comp.PanelHelper;
 import Helper.Comp.createComp;
 import Helper.Config.roundedBorder;
 import Helper.fileSystem.imageSystem;
@@ -61,6 +62,7 @@ public class Job extends JPanel {
         _addTextAnnotate();
 
         readyComp.setVisible(true);
+        S.dummy.add(this);
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -208,7 +210,9 @@ public class Job extends JPanel {
                 blur.removeBlur();
                 SwingUtilities.invokeLater(
                     () -> {
-                        window._loadFrontPage();
+                        PanelHelper.clear(this);
+                        // window._loadFrontPage();
+                        SwingUtilities.invokeLater(() -> { window._loadFrontPage(); });
                     }
                 );
             }
@@ -337,9 +341,9 @@ public class Job extends JPanel {
             CV.firstName = _FirstName;
             CV.lastName = _lastName;
             CV.username = _username;
-            CV.password = argon.HashIt(_password);
-            CV.favText = argon.HashIt(_favText);
-            CV.favNum = argon.HashIt(_favNum);
+            CV.password = _password;
+            CV.favText = _favText;
+            CV.favNum = _favNum;
             CV.gender = _gender;
             CV.age = _age;
             CV.phoneNumber = _phoneNumber;
@@ -349,6 +353,12 @@ public class Job extends JPanel {
                 closeButton.setEnabled(true);
                 readyComp.loadingLabel.setVisible(false);
                 _promptMessage(readyComp.SuccessMessage);
+
+                
+                System.out.println("Username: " + _username);
+                System.out.println("Password: " + CV.password);
+                System.out.println("Favourite Texts: " + CV.favText);
+                System.out.println("Favourite Number: " + CV.favNum);
             });
         }).start();
     }

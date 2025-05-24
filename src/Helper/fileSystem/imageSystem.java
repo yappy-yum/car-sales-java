@@ -113,6 +113,39 @@ public class imageSystem {
     public static final ImageIcon JUSTIFY_TEXT = new ImageIcon(FILE_PATH.concat("textAnnotate/justify.png"));
 
     /*//////////////////////////////////////////////////////////////
+                              Tick & Cross
+    //////////////////////////////////////////////////////////////*/
+    
+    public static final ImageIcon TICK = new ImageIcon(FILE_PATH.concat("approval/tick.png"));
+    public static final ImageIcon CROSS = new ImageIcon(FILE_PATH.concat("approval/cross.png"));
+
+    /*//////////////////////////////////////////////////////////////
+                          default face & docs
+    //////////////////////////////////////////////////////////////*/
+    
+    public static final ImageIcon DEFAULT_DOCS = new ImageIcon(FILE_PATH.concat("confidential/docs.jpeg"));
+    public static final ImageIcon DEFAULT_FACE = new ImageIcon(FILE_PATH.concat("confidential/face.jpeg"));
+
+    /*//////////////////////////////////////////////////////////////
+                           sample - customer
+    //////////////////////////////////////////////////////////////*/
+    
+    public static final ImageIcon CALEB_DOCS = new ImageIcon(FILE_PATH.concat("../sample/customer/Caleb/docs.jpeg"));
+    public static final ImageIcon CALEB_FACE = new ImageIcon(FILE_PATH.concat("../sample/customer/Caleb/face.jpeg"));
+
+    public static final ImageIcon CAMILA_DOCS = new ImageIcon(FILE_PATH.concat("../sample/customer/Camila/docs.jpeg"));
+    public static final ImageIcon CAMILA_FACE = new ImageIcon(FILE_PATH.concat("../sample/customer/Camila/face.jpeg"));
+
+    public static final ImageIcon ETHAN_DOCS = new ImageIcon(FILE_PATH.concat("../sample/customer/Ethan/docs.jpeg"));
+    public static final ImageIcon ETHAN_FACE = new ImageIcon(FILE_PATH.concat("../sample/customer/Ethan/face.jpeg"));
+
+    public static final ImageIcon GIANA_DOCS = new ImageIcon(FILE_PATH.concat("../sample/customer/Giana/docs.jpeg"));
+    public static final ImageIcon GIANA_FACE = new ImageIcon(FILE_PATH.concat("../sample/customer/Giana/face.jpeg"));
+
+    public static final ImageIcon LEO_DOCS = new ImageIcon(FILE_PATH.concat("../sample/customer/Leo/docs.jpeg"));
+    public static final ImageIcon LEO_FACE = new ImageIcon(FILE_PATH.concat("../sample/customer/Leo/face.jpeg"));
+
+    /*//////////////////////////////////////////////////////////////
                             scale image size
     //////////////////////////////////////////////////////////////*/
 
@@ -126,11 +159,10 @@ public class imageSystem {
      * 
      */
     public static ImageIcon _scaleImage(ImageIcon image, int width, int height) {
-        return new ImageIcon(
-            image
-            .getImage()
-            .getScaledInstance(width, height, Image.SCALE_SMOOTH)
-        );
+        return new ImageIcon(image
+                                .getImage()
+                                .getScaledInstance(width, height, Image.SCALE_SMOOTH)
+                        );
     }
 
     /*//////////////////////////////////////////////////////////////

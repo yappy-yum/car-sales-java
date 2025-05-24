@@ -27,6 +27,7 @@ public class storeVid {
             try {
                 player.stop();
                 player.dispose();
+                player = null;
             } catch (Exception e) {
                 System.err.println("Failed to dispose MediaPlayer: " + e.getMessage());
             }

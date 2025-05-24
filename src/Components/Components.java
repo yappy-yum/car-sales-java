@@ -2,6 +2,7 @@ package Components;
 
 import Helper.Animation.videoAnim;
 import Helper.Animation.componentAnim;
+import Helper.Comp.PanelHelper;
 import Helper.Comp.createJFX;
 import Helper.Comp.createScroll;
 import Helper.Comp.helpStoreComp;
@@ -233,6 +234,8 @@ public class Components extends JPanel {
                     window._loadSecondPage();
                 }
         }
-    }    
+    }   
+    
+    public void _remove() { PanelHelper.clear(this); }
 
 }

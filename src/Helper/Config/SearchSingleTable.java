@@ -8,6 +8,7 @@ import java.awt.event.FocusEvent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
@@ -30,11 +31,14 @@ public class SearchSingleTable {
             int Y, 
             int width, 
             int height,
-            Color textColor
+            Color textColor,
+            String placeholder
         ) {
             searchField = createComp.createJTextField(
-                X, Y, 
-                width, height, 
+                X, 
+                Y, 
+                width, 
+                height, 
                 new Font("Arial", Font.PLAIN, 15), 
                 new roundedBorder(10, Color.WHITE, null), 
                 textColor
@@ -43,7 +47,6 @@ public class SearchSingleTable {
             searchIcon.setBounds(X + width - 45, Y + 5, 30, 30);
 
             // Set placeholder text
-            String placeholder = "search username";
             searchField.setForeground(Color.GRAY);
             searchField.setText(placeholder);
 
@@ -77,11 +80,9 @@ public class SearchSingleTable {
 
                         private void update() {
                             String text = searchField.getText();
-                            if (text.equals(placeholder) || text.trim().isEmpty()) {
-                                sorter.setRowFilter(null);
-                            } else {
-                                sorter.setRowFilter(javax.swing.RowFilter.regexFilter("(?i)" + text));
-                            }
+
+                            if (text.equals(placeholder) || text.trim().isEmpty()) sorter.setRowFilter(null);
+                            else sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
                         }
 
                         public void insertUpdate(DocumentEvent e) { update(); }

@@ -56,7 +56,7 @@ public class Window {
      * 
      */
     void _initializeWindow() {
-        i.frame.setTitle("millionaire hub");
+        i.frame.setTitle("Millionaire Hub");
         i.frame.setIconImage(imageSystem.COMPANY_LOGO.getImage());
         i.frame.setResizable(false);
         i.frame.setSize(1280, 720); // HD size
@@ -187,9 +187,12 @@ public class Window {
         i.UI = null;
         i.CustomerDB = null;
         i.SalesmanDB = null;
-        i.SalesmanDB = null;
         i.ManagerDB = null;
         i.InventoryDB = null;
+        i.password = null;
+        i.VerifyCust = null;
+        i.VerifyEmployee = null;
+        i.Verify = null;
     }
 
     void _throw() {
@@ -198,6 +201,7 @@ public class Window {
         if (i.checkProfile != null) i.frame.remove(i.checkProfile);
         if (i.scrollPane != null) i.frame.remove(i.scrollPane);
         if (i.UI != null) i.frame.remove(i.UI);
+        if (i.component != null) i.component._remove();
         if (i.component != null) i.frame.remove(i.component);
         if (i.Customer != null) i.frame.remove(i.Customer);
         if (i.AboutUs != null) i.frame.remove(i.AboutUs);
@@ -205,7 +209,14 @@ public class Window {
         if (i.Job != null) i.frame.remove(i.Job);
         if (i.compAnimStorage != null) i.compAnimStorage.disposeAnim();
         if (i.videoAnimStorage != null) i.videoAnimStorage.disposeAnim();
+        if (i.password != null) i.frame.remove(i.password);
+        if (i.VerifyCust != null) i.frame.remove(i.VerifyCust);
+        if (i.VerifyEmployee != null) i.frame.remove(i.VerifyEmployee);
+        if (i.Verify != null) i.frame.remove(i.Verify);
         if (i.storeVid != null) new Thread(() -> i.storeVid.clearAll()).start(); // @audit may slower during clearance, therefore push it to background
+
+        i.frame.revalidate();
+        i.frame.repaint();
     }
 
 }

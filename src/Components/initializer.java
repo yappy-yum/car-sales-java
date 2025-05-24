@@ -5,6 +5,7 @@ import javax.swing.JScrollPane;
 
 import Details.AboutUs;
 import Details.TaC;
+import Details.Verify;
 import Details.checkProfile;
 import Inventory.stockInventory;
 import LoginSystem.isLogin;
@@ -14,10 +15,13 @@ import LoginSystem.Argon2.Argon;
 import LoginSystem.LoginPage.Customer.Customer;
 import LoginSystem.LoginPage.Job.Job;
 import SecondPage.UI;
-import SecondPage.EmployeePage.CustomerDB;
-import SecondPage.EmployeePage.InventoryDB;
-import SecondPage.EmployeePage.ManagerDB;
-import SecondPage.EmployeePage.SalesmanDB;
+import SecondPage.password;
+import SecondPage.EmployeePage.unverifiedDB.VerifyCust;
+import SecondPage.EmployeePage.unverifiedDB.VerifyEmployee;
+import SecondPage.EmployeePage.verifiedDB.CustomerDB;
+import SecondPage.EmployeePage.verifiedDB.InventoryDB;
+import SecondPage.EmployeePage.verifiedDB.ManagerDB;
+import SecondPage.EmployeePage.verifiedDB.SalesmanDB;
 import StoreAnimation.compAnimStorage;
 import StoreAnimation.videoAnimStorage;
 import frontPage.FrontPage;
@@ -48,6 +52,10 @@ public class initializer {
     public TaC TaC;
     public Job Job;
     public UI UI;
+    public password password;
+    public Verify Verify;
+    public VerifyCust VerifyCust;
+    public VerifyEmployee VerifyEmployee;
 
     public compAnimStorage compAnimStorage;
     public videoAnimStorage videoAnimStorage;

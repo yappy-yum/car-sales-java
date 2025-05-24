@@ -245,7 +245,7 @@ public class helpStoreComp {
             )
         );
     }   
-
+ 
     /*//////////////////////////////////////////////////////////////
                                Drop Down
     //////////////////////////////////////////////////////////////*/    
@@ -261,8 +261,8 @@ public class helpStoreComp {
 
         JComponent target = componentGetter.get();
 
-        int X = (1280 - 1000) / 2; 
-        int Y = (720 - 500) / 2;
+        int X = (1280 - width) / 2; 
+        int Y = (720 - height) / 2;
 
         target.setBounds(X, Y, width, height);
         target.setVisible(true);

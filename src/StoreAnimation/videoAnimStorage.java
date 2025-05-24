@@ -31,6 +31,7 @@ public class videoAnimStorage {
             if (anim != null) {
                 anim.dispose();
             }
+            anim = null;
         }
         animations.clear();
     }

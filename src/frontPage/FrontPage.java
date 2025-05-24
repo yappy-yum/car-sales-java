@@ -469,24 +469,27 @@ public class FrontPage {
     void buttom() {
         _helpTextButton(
             "About Us", 
-            i.frame.getWidth() / 2 - 220, 5600, 
+            !i.isLogin.isLogin ? (i.frame.getWidth() / 2 - 220) : (i.frame.getWidth() / 2 - 220 - 200), 
+            5600, 
             () -> {i.AboutUs = new AboutUs(i, window);}, 
             () -> i.AboutUs
         );
 
         _helpTextButton(
             "Terms & Conditions",
-            i.frame.getWidth() - 450, 5600,
+            !i.isLogin.isLogin ? (i.frame.getWidth() - 450) : (i.frame.getWidth() - 450 - 200), 
+            5600,
             () -> {i.TaC = new TaC(i, window);},
             () -> i.TaC
         );
 
-        _helpTextButton(
-            "Seeking Job?", 
-            20, 5600, 
-            () -> {i.Job = new Job(i, window);}, 
-            () -> i.Job
-        );
+        if (!i.isLogin.isLogin) _helpTextButton(
+                                    "Seeking Job?", 
+                                    20, 
+                                    5600, 
+                                    () -> {i.Job = new Job(i, window);}, 
+                                    () -> i.Job
+                                );
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -603,7 +606,7 @@ public class FrontPage {
             _ -> {
                 helpStoreComp._startDropDown(
                     i,
-                    () -> { i.checkProfile = new checkProfile(i, window); },
+                    () -> { i.checkProfile = new checkProfile(i, window, null); },
                     () -> i.checkProfile, 
                     1000, 500
                 );

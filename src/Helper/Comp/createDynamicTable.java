@@ -5,18 +5,25 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JTable;
+import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import Components.Window;
+import Components.initializer;
 import Helper.Comp.createComp.createJTable;
 
+/**
+ * 
+ * @deprecated
+ * 
+ * @author yappy-yum
+ * 
+ */
 public class createDynamicTable {
     
     /**
@@ -33,17 +40,23 @@ public class createDynamicTable {
         public List<JLabel> logos = new ArrayList<>();
         public List<JButton> texts = new ArrayList<>();
 
-        int Y_OFFSET = 0, Y_GAP = 20;
+        int Y_OFFSET = 390, Y_GAP = 120;
 
         public createMultiTable(
+            initializer i, Window w, JPanel panel,
             HashMap<String, ImageIcon> carLogo,
-            int X, int Y,
+            int X, 
+            int Y,
             String[] columnTitles,
-            int fixedWidth,
-            Color GridColor, Color textColor,
-            Color titleFillColor, Color cellFillColor,
+            int fixedWidth, 
+            int fixedHeight,
+            Color GridColor, 
+            Color textColor,
+            Color titleFillColor, 
+            Color cellFillColor,
             Font font,
-            Consumer<String> profile
+            int columnToFetchDataForProfileView,
+            int intProfileSetUp
         ) {
             if (carLogo.isEmpty() || carLogo == null) {
                 labelForNullStock = createComp.createJLabel(
@@ -56,43 +69,29 @@ public class createDynamicTable {
                 return;
             }
 
-            for (Map.Entry<String, ImageIcon> entry : carLogo.entrySet()) {
-                String logoName = entry.getKey();
-                ImageIcon logo = entry.getValue();
-
-                String text = logoName;
-
+            int size = carLogo.size();
+            for (int l = 0; l < size; l++) {
                 createJTable table = new createJTable(
+                    i, 
+                    w, 
                     columnTitles, 
                     X, Y + Y_OFFSET, 
                     fixedWidth, 
+                    fixedHeight,
                     GridColor, textColor, 
                     titleFillColor, cellFillColor, 
                     font, 
-                    profile, 
-                    logo, text
+                    columnToFetchDataForProfileView,
+                    intProfileSetUp
                 );
-                // table.logo
-                texts.add(table.text);
-                logos.add(table.logo);
 
                 tables.add(table);
 
                 TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(table.tableModel);
                 table.table.setRowSorter(sorter);
                 sorters.add(sorter);
-                
-                Y_OFFSET += table.table.getHeight() + Y_GAP;
+            
             }
-        }
-
-        public void addRow(int tableIndex, Object[] rowData) {
-            tables.get(tableIndex).addRow(rowData);
-            JTable table = tables.get(tableIndex).table;
-
-            int fixedWidth = table.getWidth();
-            int newHeight = table.getPreferredSize().height;
-            table.setSize(fixedWidth, newHeight);
         }
 
     }

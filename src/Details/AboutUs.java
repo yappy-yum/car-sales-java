@@ -7,12 +7,12 @@ import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import Components.SwitchThemeComp;
 import Components.Window;
 import Components.initializer;
 import Helper.blur;
+import Helper.Comp.PanelHelper;
 import Helper.Comp.createComp;
 import Helper.Config.roundedBorder;
 import Helper.fileSystem.imageSystem;
@@ -38,6 +38,8 @@ public class AboutUs extends JPanel {
         _addHeader();
         _addText();
         _addX();
+
+        S.dummy.add(this);
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -120,11 +122,8 @@ public class AboutUs extends JPanel {
         closeButton.addActionListener(
             _ -> {
                 blur.removeBlur();
-                SwingUtilities.invokeLater(
-                    () -> {
-                        window._loadFrontPage();
-                    }
-                );
+                PanelHelper.clear(this);
+                window._loadFrontPage();
             }
         );
         add(closeButton);

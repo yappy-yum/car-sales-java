@@ -13,6 +13,7 @@ import Components.SwitchThemeComp;
 import Components.Window;
 import Components.initializer;
 import Helper.blur;
+import Helper.Comp.PanelHelper;
 import Helper.Comp.createComp;
 import Helper.Config.roundedBorder;
 import Helper.fileSystem.imageSystem;
@@ -34,6 +35,7 @@ public class TaC extends JPanel {
         _addHeader();
         _addText();
         _addX();
+        S.dummy.add(this);
     }
 
     void _background() {
@@ -109,6 +111,7 @@ public class TaC extends JPanel {
         closeButton.addActionListener(
             _ -> {
                 blur.removeBlur();
+                PanelHelper.clear(this);
                 SwingUtilities.invokeLater(() -> { window._loadFrontPage(); } );
             }
         );

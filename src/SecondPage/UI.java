@@ -9,21 +9,21 @@ import java.awt.RenderingHints;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
 import Components.Window;
 import Components.initializer;
+import Helper.Comp.PanelHelper;
 import Helper.Comp.helpStoreComp;
 import Helper.Config.roundedBorder;
 import Helper.fileSystem.imageSystem;
-import SecondPage.EmployeePage.CustomerDB;
-import SecondPage.EmployeePage.InventoryDB;
-import SecondPage.EmployeePage.ManagerDB;
-import SecondPage.EmployeePage.SalesmanDB;
+import SecondPage.EmployeePage.verifiedDB.CustomerDB;
+import SecondPage.EmployeePage.verifiedDB.InventoryDB;
+import SecondPage.EmployeePage.verifiedDB.ManagerDB;
+import SecondPage.EmployeePage.verifiedDB.SalesmanDB;
 import Details.checkProfile;
-import Helper.login.Profile;
 
 public class UI extends JPanel {
 
@@ -35,13 +35,6 @@ public class UI extends JPanel {
 
     private final ImageIcon DARK_BUTTON = imageSystem.DARK_BUTTON;
     private final ImageIcon LIGHT_BUTTON = imageSystem.LIGHT_BUTTON;
-
-    /*//////////////////////////////////////////////////////////////
-                            Database Buttons
-    //////////////////////////////////////////////////////////////*/
-    
-    JButton customerButton, salesmanButton, managerButton, InventoryButton, JobButton;
-    JLabel customerLabel, salesmanLabel, managerLabel, InventoryLabel, JobLabel;
     
     /*//////////////////////////////////////////////////////////////
                               constructor
@@ -115,7 +108,7 @@ public class UI extends JPanel {
             50, 2, 
             110, 100
         );
-        companyLogo.addActionListener(_ -> { w._loadFrontPage(); });
+        companyLogo.addActionListener(_ -> { PanelHelper.clear(this); SwingUtilities.invokeLater(() -> { w._loadFrontPage(); }); });
         i.switchThemeComp.dummy.add(companyLogo);
 
         // right side - profile pic
@@ -133,7 +126,7 @@ public class UI extends JPanel {
             _ -> {
                 helpStoreComp._startDropDown(
                     i, 
-                    () -> { i.checkProfile = new checkProfile(i, w); }, 
+                    () -> { i.checkProfile = new checkProfile(i, w, null); }, 
                     () -> i.checkProfile, 
                     1000, 500
                 );
@@ -164,6 +157,7 @@ public class UI extends JPanel {
         _initializeSalesman();
         _initializeManager();
         _initializeInventory();
+        _initializeInventory();
         _customerButton();
         _salesmanButton();
         _managerButton();
@@ -177,40 +171,52 @@ public class UI extends JPanel {
 
     void _initializeCustomer() {
         i.CustomerDB = new CustomerDB(
-            i, this, 
-            "Customers Profile", 
-            Profile.Department.CUSTOMER, 
-            new String[] {"Username", "First Name", "Last Name", "Gender", "Age"}
+            i, 
+            w, 
+            this, 
+            "Verified Customers Profile", 
+            "Unverified Customers Profile",
+            new String[] {"Username", "First Name", "Last Name", "Gender", "Age"},
+            new String[] {"Username", "First Name", "Last Name", "Gender", "Age", "Approve", "Reject"}
         );
         i.switchThemeComp.dummy.add(i.CustomerDB);
     }
     
     void _initializeSalesman() {
         i.SalesmanDB = new SalesmanDB(
-            i, this, 
-            "Salesmen Profile", 
-            Profile.Department.SALESMAN,
-            new String[] {"Username", "First Name", "Last Name", "Gender", "Age"}
+            i, 
+            w, 
+            this, 
+            "Verified Salesmen Profile", 
+            "Unverified Salesmen Profile",
+            new String[] {"Username", "First Name", "Last Name", "Gender", "Age"},
+            new String[] {"Username", "First Name", "Last Name", "Gender", "Age", "Approve", "Reject"}
         );
         i.switchThemeComp.dummy.add(i.SalesmanDB);
     }
 
     void _initializeManager() {
         i.ManagerDB = new ManagerDB(
-            i, this, 
-            "Managers Profile", 
-            Profile.Department.MANAGER,
-            new String[] {"Username", "First Name", "Last Name", "Gender", "Age"}
+            i, 
+            w, 
+            this, 
+            "Verified Managers Profile", 
+            "Unverified Managers Profile", 
+            new String[] {"Username", "First Name", "Last Name", "Gender", "Age"},
+            new String[] {"Username", "First Name", "Last Name", "Gender", "Age", "Approve", "Reject"}
         );
         i.switchThemeComp.dummy.add(i.ManagerDB);
     }
 
     void _initializeInventory() {
         i.InventoryDB = new InventoryDB(
-            i, this, 
-            "Inventory", 
-            Profile.Department.SALESMAN,
-            new String[] {"Car Name", "Buying Price", "Selling Price", "Bought From", "Sell To"}
+            i, 
+            w, 
+            this, 
+            "Verified Inventory", 
+            "Unverified Inventory",
+            new String[] {"logo", "Car Name", "Buying Price", "Selling Price", "Bought From", "Sell To"},
+            new String[] {"Username", "First Name", "Last Name", "Gender", "Age", "Approve", "Reject"}
         );
         i.switchThemeComp.dummy.add(i.InventoryDB);
     }
@@ -220,37 +226,47 @@ public class UI extends JPanel {
     //////////////////////////////////////////////////////////////*/    
 
     void _customerDBVisible(boolean bool) {
-        i.CustomerDB.label.setVisible(bool);
-        i.CustomerDB.searchBar.setVisible(bool);
-        i.CustomerDB.searchIcon.setVisible(bool);
-        i.CustomerDB.table.getTableHeader().setVisible(bool);
-        i.CustomerDB.table.setVisible(bool);
+        if (bool) {
+            i.CustomerDB._setUnverifiedVisibility(false);
+            i.CustomerDB._setVerifiedVisibility(true);
+        }
+        else {
+            i.CustomerDB._setUnverifiedVisibility(false);
+            i.CustomerDB._setVerifiedVisibility(false);
+        }
     }
 
     void _salesmanDBVisible(boolean bool) {
-        i.SalesmanDB.label.setVisible(bool);
-        i.SalesmanDB.searchBar.setVisible(bool);
-        i.SalesmanDB.searchIcon.setVisible(bool);
-        i.SalesmanDB.table.getTableHeader().setVisible(bool);
-        i.SalesmanDB.table.setVisible(bool);
+        if (bool) {
+            i.SalesmanDB._setUnverifiedVisibility(false);
+            i.SalesmanDB._setVerifiedVisibility(true);
+        }
+        else {
+            i.SalesmanDB._setUnverifiedVisibility(false);
+            i.SalesmanDB._setVerifiedVisibility(false);
+        }
     }
 
     void _managerDBVisible(boolean bool) {
-        i.ManagerDB.label.setVisible(bool);
-        i.ManagerDB.searchBar.setVisible(bool);
-        i.ManagerDB.searchIcon.setVisible(bool);
-        i.ManagerDB.table.getTableHeader().setVisible(bool);
-        i.ManagerDB.table.setVisible(bool);
+        if (bool) {
+            i.ManagerDB._setUnverifiedVisibility(false);
+            i.ManagerDB._setVerifiedVisibility(true);
+        }
+        else {
+            i.ManagerDB._setUnverifiedVisibility(false);
+            i.ManagerDB._setVerifiedVisibility(false);
+        }
     }
 
-    void _inventoryBDVisible(boolean bool) {
-        if (i.InventoryDB.label != null) i.InventoryDB.label.setVisible(bool);
-        if (i.InventoryDB.searchBar != null) i.InventoryDB.searchBar.setVisible(bool);
-        if (i.InventoryDB.searchIcon != null) i.InventoryDB.searchIcon.setVisible(bool);
-        i.InventoryDB.tables.stream().forEach(i -> { if (i.table != null) i.table.setVisible(bool); });
-        i.InventoryDB.tables.stream().forEach(i -> { if (i.table != null) i.table.getTableHeader().setVisible(bool); });
-        i.InventoryDB.tables.stream().forEach(i -> { if (i.table != null) i.text.setVisible(bool); });
-        i.InventoryDB.tables.stream().forEach(i -> { if (i.table != null) i.logo.setVisible(bool); });
+    void _inventoryDBVisible(boolean bool) {
+        if (bool) {
+            i.InventoryDB._setUnverifiedVisibility(false);
+            i.InventoryDB._setVerifiedVisibility(true);
+        }
+        else {
+            i.InventoryDB._setUnverifiedVisibility(false);
+            i.InventoryDB._setVerifiedVisibility(false);
+        }
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -271,7 +287,7 @@ public class UI extends JPanel {
             _customerDBVisible(true);
             _salesmanDBVisible(false); 
             _managerDBVisible(false);
-            _inventoryBDVisible(false);
+            _inventoryDBVisible(false);
         });
     }
 
@@ -289,7 +305,7 @@ public class UI extends JPanel {
             _customerDBVisible(false);
             _salesmanDBVisible(true);
             _managerDBVisible(false);
-            _inventoryBDVisible(false);
+            _inventoryDBVisible(false);
         });
     }
 
@@ -307,7 +323,7 @@ public class UI extends JPanel {
             _customerDBVisible(false);
             _salesmanDBVisible(false);
             _managerDBVisible(true);
-            _inventoryBDVisible(false);
+            _inventoryDBVisible(false);
         });
     }
 
@@ -317,16 +333,16 @@ public class UI extends JPanel {
             "Inventory", 
             590, 80, 
             590, 130, 
-            170, 50,
-            new roundedBorder(15, Color.WHITE, imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)),
-            Color.PINK,
+            170, 50, 
+            new roundedBorder(15, Color.WHITE, imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)), 
+            Color.PINK, 
             new Font("Arial", Font.BOLD, 18)
         ).addActionListener( _ -> {
             _customerDBVisible(false);
             _salesmanDBVisible(false);
             _managerDBVisible(false);
-            _inventoryBDVisible(true);
+            _inventoryDBVisible(true);
         });
-    }
+    }  
 
 }
