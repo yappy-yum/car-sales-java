@@ -1,7 +1,9 @@
 package Helper.fileSystem;
 
-import javax.swing.*;
 import java.io.File;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 
 public class ImageUploader {
 

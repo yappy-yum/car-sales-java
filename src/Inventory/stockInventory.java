@@ -9,17 +9,19 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import Components.initializer;
 import Helper.fileSystem.imageSystem;
 
 public class stockInventory {
 
-    public stockInventory() {
+    public stockInventory(initializer i) {
         buyCar(
             new stockDetails.transactDetails(
+                i.CarIDGenerator.GenerateCarId(),
                 new stockDetails.CarDetails(
                     stockDetails.CarStatus.AVAILABLE, 
                     imageSystem._scaleImage(imageSystem.ROLLS_ROYCE, 80, 60), 
-                    imageSystem._scaleImage(imageSystem.ROLLS_ROYCE_PHANTOM, 80, 80), 
+                    imageSystem._scaleImage(imageSystem.ROLLS_ROYCE_PHANTOM, 250, 200), 
                     "Rolls Royce", 
                     "Rolls Royce Phantom", 
                     "Rolls Royce Company", 
@@ -30,7 +32,7 @@ public class stockInventory {
                     900
                 ), 
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), 
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")), 
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm:ss a")).toLowerCase(), 
                 null, 
                 null, 
                 null, 
@@ -40,6 +42,7 @@ public class stockInventory {
 
         buyCar(
             new stockDetails.transactDetails(
+                i.CarIDGenerator.GenerateCarId(),
                 new stockDetails.CarDetails(
                     stockDetails.CarStatus.AVAILABLE, 
                     imageSystem._scaleImage(imageSystem.ROLLS_ROYCE, 80, 60), 
@@ -54,7 +57,7 @@ public class stockInventory {
                     900
                 ), 
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), 
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")), 
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm:ss a")).toLowerCase(), 
                 null, 
                 null, 
                 null, 
@@ -64,6 +67,7 @@ public class stockInventory {
 
         buyCar(
             new stockDetails.transactDetails(
+                i.CarIDGenerator.GenerateCarId(),
                 new stockDetails.CarDetails(
                     stockDetails.CarStatus.AVAILABLE, 
                     imageSystem._scaleImage(imageSystem.BENTLEY, 80, 60), 
@@ -78,7 +82,7 @@ public class stockInventory {
                     900
                 ), 
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), 
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")), 
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm:ss a")).toLowerCase(), 
                 null, 
                 null, 
                 null, 
@@ -132,8 +136,8 @@ public class stockInventory {
 
             if (car.carDetails.carName.equals(carName.getText())) {
                 car.carDetails.status = stockDetails.CarStatus.BOOKED;
-                car.DateBookedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-                car.TimeBookedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                car.DateBookedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss a"));
+                car.TimeBookedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss a"));
                 return;
             }
 
@@ -174,6 +178,18 @@ public class stockInventory {
             }
 
         }
+    }
+
+    public stockDetails.transactDetails searchCar(String carId) {
+        for (int i = 0; i < carDetails.size(); i++) {
+            stockDetails.transactDetails car = carDetails.get(i);
+
+            if (car.carId.equals(carId)) {
+                return car;
+            }
+
+        }
+        return null;
     }
     
 

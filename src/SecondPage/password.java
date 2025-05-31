@@ -12,6 +12,7 @@ import Components.SwitchThemeComp;
 import Components.Window;
 import Components.initializer;
 import Helper.blur;
+import Helper.Comp.PanelHelper;
 import Helper.Comp.createComp;
 import Helper.Comp.helpStoreComp;
 import Helper.Config.roundedBorder;
@@ -50,6 +51,8 @@ public class password extends JPanel {
         _background();
         _createButtons();
         _addComp();
+
+        S.dummy.add(this);
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -116,7 +119,8 @@ public class password extends JPanel {
 
     void _close() {
         blur.removeBlur();
-        remove(this);
+        blur = null;
+        PanelHelper.clear(this);
     }
 
     void _checkPassword() {

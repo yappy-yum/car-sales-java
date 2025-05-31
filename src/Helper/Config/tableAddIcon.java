@@ -62,12 +62,16 @@ public class tableAddIcon {
 
             JTable table = this.table.table;
 
-            table.getColumn("Approve").setCellRenderer(new IconButtonRenderer(tick));
-            table.getColumn("Reject").setCellRenderer(new IconButtonRenderer(cross));
+            if (hasColumn(table, "Approve")) table.getColumn("Approve").setCellRenderer(new IconButtonRenderer(tick));
+            if (hasColumn(table, "Reject")) table.getColumn("Reject").setCellRenderer(new IconButtonRenderer(cross));
 
-            table.getColumn("Approve").setCellEditor(new IconButtonEditor(i, tick, table, true, intCharacter));
-            table.getColumn("Reject").setCellEditor(new IconButtonEditor(i, cross, table, false, intCharacter));
+            if (hasColumn(table, "Approve")) table.getColumn("Approve").setCellEditor(new IconButtonEditor(i, tick, table, true, intCharacter));
+            if (hasColumn(table, "Reject")) table.getColumn("Reject").setCellEditor(new IconButtonEditor(i, cross, table, false, intCharacter));
         }
+
+        /*//////////////////////////////////////////////////////////////
+                                    constructor
+        //////////////////////////////////////////////////////////////*/        
 
         private static class IconButtonRenderer extends JButton implements TableCellRenderer {
             public IconButtonRenderer(ImageIcon icon) {
@@ -89,6 +93,10 @@ public class tableAddIcon {
                 int column
             ) { return this; }
         }
+
+        /*//////////////////////////////////////////////////////////////
+                              ImageIcon ActionListener
+        //////////////////////////////////////////////////////////////*/        
 
         private static class IconButtonEditor extends AbstractCellEditor implements TableCellEditor {
             private JButton button;
@@ -117,11 +125,8 @@ public class tableAddIcon {
 
                         // customer
                         if (intCharacter == 1) {
-                            if (isApprove) {
-                                i.storage.setVerified(username);
-                            } else {
-                                i.storage.rejectVerification(username);
-                            }
+                            if (isApprove) i.storage.setVerified(username);
+                            if (!isApprove) i.storage.rejectVerification(username);
                         }
 
                         // salesman
@@ -156,5 +161,17 @@ public class tableAddIcon {
             @Override
             public Object getCellEditorValue() { return null; }
         }
+
+        /*//////////////////////////////////////////////////////////////
+                                 add Checks
+        //////////////////////////////////////////////////////////////*/        
+
+        private boolean hasColumn(JTable table, String ColumnName) {
+            try {
+                table.getColumn(ColumnName);
+                return true;
+            } catch (Exception e) { return false; }
+        }
+        
     }
 }

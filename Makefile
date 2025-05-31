@@ -22,7 +22,7 @@ DOTENV_LIB = lib/dotenv/dotenv-java-3.2.0.jar
 JUNIT_JAR = lib/junit/junit-platform-console-standalone-1.13.0-RC1.jar
 
 tests:
-	mkdir -p bin && $(JAVAC) -d bin $(JFX_MODULES) -cp "src;$(ARGON_LIBS);$(DOTENV_LIB);$(JUNIT_JAR)" src/**/*.java && $(JAVAC) -d bin $(JFX_MODULES) -cp "bin;$(ARGON_LIBS);$(DOTENV_LIB);$(JUNIT_JAR)" test/loginTest.java && $(JAVA) $(JFX_MODULES) -jar $(JUNIT_JAR) --class-path "bin;$(ARGON_LIBS);$(DOTENV_LIB);$(JUNIT_JAR)" --scan-classpath
+	$(CREATE_BIN) && $(JAVAC) -d bin $(JFX_MODULES) -cp "src;$(ARGON_LIBS);$(DOTENV_LIB);$(JUNIT_JAR)" src/**/*.java && $(JAVAC) -d bin $(JFX_MODULES) -cp "bin;$(ARGON_LIBS);$(DOTENV_LIB);$(JUNIT_JAR)" test/loginTest.java && $(JAVA) $(JFX_MODULES) -jar $(JUNIT_JAR) --class-path "bin;$(ARGON_LIBS);$(DOTENV_LIB);$(JUNIT_JAR)" --scan-classpath
 
 deploy:
 	$(CREATE_BIN) && $(JAVAC) -d bin -cp "lib/argon2/*;$(DOTENV_LIB);src" $(JFX_MODULES) src/App.java && $(JAVA) $(JFX_MODULES) -cp "bin;$(ARGON_LIBS);$(DOTENV_LIB)" App

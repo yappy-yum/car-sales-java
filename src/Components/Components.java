@@ -231,6 +231,7 @@ public class Components extends JPanel {
                     System.out.println("Customer buys items");
                 }
                 else if (isLogin.currentProfile.isVerified) {
+                    PanelHelper.clear(this);
                     window._loadSecondPage();
                 }
         }

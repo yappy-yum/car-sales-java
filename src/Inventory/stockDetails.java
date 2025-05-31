@@ -2,6 +2,12 @@ package Inventory;
 
 import javax.swing.ImageIcon;
 
+/**
+ * 
+ * A little static sub-class to provide nested memory 
+ * to store all the respective data 
+ * 
+ */
 public class stockDetails {
 
     public enum CarStatus {
@@ -60,12 +66,14 @@ public class stockDetails {
 
     public static class transactDetails {
 
+        public String carId;
         public CarDetails carDetails;
         public String DateBought, TimeBought;
         public String DateBookedAt, TimeBookedAt;
         public String DateSold, TimeSold;
 
         public transactDetails(
+            String carId,
             CarDetails carDetails, 
             String DateBought, 
             String TimeBought, 
@@ -74,6 +82,7 @@ public class stockDetails {
             String DateSold, 
             String TimeSold
         ) {
+            this.carId = carId;
             this.carDetails = carDetails;
             this.DateBought = DateBought;
             this.TimeBought = TimeBought;

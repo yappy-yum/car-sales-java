@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import Helper.ErrorMessages;
 import Helper.Comp.createComp;
 import Helper.login.loginComp;
 import Helper.login.loginFill;
@@ -95,21 +96,8 @@ public class CustReadyComp {
                        Registration Error Message
     //////////////////////////////////////////////////////////////*/    
 
-    public JLabel[] RegisterFirstErrorMessage = {
-        loginComp.createErrorMessage("First name and Last name must only contain characters", 20, 50),
-        loginComp.createErrorMessage("Username has used", 20, 50),
-        loginComp.createErrorMessage("Phone number is not valid", 20, 50),
-        loginComp.createErrorMessage("Phone number is used", 20, 50),
-        loginComp.createErrorMessage("only the age between 18 - 60", 20, 50)
-    };
-
-    public JLabel[] RegisterSecondErrorMessage = {
-        loginComp.createErrorMessage("Gender is not selected", 20, 50),
-        loginComp.createErrorMessage("'Others' gender is selected, but did not explicitly named your gender", 20, 50),
-        loginComp.createErrorMessage("Password is weak, hower 'i' for more", 20, 50),
-        loginComp.createErrorMessage("favourite text must contain only characters", 20, 50),
-        loginComp.createErrorMessage("favourite number must contain only numbers", 20, 50)
-    };
+    public JLabel[] RegisterFirstErrorMessage = ErrorMessages.ERROR_MESSAGE_FOR_FIRST_PAGE_REGISTER_CHECKS;
+    public JLabel[] RegisterSecondErrorMessage = ErrorMessages.ERROR_MESSAGE_FOR_SECOND_PAGE_REGISTER_CHECKS;
 
     /*//////////////////////////////////////////////////////////////
                           Login Error Message

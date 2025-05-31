@@ -49,25 +49,26 @@ public class ManagerDB extends singleTable
     */
     
     {
-    super
-    (
-        i, 
-        w, 
-        p, 
-        a, 
-        b, 
-        c1, 
-        c2, 
-        0, 
-        3, 
-        3, 
-        "Anything About Manager", 
-        0, 
-        1, 
-        4,
-        "Unverified Managers",
-        "Verified Managers"
-    );
+        super
+        (
+            i, 
+            w, 
+            p, 
+            a, 
+            b, 
+            c1, 
+            c2, 
+            0, 
+            3, 
+            3, 
+            "Anything About Manager", 
+            0, 
+            1, 
+            4,
+            "Unverified Managers",
+            "Verified Managers"
+        );
+        i.switchThemeComp.dummy.add(this);
     } 
 
 }

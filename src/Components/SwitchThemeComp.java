@@ -9,11 +9,17 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import Helper.Config.roundedBorder;
+import Helper.Config.tableRenderConfig;
 import Helper.fileSystem.imageSystem;
 import frontPage.isDarkTheme;
 
@@ -22,8 +28,8 @@ public class SwitchThemeComp {
     isDarkTheme isDarkTheme;
 
     /*//////////////////////////////////////////////////////////////
-                          store all components
-    //////////////////////////////////////////////////////////////*/    
+                               First Page
+    //////////////////////////////////////////////////////////////*/  
 
     public ArrayList<JTextArea> texts = new ArrayList<>();
 
@@ -34,6 +40,15 @@ public class SwitchThemeComp {
     public ArrayList<JLabel> ILabels = new ArrayList<>();
 
     public ArrayList<JPanel> JPanels = new ArrayList<>();
+
+    /*//////////////////////////////////////////////////////////////
+                         Second Page (Database)
+    //////////////////////////////////////////////////////////////*/    
+
+    public ArrayList<JLabel> SecondPageLabels = new ArrayList<>();
+    public ArrayList<JButton> SecondPageButtons = new ArrayList<>();
+    public ArrayList<JTextField> SecondPageJTextFields = new ArrayList<>();
+    public ArrayList<JTable> JTables = new ArrayList<>();
 
     // dummy storage for others components
     public ArrayList<Object> dummy = new ArrayList<>();
@@ -58,6 +73,11 @@ public class SwitchThemeComp {
         _switchILabel();
 
         _switchJPanels();
+
+        _switchSecondPageLabels();
+        _switchSecondPageButtons();
+        _switchSecondPageJTextFields();
+        _switchJTables();
     }  
 
     /*//////////////////////////////////////////////////////////////
@@ -154,7 +174,7 @@ public class SwitchThemeComp {
             // light & dark theme
             ImageIcon lightButton = imageSystem._scaleImage(imageSystem.LIGHT_BUTTON, 50, 50);
             ImageIcon darkButton = imageSystem._scaleImage(imageSystem.DARK_BUTTON, 50, 50);
-            if (button.getX() < 1090) {
+            if (button.getX() < 1090 && button.getX() > 600) {
                 button.setIcon(isDarkTheme.isDarkTheme ? lightButton : darkButton);
             }
         }        
@@ -239,6 +259,73 @@ public class SwitchThemeComp {
     }
 
     /*//////////////////////////////////////////////////////////////
+                                 JTable
+    //////////////////////////////////////////////////////////////*/
+    
+    /**
+     * 
+     * adjust {@link #JTables}
+     */
+    protected void _switchJTables() {
+        for (JTable table : JTables) {
+            table.setGridColor(isDarkTheme.isDarkTheme ? Color.CYAN : Color.BLUE);
+            table.setForeground(isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLACK);
+            table.setSelectionForeground(isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLACK);
+            table.setDefaultRenderer(
+                Object.class, 
+                tableRenderConfig.createCenterAlignedRenderer(
+                    isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLACK, 
+                    new Color(0, 0, 0, 0)
+                )
+            );
+            _helpChangeTable(table);
+        }
+    }
+
+    /**
+     * 
+     * adjust {@link #SecondPageLabels}
+     */
+    protected void _switchSecondPageLabels() {
+        for (JLabel label : SecondPageLabels) {
+            label.setForeground(isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLACK);
+        }
+    }
+
+    /**
+     * 
+     * adjust {@link #SecondPageButtons}
+     */
+    protected void _switchSecondPageButtons() {
+        for (JButton button : SecondPageButtons) {
+            button.setForeground(isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE);
+            button.setBorder(
+                new roundedBorder(
+                    15, 
+                    isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLUE, 
+                    imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)
+                )
+            );
+        }
+    }
+
+    /**
+     * 
+     * adjust {@link #SecondPageJTextFields}
+     */
+    protected void _switchSecondPageJTextFields() {
+        for (JTextField field : SecondPageJTextFields) {
+            field.setBorder(
+                new roundedBorder(
+                    10, 
+                    isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLUE, 
+                    null
+                )
+            );
+        }
+    }
+
+    /*//////////////////////////////////////////////////////////////
                                clear data
     //////////////////////////////////////////////////////////////*/
 
@@ -276,6 +363,42 @@ public class SwitchThemeComp {
             Container parent = comp.getParent();
             parent.remove(comp);
             touchedParents.add(parent);
+        }
+    }
+
+
+    private void _helpChangeTable(JTable table) {
+        if (table.getColumnModel().getColumnCount() > 1) {
+            table.getColumnModel().getColumn(1).setCellRenderer(new DefaultTableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(
+                    JTable table,
+                    Object value,
+                    boolean isSelected,
+                    boolean hasFocus,
+                    int row,
+                    int column
+                ) {
+                    if (value instanceof ImageIcon) {
+                        JLabel label = new JLabel((ImageIcon) value);
+                        label.setHorizontalAlignment(SwingConstants.CENTER);
+                        label.setOpaque(true);
+                        label.setBackground(new Color(0, 0, 0, 0));
+                        return label;
+                    }
+
+                    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                    c.setForeground(isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLACK);
+                    c.setBackground(new Color(0, 0, 0, 0));
+
+                    if (c instanceof JComponent) ((JComponent) c).setOpaque(true);
+                    if (c instanceof JLabel) ((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
+
+                    return c;
+                }
+            });
+
+            table.repaint();
         }
     }
 

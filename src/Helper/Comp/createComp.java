@@ -29,6 +29,7 @@ import javax.swing.text.StyledDocument;
 
 import Components.Window;
 import Components.initializer;
+import Details.checkCar;
 import Details.checkProfile;
 import Helper.Config.roundedBorder;
 import Helper.Config.tableRenderConfig;
@@ -437,7 +438,7 @@ public class createComp {
             if (table.getColumnModel().getColumnCount() > 0) {
                 table
                     .getColumnModel()
-                    .getColumn(0)
+                    .getColumn(1)
                     .setCellRenderer(new DefaultTableCellRenderer() {
                         @Override
                         public Component getTableCellRendererComponent(
@@ -507,6 +508,15 @@ public class createComp {
                             );
                         }
 
+                        if (intProfileSetUp == 2) {
+                            helpStoreComp._startDropDown(
+                                i, 
+                                () -> { i.checkCar = new checkCar(i, w, data); }, 
+                                () -> i.checkCar, 
+                                1000, 500
+                            );
+                        }
+
                         if (intProfileSetUp == 3) {
                             helpStoreComp._startDropDown(
                                 i,
@@ -528,6 +538,8 @@ public class createComp {
                 }
 
             });
+
+            i.switchThemeComp.JTables.add(table);
 
         }
 

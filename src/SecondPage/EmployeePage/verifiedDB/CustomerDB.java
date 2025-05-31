@@ -57,25 +57,28 @@ public class CustomerDB extends singleTable
     */
     
     {
-    super
-    (
-        i, 
-        w, 
-        p, 
-        a, 
-        b, 
-        c1, 
-        c2, 
-        0, 
-        1, 
-        1, 
-        "Anything About Customer", 
-        0, 
-        1, 
-        3,
-        "Unverified Customer",
-        "Verified Customer"
-    );
+
+        super
+        (
+            i, 
+            w, 
+            p, 
+            a, 
+            b, 
+            c1, 
+            c2, 
+            0, 
+            1, 
+            1, 
+            "Anything About Customer", 
+            0, 
+            1, 
+            3,
+            "Unverified Customer",
+            "Verified Customer"
+        );
+        i.switchThemeComp.dummy.add(this);
+
     } 
 
 }

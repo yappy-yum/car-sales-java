@@ -4,9 +4,13 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
 import Details.AboutUs;
+import Details.AddCar;
+import Details.Deletion;
 import Details.TaC;
 import Details.Verify;
+import Details.checkCar;
 import Details.checkProfile;
+import Inventory.CarIDGenerator;
 import Inventory.stockInventory;
 import LoginSystem.isLogin;
 import LoginSystem.schedule;
@@ -35,7 +39,8 @@ public class initializer {
     public Argon Argon = new Argon();
     public storage storage = new storage();
     public schedule schedule = new schedule(storage::_incAge);
-    public stockInventory stockInventory = new stockInventory();
+    public CarIDGenerator CarIDGenerator = new CarIDGenerator();
+    public stockInventory stockInventory = new stockInventory(this);
     
     public JScrollPane scrollPane;
     public Components component;
@@ -56,6 +61,9 @@ public class initializer {
     public Verify Verify;
     public VerifyCust VerifyCust;
     public VerifyEmployee VerifyEmployee;
+    public checkCar checkCar;
+    public AddCar AddCar;
+    public Deletion Deletion;
 
     public compAnimStorage compAnimStorage;
     public videoAnimStorage videoAnimStorage;

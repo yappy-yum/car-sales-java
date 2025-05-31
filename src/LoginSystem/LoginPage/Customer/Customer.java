@@ -125,6 +125,7 @@ public class Customer extends JPanel {
         readyComp.close.addActionListener( 
             _ -> {
                 blur.removeBlur();
+                blur = null;
                 PanelHelper.clear(half);
                 PanelHelper.clear(this);
                 readyComp = null;

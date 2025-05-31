@@ -214,6 +214,7 @@ public class Verify extends JPanel {
 
     void _removing() {
         blur.removeBlur();
+        blur = null;
         PanelHelper.clear(this);
         SwingUtilities.invokeLater(() -> {
             try {

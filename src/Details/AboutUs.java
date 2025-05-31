@@ -122,6 +122,7 @@ public class AboutUs extends JPanel {
         closeButton.addActionListener(
             _ -> {
                 blur.removeBlur();
+                blur = null;
                 PanelHelper.clear(this);
                 window._loadFrontPage();
             }

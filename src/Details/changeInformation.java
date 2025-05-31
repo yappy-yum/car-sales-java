@@ -243,6 +243,7 @@ public class changeInformation extends JPanel {
         close.addActionListener(
             _ -> {
                 blur.removeBlur();
+                blur = null;
                 PanelHelper.clear(this);
                 SwingUtilities.invokeLater(() -> { 
                     try {

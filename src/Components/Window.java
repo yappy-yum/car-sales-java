@@ -193,6 +193,9 @@ public class Window {
         i.VerifyCust = null;
         i.VerifyEmployee = null;
         i.Verify = null;
+        i.checkCar = null;
+        i.AddCar = null;
+        i.Deletion = null;
     }
 
     void _throw() {
@@ -213,6 +216,9 @@ public class Window {
         if (i.VerifyCust != null) i.frame.remove(i.VerifyCust);
         if (i.VerifyEmployee != null) i.frame.remove(i.VerifyEmployee);
         if (i.Verify != null) i.frame.remove(i.Verify);
+        if (i.checkCar != null) i.frame.remove(i.checkCar);
+        if (i.AddCar != null) i.frame.remove(i.AddCar);
+        if (i.Deletion != null) i.frame.remove(i.Deletion);
         if (i.storeVid != null) new Thread(() -> i.storeVid.clearAll()).start(); // @audit may slower during clearance, therefore push it to background
 
         i.frame.revalidate();

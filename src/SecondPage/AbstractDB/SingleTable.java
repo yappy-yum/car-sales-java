@@ -13,7 +13,9 @@ import javax.swing.table.DefaultTableModel;
 
 import Components.Window;
 import Components.initializer;
+import Details.AddCar;
 import Helper.Comp.createComp;
+import Helper.Comp.helpStoreComp;
 import Helper.Config.SearchSingleTable;
 import Helper.Config.roundedBorder;
 import Helper.Config.tableAddIcon;
@@ -54,6 +56,8 @@ public abstract class singleTable {
     public String[] unverifiedColumnTitles;
     public JButton unverifiedButton;
     public String unverifiedDBPhrase;
+
+    JButton addInventoryButton;
 
 
 
@@ -121,6 +125,8 @@ public abstract class singleTable {
         _initTableForUnverified();
         _createButtons();
         _config();
+
+        i.switchThemeComp.dummy.add(this);
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -272,10 +278,10 @@ public abstract class singleTable {
         if (verifiedIntInstruct == 4) {
             for (stockDetails.transactDetails car : i.stockInventory.carDetails) {
                 _initTable.addRow(new Object[] {
+                    car.carId,
                     car.carDetails.carLogo,
                     car.carDetails.carName,
-                    car.carDetails.buyingPrice,
-                    car.carDetails.sellingPrice,
+                    car.carDetails.status,
                     car.carDetails.BoughtFrom,
                     car.carDetails.SellTo
                 });
@@ -355,20 +361,22 @@ public abstract class singleTable {
         if (unverifiedTable != null) panel.add(unverifiedTable);
         if (unverifiedButton != null) panel.add(unverifiedButton);
 
+        if (addInventoryButton != null) panel.add(addInventoryButton);
+
         // dummy
-        if (verifiedLabel != null) i.switchThemeComp.dummy.add(verifiedLabel);
-        if (verifiedSearchBar != null) i.switchThemeComp.dummy.add(verifiedSearchBar);
+        if (verifiedLabel != null) i.switchThemeComp.SecondPageLabels.add(verifiedLabel);
+        if (verifiedSearchBar != null) i.switchThemeComp.SecondPageJTextFields.add(verifiedSearchBar);
         if (verifiedSearchIcon != null) i.switchThemeComp.dummy.add(verifiedSearchIcon);
         if (verifiedTable != null) i.switchThemeComp.dummy.add(verifiedTable.getTableHeader());
-        if (verifiedTable != null) i.switchThemeComp.dummy.add(verifiedTable);
-        if (verifiedButton != null) i.switchThemeComp.dummy.add(verifiedButton);
+        if (verifiedButton != null) i.switchThemeComp.SecondPageButtons.add(verifiedButton);
 
-        if (unverifiedLabel != null) i.switchThemeComp.dummy.add(unverifiedLabel);
-        if (unverifiedSearchBar != null) i.switchThemeComp.dummy.add(unverifiedSearchBar);
+        if (unverifiedLabel != null) i.switchThemeComp.SecondPageLabels.add(unverifiedLabel);
+        if (unverifiedSearchBar != null) i.switchThemeComp.SecondPageJTextFields.add(unverifiedSearchBar);
         if (unverifiedSearchIcon != null) i.switchThemeComp.dummy.add(unverifiedSearchIcon);
         if (unverifiedTable != null) i.switchThemeComp.dummy.add(unverifiedTable.getTableHeader());
-        if (unverifiedTable != null) i.switchThemeComp.dummy.add(unverifiedTable);
-        if (unverifiedButton != null) i.switchThemeComp.dummy.add(unverifiedButton);
+        if (unverifiedButton != null) i.switchThemeComp.SecondPageButtons.add(unverifiedButton);
+
+        if (addInventoryButton != null) i.switchThemeComp.SecondPageButtons.add(addInventoryButton);
 
         // hide them
         _setVerifiedVisibility(false);
@@ -376,37 +384,65 @@ public abstract class singleTable {
     }  
     
     void _createButtons() {
-        verifiedButton = createComp.createJButton(
-            verifiedDBPhrase, 
-            1000, 
-            250, 
-            200, 
-            50, 
-            new roundedBorder(15, Color.WHITE, null), 
-            Color.PINK, 
-            new Font("Arial", Font.BOLD, 15)
-        );
-        
-        verifiedButton.addActionListener( _ -> {
-            _setVerifiedVisibility(true);
-            _setUnverifiedVisibility(false);
-        });;
 
-        unverifiedButton = createComp.createJButton(
-            unverifiedDBPhrase, 
-            1000, 
-            250, 
-            200, 
-            50, 
-            new roundedBorder(15, Color.WHITE, null), 
-            Color.PINK, 
-            new Font("Arial", Font.BOLD, 15)
-        );
-        
-        unverifiedButton.addActionListener( _ -> {
-            _setVerifiedVisibility(false);
-            _setUnverifiedVisibility(true);
-        });
+        if (verifiedDBPhrase != null && unverifiedDBPhrase != null) {
+            verifiedButton = createComp.createJButton(
+                verifiedDBPhrase, 
+                1000, 
+                250, 
+                200, 
+                50, 
+                new roundedBorder(15, Color.WHITE, null), 
+                Color.PINK, 
+                new Font("Arial", Font.BOLD, 15)
+            );
+            
+            verifiedButton.addActionListener( _ -> {
+                _setVerifiedVisibility(true);
+                _setUnverifiedVisibility(false);
+            });;
+
+            unverifiedButton = createComp.createJButton(
+                unverifiedDBPhrase, 
+                1000, 
+                250, 
+                200, 
+                50, 
+                new roundedBorder(15, Color.WHITE, null), 
+                Color.PINK, 
+                new Font("Arial", Font.BOLD, 15)
+            );
+            
+            unverifiedButton.addActionListener( _ -> {
+                _setVerifiedVisibility(false);
+                _setUnverifiedVisibility(true);
+            });
+        } 
+
+        else {
+
+            addInventoryButton = createComp.createJButton(
+                "Add Cars", 
+                1000, 
+                250, 
+                200, 
+                50, 
+                new roundedBorder(15, Color.WHITE, null), 
+                Color.PINK, 
+                new Font("Arial", Font.BOLD, 15)
+            );
+
+            addInventoryButton.addActionListener( _ -> {
+                helpStoreComp._startDropDown(
+                    i, 
+                    () -> { i.AddCar = new AddCar(i, w); }, 
+                    () -> i.AddCar, 
+                    1000, 
+                    500
+                );
+            });    
+
+        }
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -420,6 +456,8 @@ public abstract class singleTable {
         if (verifiedTable != null) verifiedTable.getTableHeader().setVisible(bool);
         if (verifiedTable != null) verifiedTable.setVisible(bool);
         if (unverifiedButton != null) unverifiedButton.setVisible(bool);
+        if (addInventoryButton != null) addInventoryButton.setVisible(bool);
+
     }
 
     public void _setUnverifiedVisibility(boolean bool) {
@@ -428,7 +466,9 @@ public abstract class singleTable {
         if (unverifiedSearchIcon != null) unverifiedSearchIcon.setVisible(bool);
         if (unverifiedTable != null) unverifiedTable.getTableHeader().setVisible(bool);
         if (unverifiedTable != null) unverifiedTable.setVisible(bool);
-        if (verifiedButton != null) verifiedButton.setVisible(bool);        
+        if (verifiedButton != null) verifiedButton.setVisible(bool);    
+        if (addInventoryButton != null) addInventoryButton.setVisible(bool);
+
     }
 
 }

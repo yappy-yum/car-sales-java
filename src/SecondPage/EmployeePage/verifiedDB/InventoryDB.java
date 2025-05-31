@@ -17,8 +17,7 @@ public class InventoryDB extends singleTable
         JPanel p, 
         String a, 
         String b, 
-        String[] c1, 
-        String[] c2
+        String[] c1
     )
 
     /* 
@@ -55,25 +54,26 @@ public class InventoryDB extends singleTable
     */
 
     {
-    super
-    (
-        i, 
-        w, 
-        p, 
-        a, 
-        b, 
-        c1, 
-        c2, 
-        70, 
-        4, 
-        5, 
-        "Anything Inventory Related", 
-        0, 
-        2, 
-        0,
-        "Unverified Inventory",
-        "Verified Inventory"
-    );
+        super
+        (
+            i, 
+            w, 
+            p, 
+            a, 
+            b, 
+            c1, 
+            null, 
+            70, 
+            4, 
+            5, 
+            "Anything Inventory Related", 
+            0, 
+            2, 
+            0,
+            null,
+            null
+        );
+        i.switchThemeComp.dummy.add(this);
     }
 
 }

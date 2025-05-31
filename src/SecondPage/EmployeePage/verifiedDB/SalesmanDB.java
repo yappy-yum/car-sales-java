@@ -67,25 +67,26 @@ public class SalesmanDB extends singleTable
     */
     
     {
-    super
-    (
-        i, 
-        w, 
-        p, 
-        a, 
-        b, 
-        c1, 
-        c2, 
-        0, 
-        2, 
-        2, 
-        "Anything About Salesman", 
-        0, 
-        1, 
-        4,
-        "Unverified Salesman",
-        "Verified Salesman"
-    );
+        super
+        (
+            i, 
+            w, 
+            p, 
+            a, 
+            b, 
+            c1, 
+            c2, 
+            0, 
+            2, 
+            2, 
+            "Anything About Salesman", 
+            0, 
+            1, 
+            4,
+            "Unverified Salesman",
+            "Verified Salesman"
+        );
+        i.switchThemeComp.dummy.add(this);
     } 
 
 }

@@ -49,6 +49,13 @@ public class imageSystem {
     public static final ImageIcon DARK_BUTTON = new ImageIcon(FILE_PATH.concat("theme/darkTheme.png"));
 
     /*//////////////////////////////////////////////////////////////
+                         Base Car & Brand Logo
+    //////////////////////////////////////////////////////////////*/
+    
+    public static final ImageIcon BASE_CAR_BRAND = new ImageIcon(FILE_PATH.concat("car_image/Icon/CarBrand.jpeg"));
+    public static final ImageIcon BASE_CAR_IMAGE = new ImageIcon(FILE_PATH.concat("car_image/Icon/CarImage.jpeg"));
+
+    /*//////////////////////////////////////////////////////////////
                              car logo icon
     //////////////////////////////////////////////////////////////*/
      
@@ -66,7 +73,8 @@ public class imageSystem {
                                Car Images
     //////////////////////////////////////////////////////////////*/
     
-    public static final ImageIcon ROLLS_ROYCE_PHANTOM = new ImageIcon(FILE_PATH.concat("cars/Rolls_Royce.jpg"));
+    public static final ImageIcon ROLLS_ROYCE_PHANTOM = new ImageIcon(FILE_PATH.concat("car_image/RollsRoyce/Rolls_Royce_Phantom.jpeg"));
+    public static final ImageIcon ROLLS_ROYCE_LUXE = new ImageIcon(FILE_PATH.concat("car_image/RollsRoyce/Rolls_Royce_Luxe.jpeg"));
     
     /*//////////////////////////////////////////////////////////////
                            mouse cursor icon

@@ -17,6 +17,43 @@ import Helper.Comp.createComp;
 import Helper.Config.roundedBorder;
 import Helper.fileSystem.imageSystem;
 
+/**
+ * drop down small JPanel that shows error/success messages
+ * 
+ * <p>
+ *  
+ * Ensures that below code exist in the class that calls this:
+ * 
+ * <pre>java
+ * 
+ *  PromptMessage message;
+ *  initializer i;
+ * 
+ *  public void _removeMessage() { remove(message); message = null; }
+ *
+ *  void _promptMessage(JLabel text) {
+ *      message = new PromptMessage(i, text, this);
+ *      message.setBounds(300, 150, 550, 180);
+ *      message.setVisible(true);
+ *
+ *      i.frame.getContentPane().add(message);
+ *
+ *      i.compAnimStorage.addAnim(
+ *          new componentAnim(
+ *              message, 
+ *              350, 150, 
+ *              350, 250, 
+ *              i.scrollPane
+ *          ).start()
+ *      );
+ *   }
+ * </pre>
+ * 
+ * 
+ * @author yappy-yum
+ * 
+ * 
+ */
 public class PromptMessage extends JPanel {
  
     blur blur;
@@ -55,7 +92,15 @@ public class PromptMessage extends JPanel {
         );
     }
 
+    /*//////////////////////////////////////////////////////////////
+                              Add Message
+    //////////////////////////////////////////////////////////////*/    
+
     void _addMessage() { S.dummy.add(text); add(text); text.setVisible(true); }
+
+    /*//////////////////////////////////////////////////////////////
+                              Close Button
+    //////////////////////////////////////////////////////////////*/    
 
     void _addX() {
 
@@ -70,6 +115,7 @@ public class PromptMessage extends JPanel {
         closeButton.addActionListener(
             _ -> {
                 blur.removeBlur();
+                blur = null;
                 PanelHelper.clear(this);
                 SwingUtilities.invokeLater(() -> { 
                     try {
@@ -87,6 +133,10 @@ public class PromptMessage extends JPanel {
         S.dummy.add(closeButton);
 
     }
+
+    /*//////////////////////////////////////////////////////////////
+                                 Header
+    //////////////////////////////////////////////////////////////*/    
 
     void _addHeader() {
         JLabel header = createComp.createJLabel(

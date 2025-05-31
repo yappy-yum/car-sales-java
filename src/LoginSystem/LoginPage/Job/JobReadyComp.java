@@ -10,6 +10,7 @@ import javax.swing.JTextPane;
 
 import Components.initializer;
 import Helper.Comp.createComp;
+import Helper.ErrorMessages;
 import Helper.login.annotateButton;
 import Helper.login.loginComp;
 import Helper.login.loginFill;
@@ -92,20 +93,7 @@ public class JobReadyComp {
                              Error Message
     //////////////////////////////////////////////////////////////*/
      
-    public JLabel[] ErrorMessage = {
-        loginComp.createErrorMessage("First name and Last name must only contain characters", 20, 50),
-        loginComp.createErrorMessage("Username has used", 20, 50),
-        loginComp.createErrorMessage("Phone number is not valid", 20, 50),
-        loginComp.createErrorMessage("Phone number is used", 20, 50),
-        loginComp.createErrorMessage("only the age between 18 - 60", 20, 50),
-        loginComp.createErrorMessage("Gender is not selected", 20, 50),
-        loginComp.createErrorMessage("'Others' gender is selected, but did not explicitly named your gender", 20, 50),
-        loginComp.createErrorMessage("Role is not selected", 20, 50),
-        loginComp.createErrorMessage("Password is weak, hower 'i' for more", 20, 50),
-        loginComp.createErrorMessage("favourite text must contain only characters", 20, 50),
-        loginComp.createErrorMessage("favourite number must contain only numbers", 20, 50),
-        loginComp.createErrorMessage("CV is empty", 20, 50)
-    };
+    public JLabel[] ErrorMessage = ErrorMessages.ERROR_MESSAGE_FOR_JOB_CHECKS;
 
     public JLabel SuccessMessage = loginComp.createSuccessMessage("Submitted Successfully", 20, 50);
     public JLabel loadingLabel = loginComp.createLoading(580, 420);

@@ -208,6 +208,7 @@ public class Job extends JPanel {
         closeButton.addActionListener(
             _ -> {
                 blur.removeBlur();
+                blur = null;
                 SwingUtilities.invokeLater(
                     () -> {
                         PanelHelper.clear(this);

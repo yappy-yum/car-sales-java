@@ -79,9 +79,10 @@ replace `<username>` and `<password>` with any username and password respectivel
 
 <br>
 
-> once you've finished all the configuration process, run the following command to run the program
+> once you've finished all the configuration process, run the following command to run the tests and the program
 >
 > ```
+> make tests
 > make deploy
 > ```
 
@@ -159,8 +160,10 @@ src/
 ├── Details/
 │   ├── AboutUs.java
 │   ├── changeInformation.java
+│   ├── checkCar.java
 │   ├── checkProfile.java
-│   └── TaC.java
+│   ├── TaC.java
+│   └── Verify.java
 |
 ├── frontPage/
 │   ├── FaQConfig.java
@@ -173,16 +176,18 @@ src/
 │   │   └── VideoAnim.java
 │   ├── Comp/
 │   │   ├── createComp.java
+│   │   ├── createDynamicTavle.java // @deprecated
 │   │   ├── createJFX.java
 │   │   ├── createScroll.java
 │   │   ├── helpStoreComp.java
 │   │   ├── PanelHelper.java
 │   │   └── wordWrap.java
 │   ├── Config/
-│   │   ├── dynamicTable.java
 │   │   ├── roundedBorder.java
-│   │   ├── tableRenderConfig.java
-│   │   └── tableSearch.java
+│   │   ├── SearchDynTable.java // @deprecated
+│   │   ├── SerchSingleTable.java
+│   │   ├── tableAddIcon.java
+│   │   └── tableRenderConfig.java
 │   ├── fileSystem/
 │   │   ├── filePath.java
 │   │   ├── fontSystem.java
@@ -197,6 +202,7 @@ src/
 |   └── blur.java
 |
 ├── Inventory/
+│   ├── CarIDGenerator.java
 │   ├── stockDetails.java
 |   └── stockInventory.java
 |
@@ -212,19 +218,29 @@ src/
 │   │   |   ├── Job.java
 │   │   |   └── JobReadyComp.java
 |   |   └── PromptMessage.java
+│   ├── SecureImage/
+│   │   └── ImageHandler.java
 │   ├── isLogin.java
 │   ├── schedule.java
 │   └── storage.java
 |
 ├── SecondPage/
+│   ├── AbstractDB/
+│   │   ├── dynamicTable.java // @deprecated
+│   │   └── singleTable.java
 │   ├── CustomerPage/
 │   │   ├── 
 │   │   └── 
 │   ├── EmployeePage/
-│   │   ├── CustomerDB.java
-│   │   ├── ManagerDB.java
-│   │   └── SalesmanDB.java
-│   ├── ADatabase.java
+│   │   ├── unVerifiedDB/
+│   │   |   ├── VerifyCust.java
+│   │   |   └── VerifyEmployee.java
+│   │   └── VerifiedDB/
+│   │       ├── CustomerDB.java
+│   │       ├── InventoryDB.java
+│   │       ├── ManagerDB.java
+│   │       └── SalesmanDB.java
+│   ├── password.java
 │   └── UI.java
 |
 ├── StoreAnimation/

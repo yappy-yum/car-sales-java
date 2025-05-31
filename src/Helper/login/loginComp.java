@@ -220,6 +220,65 @@ public class loginComp {
         }
     }    
 
+    public static class createCarLengthInstructor {
+        public JButton button;
+        public JTextArea textArea;
+        public JTextArea textBackground;
+
+        public createCarLengthInstructor(int X, int Y) {
+
+            button = createComp.createJButton(
+                "i", 
+                X, Y, 
+                30, 30, 
+                null, Color.BLACK,
+                new Font("Arial", Font.BOLD, 17)
+            );
+            button.setVisible(false);
+
+            textArea = createComp.createJTextArea(
+                """
+                LENGTH X HEIGHT
+
+                Ex: 1000 X 500
+                """,
+                X - 40, Y - 48,
+                100, 50,
+                new Font("Arial", Font.BOLD, 10),
+                null, Color.BLACK
+            );
+
+            textBackground = createComp.createJTextArea(
+                null, X - 45, Y - 52,
+                100, 50,
+                null, 
+                new roundedBorder(
+                    5, 
+                    Color.BLACK, 
+                    imageSystem._reduceColorTransparency(
+                        Color.GRAY, 
+                        0.9f
+                    )
+                ), 
+                null
+            );
+
+            button.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent E) {
+                    textBackground.setVisible(true);
+                    textArea.setVisible(true);
+                }
+    
+                @Override
+                public void mouseExited(MouseEvent E) {
+                    textBackground.setVisible(false);
+                    textArea.setVisible(false);
+                }
+            });
+        }
+    }    
+
     public static JButton createFillNext(String _text, int X, int Y, int fontSize, Runnable method) {
         JButton button = createComp.createJButton(
             _text, 

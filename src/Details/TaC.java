@@ -111,6 +111,7 @@ public class TaC extends JPanel {
         closeButton.addActionListener(
             _ -> {
                 blur.removeBlur();
+                blur = null;
                 PanelHelper.clear(this);
                 SwingUtilities.invokeLater(() -> { window._loadFrontPage(); } );
             }

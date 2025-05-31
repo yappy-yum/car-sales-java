@@ -19,6 +19,7 @@ import Helper.Comp.PanelHelper;
 import Helper.Comp.helpStoreComp;
 import Helper.Config.roundedBorder;
 import Helper.fileSystem.imageSystem;
+import Helper.login.Profile;
 import SecondPage.EmployeePage.verifiedDB.CustomerDB;
 import SecondPage.EmployeePage.verifiedDB.InventoryDB;
 import SecondPage.EmployeePage.verifiedDB.ManagerDB;
@@ -45,7 +46,7 @@ public class UI extends JPanel {
     JScrollPane scroll;
 
     public UI(initializer i, Window w) { this.i = i; this.w = w; }
-    public void _setScroll(JScrollPane scroll) { this.scroll = scroll; _init_(); }
+    public void _setScroll(JScrollPane scroll) { this.scroll = scroll; _init_(); i.switchThemeComp.dummy.add(this); }
 
     /*//////////////////////////////////////////////////////////////
                           background gradient
@@ -148,22 +149,17 @@ public class UI extends JPanel {
         themeIcon.addActionListener( _ -> { i.isDarkTheme.switchTheme(this, i.switchThemeComp); });
         i.switchThemeComp.dummy.add(themeIcon);
 
-        // if (i.isLogin.currentProfile.department == Profile.Department.CUSTOMER) ;
-        // if (i.isLogin.currentProfile.department == Profile.Department.SALESMAN) ;
-        // if (i.isLogin.currentProfile.department == Profile.Department.MANAGER) ;
-        // if (i.isLogin.currentProfile.department == Profile.Department.OWNER) ;
-        // _addCustomerDatabase(); 
-        _initializeCustomer();
-        _initializeSalesman();
-        _initializeManager();
-        _initializeInventory();
-        _initializeInventory();
-        _customerButton();
-        _salesmanButton();
-        _managerButton();
-        _inventoryButton();
+        _initializeCustomerDB();
+        _initializeInventoryDB();
+        if (i.isLogin.currentProfile.department != Profile.Department.CUSTOMER) _initializeSalesmanDB();
+        if (i.isLogin.currentProfile.department == Profile.Department.OWNER) _initializeManagerDB();  
 
     }
+
+    void _initializeCustomerDB() { _initializeCustomer(); _customerButton(); }
+    void _initializeInventoryDB() { _initializeInventory(); _inventoryButton(); }
+    void _initializeSalesmanDB() { _initializeSalesman(); _salesmanButton(); }
+    void _initializeManagerDB() { _initializeManager(); _managerButton(); }
 
     /*//////////////////////////////////////////////////////////////
                               Create Table
@@ -213,10 +209,9 @@ public class UI extends JPanel {
             i, 
             w, 
             this, 
-            "Verified Inventory", 
-            "Unverified Inventory",
-            new String[] {"logo", "Car Name", "Buying Price", "Selling Price", "Bought From", "Sell To"},
-            new String[] {"Username", "First Name", "Last Name", "Gender", "Age", "Approve", "Reject"}
+            "Inventory", 
+            null,
+            new String[] {"Car ID", "logo", "Car Name", "Status", "Account Payable", "Account Receivable"}
         );
         i.switchThemeComp.dummy.add(i.InventoryDB);
     }
@@ -274,7 +269,7 @@ public class UI extends JPanel {
     //////////////////////////////////////////////////////////////*/    
 
     void _customerButton() {
-        helpStoreComp.addJButton(
+        JButton button = helpStoreComp.addJButton(
             i, this, 
             "Customers", 
             50, 80, 
@@ -283,66 +278,79 @@ public class UI extends JPanel {
             new roundedBorder(15, Color.WHITE, imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)),
             Color.PINK,
             new Font("Arial", Font.BOLD, 18)
-        ).addActionListener( _ -> { 
+        );
+        button.addActionListener( _ -> { 
             _customerDBVisible(true);
             _salesmanDBVisible(false); 
             _managerDBVisible(false);
             _inventoryDBVisible(false);
         });
+
+        i.switchThemeComp.SecondPageButtons.add(button);
     }
 
     void _salesmanButton() {
-        helpStoreComp.addJButton(
+        JButton button = helpStoreComp.addJButton(
             i, this, 
             "Salesmen", 
-            230, 80, 
-            230, 130, 
-            170, 50,
-            new roundedBorder(15, Color.WHITE, imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)),
-            Color.PINK,
-            new Font("Arial", Font.BOLD, 18)
-        ).addActionListener( _ -> {
-            _customerDBVisible(false);
-            _salesmanDBVisible(true);
-            _managerDBVisible(false);
-            _inventoryDBVisible(false);
-        });
-    }
-
-    void _managerButton() {
-        helpStoreComp.addJButton(
-            i, this, 
-            "Managers", 
             410, 80, 
             410, 130, 
             170, 50,
             new roundedBorder(15, Color.WHITE, imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)),
             Color.PINK,
             new Font("Arial", Font.BOLD, 18)
-        ).addActionListener( _ -> {
+        );
+        button.addActionListener( _ -> {
+            _customerDBVisible(false);
+            _salesmanDBVisible(true);
+            _managerDBVisible(false);
+            _inventoryDBVisible(false);
+        });
+
+        i.switchThemeComp.SecondPageButtons.add(button);
+    }
+
+    void _managerButton() {
+        JButton button = helpStoreComp.addJButton(
+            i, this, 
+            "Managers", 
+            590, 80, 
+            590, 130, 
+            170, 50,
+            new roundedBorder(15, Color.WHITE, imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)),
+            Color.PINK,
+            new Font("Arial", Font.BOLD, 18)
+        );
+        button.addActionListener( _ -> {
             _customerDBVisible(false);
             _salesmanDBVisible(false);
             _managerDBVisible(true);
             _inventoryDBVisible(false);
         });
+
+        i.switchThemeComp.SecondPageButtons.add(button);
     }
 
     void _inventoryButton() {
-        helpStoreComp.addJButton(
+        JButton button = helpStoreComp.addJButton(
             i, this, 
             "Inventory", 
-            590, 80, 
-            590, 130, 
+            230, 80, 
+            230, 130, 
             170, 50, 
             new roundedBorder(15, Color.WHITE, imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)), 
             Color.PINK, 
             new Font("Arial", Font.BOLD, 18)
-        ).addActionListener( _ -> {
+        );
+        button.addActionListener( _ -> {
             _customerDBVisible(false);
             _salesmanDBVisible(false);
             _managerDBVisible(false);
             _inventoryDBVisible(true);
         });
+
+        i.switchThemeComp.SecondPageButtons.add(button);
+
     }  
 
 }

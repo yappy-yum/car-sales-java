@@ -53,6 +53,7 @@ public class checkProfile extends JPanel {
         if (user == null) _changeInformation();
         _addX();
         _verify();
+        if (i.isLogin.currentProfile.department != Profile.Department.OWNER) _deleteAccount();
         if (user == null) _logout();
         _addHeader();
         _addInformation();
@@ -89,18 +90,7 @@ public class checkProfile extends JPanel {
             new Font("Arial", Font.BOLD, 20)
         );
         closeButton.setVisible(true);
-        closeButton.addActionListener(
-            _ -> {
-                blur.removeBlur();
-                PanelHelper.clear(this);
-                SwingUtilities.invokeLater(
-                    () -> {
-                        if (user == null) window._loadFrontPage();
-                        if (user != null) window._loadSecondPage();
-                    }
-                );
-            }
-        );
+        closeButton.addActionListener( _ -> { _close(); } );
         S.dummy.add(closeButton);
         add(closeButton);
     }  
@@ -242,7 +232,7 @@ public class checkProfile extends JPanel {
     void _changeInformation() {
         JButton button = createComp.createJButton(
             "Edit Details", 
-            750, 430, 
+            800, 430, 
             170, 50, 
             new roundedBorder(15, Color.BLACK, null), Color.BLACK,
             new Font("Arial", Font.BOLD, 20)
@@ -261,7 +251,7 @@ public class checkProfile extends JPanel {
     void _logout() {
         JButton button = createComp.createJButton(
             "Logout", 
-            600, 430, 
+            670, 430, 
             120, 50, 
             new roundedBorder(15, Color.BLACK, null), Color.BLACK,
             new Font("Arial", Font.BOLD, 20)
@@ -286,7 +276,7 @@ public class checkProfile extends JPanel {
         if (i.isLogin.currentProfile.department == Profile.Department.CUSTOMER && !i.isLogin.currentProfile.isVerified) {
             JButton button = createComp.createJButton(
                 "Verify", 
-                500, 430, 
+                570, 430, 
                 90, 50, 
                 new roundedBorder(15, Color.BLACK, null), Color.BLACK,
                 new Font("Arial", Font.BOLD, 20)
@@ -297,6 +287,22 @@ public class checkProfile extends JPanel {
             add(button);  
             S.dummy.add(button);          
         }
+    }
+
+    void _deleteAccount() {
+        JButton button = createComp.createJButton(
+            "Delete", 
+            800, 370, 
+            170, 50, 
+            new roundedBorder(15, Color.BLACK, null), Color.BLACK,
+            new Font("Arial", Font.BOLD, 20)
+        );
+        button.setVisible(true);
+        button.setEnabled(true);
+        button.addActionListener( _ -> { _promptDelete(); } );
+
+        add(button);
+        S.dummy.add(button);
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -324,6 +330,8 @@ public class checkProfile extends JPanel {
 
     public void _removeVerify() { PanelHelper.clear(i.Verify); }
 
+    public void _removeEverything() { PanelHelper.clear(i.Deletion); }
+
     void _promptVerify() {
         helpStoreComp._startDropDown(
             i, 
@@ -332,5 +340,25 @@ public class checkProfile extends JPanel {
             800, 400
         );
     }    
+
+    void _promptDelete() {
+        helpStoreComp._startDropDown(
+            i, 
+            () -> i.Deletion = new Deletion(i, window, this), 
+            () -> i.Deletion, 
+            800, 200
+        );
+    }
+
+    public void _close() {
+        blur.removeBlur();
+        PanelHelper.clear(this);
+        SwingUtilities.invokeLater(
+            () -> {
+                if (user == null) window._loadFrontPage();
+                if (user != null) window._loadSecondPage();
+            }
+        );
+    }
 
 }
