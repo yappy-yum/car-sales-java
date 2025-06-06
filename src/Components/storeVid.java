@@ -34,4 +34,24 @@ public class storeVid {
         }
         mediaPlayers.clear();
     }
+
+    // @audit have below method uncommented if the method above causes lag
+    // public void clearAll() {
+    //     // Just to make sure nothing crashes
+    //     try {
+    //         for (int j = 0; j < mediaPlayers.size(); j++) {
+    //             MediaPlayer player = mediaPlayers.get(j);
+    //             if (player != null) {
+    //                 player.stop();
+    //                 player.dispose();
+    //                 // player = null; // this line is useless and can be removed
+    //             }
+    //         }
+    //     } catch (Exception e) {
+    //         System.err.println("Video cleanup failed: " + e.getMessage());
+    //     } finally {
+    //         mediaPlayers.clear(); // always clear at the end
+    //     }
+    // }
+
 }

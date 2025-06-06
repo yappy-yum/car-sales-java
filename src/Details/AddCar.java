@@ -145,7 +145,7 @@ public class AddCar extends JPanel {
                         imageSystem._scaleImage(
                             img, 
                             80, 
-                            60
+                            80
                         )
                     );
                 }
@@ -381,7 +381,7 @@ public class AddCar extends JPanel {
         blur.removeBlur();
         blur = null;
         PanelHelper.clear(this);
-        SwingUtilities.invokeLater(() -> { W._loadSecondPage(); });
+        SwingUtilities.invokeLater(() -> { W._loadDBPage(); });
     }
 
     /*//////////////////////////////////////////////////////////////

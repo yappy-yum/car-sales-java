@@ -92,6 +92,7 @@ public class Deletion extends JPanel {
 
     void _removeEverything() {
         i.storage.removeUser(i.isLogin.currentProfile.username);
+        i.stockInventory.UserDeleted(i.isLogin.currentProfile.username);
         i.isLogin.currentProfile = null;
         i.isLogin.isLogin = false;
 
@@ -102,7 +103,7 @@ public class Deletion extends JPanel {
             try {
                 classToInteractWith
                         .getClass()
-                        .getMethod("_close")
+                        .getMethod("_closeEverything")
                         .invoke(classToInteractWith);
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();

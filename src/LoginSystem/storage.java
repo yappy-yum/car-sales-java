@@ -40,142 +40,6 @@ public class storage {
                 imageSystem._scaleImage(imageSystem.PROFILE, 50, 50)
             )
         );
-
-        Users.put(
-            "Catherine", 
-            new Profile.userProfile(
-                Profile.Department.CUSTOMER, 
-                true,
-                "Catherine",
-                "Yap",
-                "Female", 
-                Integer.parseInt("0120987654"),
-                20, 
-                "Catherine",
-                "Catherine Password",
-                null, 
-                null, 
-                imageSystem._scaleImage(imageSystem.PROFILE, 50, 50)
-            )
-        );
-
-        Users.put(
-            "Caleb", 
-            new Profile.userProfile(
-                Profile.Department.CUSTOMER, 
-                false,
-                "Caleb",
-                "Tan",
-                "Male", 
-                Integer.parseInt("0125556754"),
-                20, 
-                "Caleb",
-                argon.HashIt("123"),
-                null, 
-                null, 
-                imageSystem._scaleImage(imageSystem.PROFILE, 50, 50)
-            )
-        );
-        _encryptImage(
-            "Caleb", 
-            imageSystem._scaleImage(imageSystem.CALEB_FACE, 200, 200), 
-            imageSystem._scaleImage(imageSystem.CALEB_DOCS, 200, 200)
-        );
-
-        Users.put(
-            "Camila", 
-            new Profile.userProfile(
-                Profile.Department.CUSTOMER, 
-                false,
-                "Camila",
-                "Tay",
-                "Female", 
-                Integer.parseInt("0125556754"),
-                20, 
-                "Camila",
-                "Camila Password",
-                null, 
-                null, 
-                imageSystem._scaleImage(imageSystem.PROFILE, 50, 50)
-            )
-        );
-        _encryptImage(
-            "Camila", 
-            imageSystem._scaleImage(imageSystem.CAMILA_FACE, 200, 200), 
-            imageSystem._scaleImage(imageSystem.CAMILA_DOCS, 200, 200)
-        );
-
-        Users.put(
-            "Bob", 
-            new Profile.userProfile(
-                Profile.Department.CUSTOMER, 
-                true,
-                "Bobby",
-                "Yeoh",
-                "Male", 
-                Integer.parseInt("0120387659"),
-                20, 
-                "Bob",
-                "Bob Password",
-                null, 
-                null, 
-                imageSystem._scaleImage(imageSystem.PROFILE, 50, 50)
-            )
-        );
-
-        Users.put(
-            "Jann", 
-            new Profile.userProfile(
-                Profile.Department.MANAGER, 
-                true,
-                "Jannist",
-                "Tan",
-                "Female", 
-                Integer.parseInt("0190683659"),
-                20, 
-                "Jann",
-                "Jann Password",
-                null, 
-                null, 
-                imageSystem._scaleImage(imageSystem.PROFILE, 50, 50)
-            )
-        );
-
-        Users.put(
-            "Alice", 
-            new Profile.userProfile(
-                Profile.Department.SALESMAN, 
-                true,
-                "Aliciest",
-                "Yeoh",
-                "Female", 
-                Integer.parseInt("0190673600"),
-                20, 
-                "Alice",
-                "Alice Password",
-                null, 
-                null, 
-                imageSystem._scaleImage(imageSystem.PROFILE, 50, 50)
-            )
-        );
-
-        Users.put(
-            "May", 
-            new Profile.userProfile(
-                Profile.Department.SALESMAN, 
-                true,
-                "Maylie",
-                "Yap",
-                "No Gender", 
-                Integer.parseInt("0190000600"),
-                20, 
-                "May",
-                "May Password",
-                null, 
-                null, 
-                imageSystem._scaleImage(imageSystem.PROFILE, 50, 50)
-            )
-        );
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -186,6 +50,16 @@ public class storage {
      * store all the users detail
      */
     public HashMap<String, Profile.userProfile> Users = new HashMap<String, Profile.userProfile>();
+
+    /**
+     * stores all the car a customer has bought, including booked
+     * 
+     * @apiNote
+     * when customer account is deleted, this HashMap wont get deleted, but instead at <code>(deleted)</code>
+     * right after this username 
+     * 
+     */
+    public HashMap<String, Profile.CarHolder> CustomersCarHolder = new HashMap<String, Profile.CarHolder>();
 
     /**
      * store all the confidential of the customer, such as docs id and face for verification
@@ -316,7 +190,17 @@ public class storage {
     //////////////////////////////////////////////////////////////*/
     
     public void setVerified(String username) { 
-        Users.get(username).isVerified = true; 
+        Users.get(username).isVerified = true;
+
+        CustomersCarHolder.put(
+            username, 
+            new Profile.CarHolder(
+                username, 
+                null, 
+                null
+            )
+        );
+        
         rejectVerification(username);
     }
 
@@ -409,7 +293,27 @@ public class storage {
                               Remove User
     //////////////////////////////////////////////////////////////*/    
     
-    public void removeUser(String username) { Users.remove(username); }
+    public void removeUser(String username) { 
+        Users.remove(username);
+
+        if (CustomersCarHolder.containsKey(username)) {
+            
+            if (CustomersCarHolder.get(username).CarId.size() > 0 && CustomersCarHolder.get(username).CarName.size() > 0) {
+                Profile.CarHolder dummy = CustomersCarHolder.get(username);
+                dummy.Username.concat( " (deleted)" );
+
+                
+                CustomersCarHolder.put(
+                    username.concat(" (deleted)"), 
+                    dummy
+                );
+            }
+            
+            CustomersCarHolder.remove(username);
+        }
+
+        if (CustomerVerification.containsKey(username)) _deleteConfidential(username);
+    }
 
     /*//////////////////////////////////////////////////////////////
                               Search User
@@ -573,7 +477,7 @@ public class storage {
                         Delete User Confidential
     //////////////////////////////////////////////////////////////*/    
 
-    public void _deleteConfidential(boolean isApproved, String username) 
+    public void _deleteConfidential(String username) 
     {
         CustomerVerification.remove(username);
     }

@@ -1,5 +1,7 @@
 package Helper.login;
 
+import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
 import javax.swing.text.StyledDocument;
 
@@ -150,6 +152,24 @@ public class Profile {
             this.hashedID = hashedID;
             this.encryptedFace = encryptedFace;
             this.encryptedID = encryptedID;
+        }
+
+    }
+
+    /*//////////////////////////////////////////////////////////////
+                                Records
+    //////////////////////////////////////////////////////////////*/    
+
+    public static class CarHolder {
+
+        public String Username;
+        public ArrayList<String> CarId = new ArrayList<>();
+        public ArrayList<String> CarName = new ArrayList<>();
+
+        public CarHolder(String Username, String CarId, String CarName) {
+            this.Username = Username;
+            this.CarId.add(CarId);
+            this.CarName.add(CarName);
         }
 
     }

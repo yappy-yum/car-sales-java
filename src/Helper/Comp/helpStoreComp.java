@@ -10,6 +10,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import Components.initializer;
@@ -65,6 +66,50 @@ public class helpStoreComp {
             )
         );
     }
+
+    /**
+     * adding texts into JTextArea data type, usually long text
+     * 
+     * @param startX X coordinate of animation start from
+     * @param startY Y coordinate of animation start from
+     * @param targetX X coordinate of animation to
+     * @param targetY Y coordinate of animation to
+     * @param width the length width of the JTextArea
+     * @param height the length height of the JTextArea
+     * @param font the type font to be used for the text
+     * @param border JTextArea box border
+     * @param textColor text color
+     * 
+     */
+    public static JTextField addJTextField(
+        initializer i, JPanel windowPanel,
+        int startX, int startY,
+        int targetX, int targetY,
+        int width, int height,
+        Font font, Border border,
+        Color textColor
+    ) {
+        JTextField text = createComp.createJTextField(
+            startX, startY, 
+            width, height, 
+            font, border, 
+            textColor
+        );
+        
+        i.switchThemeComp.searchBar.add(text);
+        windowPanel.add(text);
+        
+        i.compAnimStorage.addAnim(
+            new componentAnim(
+                text, 
+                startX, startY, 
+                targetX, targetY, 
+                i.scrollPane
+            )
+        );
+
+        return text;
+    }    
 
     /*//////////////////////////////////////////////////////////////
                               add JButton

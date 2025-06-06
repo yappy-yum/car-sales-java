@@ -114,7 +114,7 @@ public class password extends JPanel {
             Color.BLACK, 
             new Font("Arial", Font.BOLD, 15)
         );
-        close.addActionListener( _ -> { _close(); SwingUtilities.invokeLater(() -> { w._loadSecondPage(); }); });
+        close.addActionListener( _ -> { _close(); SwingUtilities.invokeLater(() -> { w._loadDBPage(); }); });
     }
 
     void _close() {

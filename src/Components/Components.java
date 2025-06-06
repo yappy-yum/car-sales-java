@@ -208,7 +208,14 @@ public class Components extends JPanel {
         Switch.TButtons.add(toggleButton);
 
 
-        i.compAnimStorage.addAnim(new componentAnim(boxPanel, x, y - 100, x, y, scrollPane));
+        i.compAnimStorage.addAnim(
+                    new componentAnim(
+                        boxPanel, 
+                        x, y - 100, 
+                        x, y, 
+                        scrollPane
+                    )
+                );
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -228,11 +235,12 @@ public class Components extends JPanel {
         
             case 1: 
                 if (isLogin.currentProfile.department == Profile.Department.CUSTOMER) {
-                    System.out.println("Customer buys items");
+                    PanelHelper.clear(this);
+                    window._loadPurchasePage();
                 }
                 else if (isLogin.currentProfile.isVerified) {
                     PanelHelper.clear(this);
-                    window._loadSecondPage();
+                    window._loadDBPage();
                 }
         }
     }   

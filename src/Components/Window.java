@@ -9,6 +9,7 @@ import Helper.Comp.PanelHelper;
 import Helper.Comp.createScroll;
 import Helper.fileSystem.imageSystem;
 import SecondPage.UI;
+import SecondPage.CustomerPage.Purchase;
 import StoreAnimation.compAnimStorage;
 import StoreAnimation.videoAnimStorage;
 
@@ -126,9 +127,16 @@ public class Window {
         i.frontPage = new FrontPage(i, this); 
     }
 
-    public void _loadSecondPage() {
+    public void _loadDBPage() {
         _throw();
-        _initSecondPage();
+        _initDBPage();
+        
+        i.frame.setVisible(true);
+    }
+
+    public void _loadPurchasePage() {
+        _throw();
+        _initPurchasePage();
         
         i.frame.setVisible(true);
     }
@@ -154,7 +162,7 @@ public class Window {
         i.frame.getContentPane().add(i.scrollPane, BorderLayout.CENTER);
     }
 
-    void _initSecondPage() {
+    void _initDBPage() {
         _nullify();
 
         i.switchThemeComp = new SwitchThemeComp(i);
@@ -169,6 +177,21 @@ public class Window {
         i.frame.getContentPane().setLayout(new BorderLayout());
         i.frame.getContentPane().add(i.scrollPane, BorderLayout.CENTER);
         
+    }
+
+    void _initPurchasePage() {
+        _nullify();
+
+        i.switchThemeComp = new SwitchThemeComp(i);
+        i.compAnimStorage = new compAnimStorage();
+        i.Purchase = new Purchase(i, this);
+
+        _initializeScrollControl(i.Purchase);
+        PanelHelper.resizeHeightToFit(i.Purchase);
+
+        i.frame.getContentPane().removeAll();
+        i.frame.getContentPane().setLayout(new BorderLayout());
+        i.frame.getContentPane().add(i.scrollPane, BorderLayout.CENTER);
     }
 
     void _nullify() {
@@ -196,6 +219,7 @@ public class Window {
         i.checkCar = null;
         i.AddCar = null;
         i.Deletion = null;
+        i.Purchase = null;
     }
 
     void _throw() {
@@ -219,6 +243,7 @@ public class Window {
         if (i.checkCar != null) i.frame.remove(i.checkCar);
         if (i.AddCar != null) i.frame.remove(i.AddCar);
         if (i.Deletion != null) i.frame.remove(i.Deletion);
+        if (i.Purchase != null) i.frame.remove(i.Purchase);
         if (i.storeVid != null) new Thread(() -> i.storeVid.clearAll()).start(); // @audit may slower during clearance, therefore push it to background
 
         i.frame.revalidate();

@@ -16,6 +16,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import Helper.Config.roundedBorder;
@@ -50,6 +51,13 @@ public class SwitchThemeComp {
     public ArrayList<JTextField> SecondPageJTextFields = new ArrayList<>();
     public ArrayList<JTable> JTables = new ArrayList<>();
 
+    /*//////////////////////////////////////////////////////////////
+                      Second Page (Customer Page)
+    //////////////////////////////////////////////////////////////*/    
+
+    public ArrayList<JComponent> CustLabel = new ArrayList<>();
+    public ArrayList<JTextField> searchBar = new ArrayList<>();
+
     // dummy storage for others components
     public ArrayList<Object> dummy = new ArrayList<>();
 
@@ -64,20 +72,23 @@ public class SwitchThemeComp {
     //////////////////////////////////////////////////////////////*/    
     
     public void switchTheme() {
-        _switchTexts();
+        if (texts.size() > 0) _switchTexts();
 
-        _switchTButton();
-        _switchIButton();
+        if (TButtons.size() > 0) _switchTButton();
+        if (IButtons.size() > 0) _switchIButton();
 
-        _switchTLabel();
-        _switchILabel();
+        if (TLabels.size() > 0) _switchTLabel();
+        if (ILabels.size() > 0) _switchILabel();
 
-        _switchJPanels();
+        if (JPanels.size() > 0) _switchJPanels();
 
-        _switchSecondPageLabels();
-        _switchSecondPageButtons();
-        _switchSecondPageJTextFields();
-        _switchJTables();
+        if (SecondPageLabels.size() > 0) _switchSecondPageLabels();
+        if (SecondPageButtons.size() > 0) _switchSecondPageButtons();
+        if (SecondPageJTextFields.size() > 0) _switchSecondPageJTextFields();
+        if (JTables.size() > 0) _switchJTables();
+
+        if (CustLabel.size() > 0) _switchCustLabel();
+        if (searchBar.size() > 0) _switchSearchBar();
     }  
 
     /*//////////////////////////////////////////////////////////////
@@ -160,7 +171,7 @@ public class SwitchThemeComp {
 
     /*//////////////////////////////////////////////////////////////
                               Image Button
-    //////////////////////////////////////////////////////////////*/    
+    //////////////////////////////////////////////////////////////*/ 
 
     /**
      * 
@@ -174,7 +185,7 @@ public class SwitchThemeComp {
             // light & dark theme
             ImageIcon lightButton = imageSystem._scaleImage(imageSystem.LIGHT_BUTTON, 50, 50);
             ImageIcon darkButton = imageSystem._scaleImage(imageSystem.DARK_BUTTON, 50, 50);
-            if (button.getX() < 1090 && button.getX() > 600) {
+            if (button.getX() == 915 || button.getX() == 1000) {
                 button.setIcon(isDarkTheme.isDarkTheme ? lightButton : darkButton);
             }
         }        
@@ -322,6 +333,45 @@ public class SwitchThemeComp {
                     null
                 )
             );
+            field.setForeground(isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLACK);
+        }
+    }
+
+    protected void _switchCustLabel() {
+        for (JComponent label : CustLabel) {
+            if (label.getBorder() != null) label.setBorder
+                                                    (
+                                                        new roundedBorder(
+                                                            20, 
+                                                            isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE, 
+                                                            imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)
+                                                        )
+                                                    ); 
+
+            if (label.getForeground() == Color.BLUE || label.getForeground() == Color.PINK) 
+            {
+                label.setForeground
+                (
+                    isDarkTheme.isDarkTheme ? 
+                                Color.PINK : 
+                                Color.BLUE
+                );
+            }
+        }
+    }
+
+    protected void _switchSearchBar() {
+        for (JTextField field : searchBar) {
+            field.setForeground(
+                isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLACK
+            );
+            field.setBorder(
+                new roundedBorder(
+                    20, 
+                    isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE, 
+                    imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)
+                )
+            );
         }
     }
 
@@ -333,39 +383,52 @@ public class SwitchThemeComp {
         Set<Container> touchedParents = new HashSet<>();
 
         // Batch-remove JTextAreas
-        for (JTextArea text : texts) safelyRemoveAndTrack(text, touchedParents);
-        for (JButton btn : TButtons) safelyRemoveAndTrack(btn, touchedParents);
-        for (JButton btn : IButtons) safelyRemoveAndTrack(btn, touchedParents);
-        for (JLabel lbl : TLabels) safelyRemoveAndTrack(lbl, touchedParents);
-        for (JLabel lbl : ILabels) safelyRemoveAndTrack(lbl, touchedParents);
-        for (JPanel panel : JPanels) safelyRemoveAndTrack(panel, touchedParents);
-        for (Object dummyObj : dummy) safelyRemoveAndTrack(dummyObj, touchedParents);
+        if (texts.size() > 0) for (JTextArea text : texts) safelyRemoveAndTrack(text, touchedParents);
+        if (TButtons.size() > 0) for (JButton btn : TButtons) safelyRemoveAndTrack(btn, touchedParents);
+        if (IButtons.size() > 0) for (JButton btn : IButtons) safelyRemoveAndTrack(btn, touchedParents);
+        if (TLabels.size() > 0) for (JLabel lbl : TLabels) safelyRemoveAndTrack(lbl, touchedParents);
+        if (ILabels.size() > 0) for (JLabel lbl : ILabels) safelyRemoveAndTrack(lbl, touchedParents);
+        if (JPanels.size() > 0) for (JPanel panel : JPanels) safelyRemoveAndTrack(panel, touchedParents);
+        if (dummy.size() > 0) for (Object dummyObj : dummy) safelyRemoveAndTrack(dummyObj, touchedParents);
+        if (JTables.size() > 0) for (JTable table : JTables) safelyRemoveAndTrack(table, touchedParents);
+        if (SecondPageLabels.size() > 0) for (JLabel label : SecondPageLabels) safelyRemoveAndTrack(label, touchedParents);
+        if (SecondPageButtons.size() > 0) for (JButton button : SecondPageButtons) safelyRemoveAndTrack(button, touchedParents);
+        if (SecondPageJTextFields.size() > 0) for (JTextField field : SecondPageJTextFields) safelyRemoveAndTrack(field, touchedParents);
+        if (CustLabel.size() > 0) for (JComponent label : CustLabel) safelyRemoveAndTrack(label, touchedParents);
+        if (searchBar.size() > 0) for (JTextField field : searchBar) safelyRemoveAndTrack(field, touchedParents);
 
-        // Repaint/revalidate only once per affected container
-        for (Container parent : touchedParents) {
-            parent.revalidate();
-            parent.repaint();
-        }
+        SwingUtilities.invokeLater(() -> {
+            for (Container parent : touchedParents) {
+                parent.removeAll();
+                // parent.revalidate();
+                // parent.repaint();                
+            }
 
-        // Clear lists
-        texts.clear();
-        TButtons.clear();
-        IButtons.clear();
-        TLabels.clear();
-        ILabels.clear();
-        JPanels.clear();
-        dummy.clear();
+            // Clear lists
+            texts.clear();        TButtons.clear();     IButtons.clear();     
+            TLabels.clear();      ILabels.clear();      JPanels.clear();
+            dummy.clear();        JTables.clear();      SecondPageLabels.clear();   
+            CustLabel.clear();    searchBar.clear();
+            SecondPageButtons.clear();              SecondPageJTextFields.clear(); 
+        });
     }
 
     // Track parent for batch repaint/revalidate
-    private void safelyRemoveAndTrack(Object obj, Set<Container> touchedParents) {
-        if (obj instanceof Component comp && comp.getParent() != null) {
-            Container parent = comp.getParent();
-            parent.remove(comp);
-            touchedParents.add(parent);
+    private void safelyRemoveAndTrack(Object obj, Set<Container> touchedParents) 
+    {
+        if 
+        (
+            obj instanceof Component comp && 
+            comp.getParent() != null
+        ) 
+        {
+            touchedParents.add(comp.getParent());                
         }
     }
 
+    /*//////////////////////////////////////////////////////////////
+                          Table Changes Config
+    //////////////////////////////////////////////////////////////*/    
 
     private void _helpChangeTable(JTable table) {
         if (table.getColumnModel().getColumnCount() > 1) {

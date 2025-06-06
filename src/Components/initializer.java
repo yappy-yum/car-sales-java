@@ -20,6 +20,7 @@ import LoginSystem.LoginPage.Customer.Customer;
 import LoginSystem.LoginPage.Job.Job;
 import SecondPage.UI;
 import SecondPage.password;
+import SecondPage.CustomerPage.Purchase;
 import SecondPage.EmployeePage.unverifiedDB.VerifyCust;
 import SecondPage.EmployeePage.unverifiedDB.VerifyEmployee;
 import SecondPage.EmployeePage.verifiedDB.CustomerDB;
@@ -64,6 +65,7 @@ public class initializer {
     public checkCar checkCar;
     public AddCar AddCar;
     public Deletion Deletion;
+    public Purchase Purchase;
 
     public compAnimStorage compAnimStorage;
     public videoAnimStorage videoAnimStorage;

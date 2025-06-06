@@ -9,6 +9,8 @@ import javax.swing.JPanel;
 public class PanelHelper {
 
     public static void resizeHeightToFit(JPanel panel) {
+        panel.setLayout(null); // just in case :D
+
         int maxY = 0;
         for (Component comp : panel.getComponents()) {
             Rectangle bounds = comp.getBounds();
@@ -23,6 +25,7 @@ public class PanelHelper {
             )
         );
         panel.revalidate(); 
+        panel.repaint();
     }
 
     public static void clear(JPanel panel) {

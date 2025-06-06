@@ -277,6 +277,45 @@ public class loginComp {
                 }
             });
         }
+    }
+    
+    public static class CreateNonLoginBookInstructor {
+        public JTextArea textArea;
+        public JTextArea textBackground;
+
+        public CreateNonLoginBookInstructor(int X, int Y) {
+
+            textArea = createComp.createJTextArea(
+                """
+                Only Verified 
+                Customer 
+                Can Book
+                """,
+                X, Y,
+                100, 60,
+                new Font("Arial", Font.BOLD, 11),
+                null, Color.BLACK
+            );
+
+            textBackground = createComp.createJTextArea(
+                null, 
+                X - 5, Y - 4,
+                80, 50,
+                null, 
+                new roundedBorder(
+                    5, 
+                    Color.BLACK, 
+                    imageSystem._reduceColorTransparency(
+                        Color.GRAY, 
+                        0.8f
+                    )
+                ), 
+                null
+            );
+
+            textArea.setVisible(false);
+            textBackground.setVisible(false);
+        }
     }    
 
     public static JButton createFillNext(String _text, int X, int Y, int fontSize, Runnable method) {

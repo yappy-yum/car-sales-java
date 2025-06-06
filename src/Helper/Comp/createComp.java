@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -295,6 +297,7 @@ public class createComp {
         panel.setLocation(x, y);
         panel.setOpaque(false);
         panel.setSize(panelWidth, panelHeight);
+        panel.setBounds(x, y, panelWidth, panelHeight);
 
         return panel;
     }
@@ -346,7 +349,19 @@ public class createComp {
             e.printStackTrace();
             return true;
         }
-    }    
+    } 
+    
+    public static Date ResetTime(Date date) {
+        Calendar cal = Calendar.getInstance();
+
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        
+        return cal.getTime();
+    }
 
     /*//////////////////////////////////////////////////////////////
                                  JTable

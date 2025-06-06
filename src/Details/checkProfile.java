@@ -2,6 +2,8 @@ package Details;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.List;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -23,6 +25,7 @@ import Helper.fileSystem.ImageUploader;
 import Helper.fileSystem.fontSystem;
 import Helper.fileSystem.imageSystem;
 import Helper.login.Profile;
+import Inventory.stockDetails;
 import LoginSystem.storage;
 
 public class checkProfile extends JPanel {
@@ -35,6 +38,21 @@ public class checkProfile extends JPanel {
     changeInformation change;
     initializer i;
     String user;
+
+    JLabel header;
+    JButton closeButton;
+    JTextArea LeftInfo;
+    JButton RightPFP;
+    JTextArea RightInfo;
+
+    JButton EditButton;
+    JButton LogoutButton;
+    JButton VerifyButton;
+    JButton DeleteButton;
+
+    JButton SwitchToCar;
+    JButton SwitchToProfile;
+    List<JTextArea> CarDetails = new ArrayList<>();
 
     /*//////////////////////////////////////////////////////////////
                               constructor
@@ -49,14 +67,10 @@ public class checkProfile extends JPanel {
         this.i = i;
         this.user = user;
 
-        _background();
-        if (user == null) _changeInformation();
-        _addX();
-        _verify();
-        if (i.isLogin.currentProfile.department != Profile.Department.OWNER) _deleteAccount();
-        if (user == null) _logout();
-        _addHeader();
-        _addInformation();
+        _background();              _addX();               _logout();          
+        _changeInformation();       _deleteAccount();      _switchButton();
+        _addHeader();               _verify();             _addInformation();
+        _CarDetails();              _addComp();
 
         S.dummy.add(this);
     }
@@ -82,17 +96,14 @@ public class checkProfile extends JPanel {
     //////////////////////////////////////////////////////////////*/    
 
     void _addX() {
-        JButton closeButton = createComp.createJButton(
+        closeButton = createComp.createJButton(
             "X", 
             900, 20, 
             60, 40, 
             new roundedBorder(10, Color.BLACK, null), Color.BLACK, 
             new Font("Arial", Font.BOLD, 20)
         );
-        closeButton.setVisible(true);
         closeButton.addActionListener( _ -> { _close(); } );
-        S.dummy.add(closeButton);
-        add(closeButton);
     }  
 
     /*//////////////////////////////////////////////////////////////
@@ -100,16 +111,14 @@ public class checkProfile extends JPanel {
     //////////////////////////////////////////////////////////////*/
     
     void _addHeader() {
-        JLabel header = createComp.createJLabel(
+        header = createComp.createJLabel(
             "Your Profile", 
-            450, 20, 
+            20, 40, 
             200, 50, 
             new Font("Arial", Font.BOLD, 25), 
             Color.BLACK
         );
         header.setVisible(true);
-        S.dummy.add(header);
-        add(header);
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -127,8 +136,6 @@ public class checkProfile extends JPanel {
     //////////////////////////////////////////////////////////////*/    
 
     void _addLeftInfo() {
-        JTextArea LeftInfo;
-
         if (user == null) {
             LeftInfo = createComp.createJTextArea(
                 "First Name: " + profile.firstName + "\n\n" +
@@ -137,7 +144,7 @@ public class checkProfile extends JPanel {
                 "Gender: " + profile.gender + "\n\n" +
                 "Age: " + profile.age + "\n\n" +
                 "Phone Number: " + 0 + profile.phoneNumber,
-                20, 100, 
+                20, 120, 
                 500, 500, 
                 fontSystem.TAGES.deriveFont(25f), 
                 null, Color.BLACK
@@ -152,16 +159,12 @@ public class checkProfile extends JPanel {
                 "Gender: " + userProf.gender + "\n\n" +
                 "Age: " + userProf.age + "\n\n" +
                 "Phone Number: " + 0 + userProf.phoneNumber,
-                20, 100, 
+                20, 120, 
                 500, 500, 
                 fontSystem.TAGES.deriveFont(25f), 
                 null, Color.BLACK
             );
         }
-
-        LeftInfo.setVisible(true);
-        S.dummy.add(LeftInfo);
-        add(LeftInfo);
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -171,16 +174,13 @@ public class checkProfile extends JPanel {
     void _RightPFP() {
         ImageIcon pfp = user == null ?
                         imageSystem._scaleImage(profile.pfp, 100, 100) :
-                        storage.searchUser(user).pfp;
+                        imageSystem._scaleImage(storage.searchUser(user).pfp, 100, 100);
 
-        JButton RightPFP = createComp.createJButton(
+        RightPFP = createComp.createJButton(
             pfp, 
             600, 100, 
             100, 100
         );
-        RightPFP.setVisible(true);
-        S.dummy.add(RightPFP);
-        add(RightPFP);
 
         if (user == null)    
             RightPFP.addActionListener( _ -> {
@@ -196,8 +196,6 @@ public class checkProfile extends JPanel {
     //////////////////////////////////////////////////////////////*/    
 
     void _addRight() {
-        JTextArea RightInfo;
-
         if (user == null) {
             RightInfo = createComp.createJTextArea(
                 "Role: " + profile.department + "\n\n" +
@@ -219,10 +217,6 @@ public class checkProfile extends JPanel {
                 null, Color.BLACK
             );
         }
-
-        RightInfo.setVisible(true);
-        S.dummy.add(RightInfo);
-        add(RightInfo);
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -230,18 +224,16 @@ public class checkProfile extends JPanel {
     //////////////////////////////////////////////////////////////*/
 
     void _changeInformation() {
-        JButton button = createComp.createJButton(
-            "Edit Details", 
-            800, 430, 
-            170, 50, 
-            new roundedBorder(15, Color.BLACK, null), Color.BLACK,
-            new Font("Arial", Font.BOLD, 20)
-        );
-        button.setVisible(true);
-        button.addActionListener( _ -> { _promptChanges(); });
-
-        S.dummy.add(button);
-        add(button);
+        if (user == null) {
+            EditButton = createComp.createJButton(
+                "Edit Details", 
+                800, 430, 
+                170, 50, 
+                new roundedBorder(15, Color.BLACK, null), Color.BLACK,
+                new Font("Arial", Font.BOLD, 20)
+            );
+            EditButton.addActionListener( _ -> { _promptChanges(); });
+        }
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -249,60 +241,182 @@ public class checkProfile extends JPanel {
     //////////////////////////////////////////////////////////////*/    
 
     void _logout() {
-        JButton button = createComp.createJButton(
-            "Logout", 
-            670, 430, 
-            120, 50, 
-            new roundedBorder(15, Color.BLACK, null), Color.BLACK,
-            new Font("Arial", Font.BOLD, 20)
-        );
-        button.setVisible(true);
-        button.addActionListener(
-            _ -> {
-                i.isLogin.currentProfile = null;
-                i.isLogin.isLogin = false;
+        if (user == null) {
+            LogoutButton = createComp.createJButton(
+                "Logout", 
+                670, 430, 
+                120, 50, 
+                new roundedBorder(15, Color.BLACK, null), Color.BLACK,
+                new Font("Arial", Font.BOLD, 20)
+            );
 
-                blur.removeBlur();
-                PanelHelper.clear(this);
-                SwingUtilities.invokeLater(() -> { window._loadFrontPage(); } );
-            }
-        );
+            LogoutButton.addActionListener( 
+                _ -> {
+                    i.isLogin.currentProfile = null;
+                    i.isLogin.isLogin = false;
 
-        add(button);
-        S.dummy.add(button);
+                    blur.removeBlur();
+                    blur = null;
+                    PanelHelper.clear(this);
+                    SwingUtilities.invokeLater(() -> window._loadFrontPage());
+                }
+            );
+
+        };
     }
+
+    /*//////////////////////////////////////////////////////////////
+                                 Verify
+    //////////////////////////////////////////////////////////////*/    
 
     void _verify() {
         if (i.isLogin.currentProfile.department == Profile.Department.CUSTOMER && !i.isLogin.currentProfile.isVerified) {
-            JButton button = createComp.createJButton(
+            VerifyButton = createComp.createJButton(
                 "Verify", 
                 570, 430, 
                 90, 50, 
                 new roundedBorder(15, Color.BLACK, null), Color.BLACK,
                 new Font("Arial", Font.BOLD, 20)
             );
-            button.setVisible(true);
-            button.addActionListener( _ -> { _promptVerify(); } );
-
-            add(button);  
-            S.dummy.add(button);          
+            VerifyButton.addActionListener( _ -> { _promptVerify(); } );
         }
     }
 
-    void _deleteAccount() {
-        JButton button = createComp.createJButton(
-            "Delete", 
-            800, 370, 
-            170, 50, 
-            new roundedBorder(15, Color.BLACK, null), Color.BLACK,
-            new Font("Arial", Font.BOLD, 20)
-        );
-        button.setVisible(true);
-        button.setEnabled(true);
-        button.addActionListener( _ -> { _promptDelete(); } );
+    /*//////////////////////////////////////////////////////////////
+                                 Delete
+    //////////////////////////////////////////////////////////////*/    
 
-        add(button);
-        S.dummy.add(button);
+    void _deleteAccount() {
+        if (i.isLogin.currentProfile.department != Profile.Department.OWNER && user == null) {
+            DeleteButton = createComp.createJButton(
+                "Delete", 
+                800, 370, 
+                170, 50, 
+                new roundedBorder(15, Color.BLACK, null), Color.BLACK,
+                new Font("Arial", Font.BOLD, 20)
+            );
+            DeleteButton.addActionListener( _ -> { _promptDelete(); } );
+        }
+    }
+
+    /*//////////////////////////////////////////////////////////////
+                                 Switch
+    //////////////////////////////////////////////////////////////*/
+    
+    void _switchButton() {
+        if (Profile.Department.CUSTOMER == i.isLogin.currentProfile.department  || user != null) {
+            SwitchToCar = createComp.createJButton(
+                "Your Payment History", 
+                230, 40, 
+                250, 40, 
+                new roundedBorder(15, Color.BLACK, null), 
+                Color.BLACK,
+                new Font("Arial", Font.BOLD, 15)
+            );
+            SwitchToCar.addActionListener( _ -> { _setProfileVisible(false); _setCarVisible(true); } );
+
+            SwitchToProfile = createComp.createJButton(
+                "Switch to Profile", 
+                230, 40, 
+                250, 40, 
+                new roundedBorder(15, Color.BLACK, null), 
+                Color.BLACK,
+                new Font("Arial", Font.BOLD, 15)
+            );
+            SwitchToProfile.addActionListener( _ -> { _setProfileVisible(true); _setCarVisible(false); } );
+        }
+    }
+
+    /*//////////////////////////////////////////////////////////////
+                            Car Booking Info
+    //////////////////////////////////////////////////////////////*/    
+
+    void _CarDetails() {
+        int LeftIndex = 0;
+        int RightIndex = 0;
+
+        List<stockDetails.transactDetails> cars = i.stockInventory.SearchCarViaUsername(
+                                                                user == null                      ?
+                                                                i.isLogin.currentProfile.username : 
+                                                                user
+                                                            );
+
+        if (cars != null) {                                                            
+            for (stockDetails.transactDetails car : cars) {
+                if (car.carDetails.status == stockDetails.CarStatus.BOOKED) {
+                    CarDetails.add(
+                        createComp.createJTextArea(
+                            car.carId + ", " + car.carDetails.carName + "\n" + 
+                            "Booked on " + car.DateBookedAt + " at " + car.TimeBookedAt,
+                            20, 100 + (LeftIndex * 50), 
+                            500, 50, 
+                            new Font("Arial", Font.BOLD, 15), 
+                            null,
+                            Color.BLACK
+                        )
+                    );
+                    LeftIndex++;
+                } else {
+                    CarDetails.add(
+                        createComp.createJTextArea(
+                            car.carId + ", " + car.carDetails.carName + "\n" +
+                            "Sold on " + car.DateSold + " at " + car.TimeSold,
+                            520, 100 + (RightIndex * 50), 
+                            500, 50, 
+                            new Font("Arial", Font.BOLD, 15), 
+                            null,
+                            Color.BLACK
+                        )
+                    );
+                    RightIndex++;
+                }
+            }
+        }
+    }
+
+    /*//////////////////////////////////////////////////////////////
+                             Add to JPanel
+    //////////////////////////////////////////////////////////////*/
+    
+    void _addComp() {
+
+        if (EditButton != null) add(EditButton); S.dummy.add(EditButton);
+        if (LogoutButton != null) add(LogoutButton); S.dummy.add(LogoutButton);
+        if (VerifyButton != null) add(VerifyButton); S.dummy.add(VerifyButton);
+        if (DeleteButton != null) add(DeleteButton); S.dummy.add(DeleteButton);
+
+        if (header != null) add(header); S.dummy.add(header);
+        if (closeButton != null) add(closeButton); S.dummy.add(closeButton);
+        if (LeftInfo != null) add(LeftInfo); S.dummy.add(LeftInfo);
+        if (RightPFP != null) add(RightPFP); S.dummy.add(RightPFP);
+        if (RightInfo != null) add(RightInfo); S.dummy.add(RightInfo);
+
+        if (SwitchToCar != null) add(SwitchToCar); S.dummy.add(SwitchToCar);
+        if (SwitchToProfile != null) add(SwitchToProfile); S.dummy.add(SwitchToProfile);
+        if (CarDetails.size() > 0) CarDetails.stream().forEach(i -> { add(i); S.dummy.add(i); });
+
+        _setProfileVisible(true);
+        _setCarVisible(false);
+
+    }
+
+    void _setProfileVisible(boolean bool) {
+        if (closeButton != null) closeButton.setVisible(bool);  
+        if (LeftInfo != null) LeftInfo.setVisible(bool);
+        if (RightPFP != null) RightPFP.setVisible(bool);
+        if (RightInfo != null) RightInfo.setVisible(bool);
+        
+        if (EditButton != null) EditButton.setVisible(bool);
+        if (LogoutButton != null) LogoutButton.setVisible(bool);
+        if (VerifyButton != null) VerifyButton.setVisible(bool);
+        if (DeleteButton != null) DeleteButton.setVisible(bool);
+
+        if (SwitchToCar != null) SwitchToCar.setVisible(bool);
+    }
+
+    void _setCarVisible(boolean bool) {
+        if (SwitchToProfile != null) SwitchToProfile.setVisible(bool);
+        if (CarDetails.size() > 0) CarDetails.stream().forEach(i -> { i.setVisible(bool); });
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -352,13 +466,22 @@ public class checkProfile extends JPanel {
 
     public void _close() {
         blur.removeBlur();
+        blur = null;
         PanelHelper.clear(this);
         SwingUtilities.invokeLater(
             () -> {
-                if (user == null) window._loadFrontPage();
-                if (user != null) window._loadSecondPage();
+                if (i.component != null) window._loadFrontPage();
+                if (i.UI != null) window._loadDBPage();
+                if (i.Purchase != null) window._loadPurchasePage();
             }
         );
+    }
+
+    public void _closeEverything() {
+        blur.removeBlur();
+        blur = null;
+        PanelHelper.clear(this);
+        SwingUtilities.invokeLater( () -> { window._loadFrontPage(); } );
     }
 
 }

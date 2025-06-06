@@ -354,12 +354,6 @@ public class Job extends JPanel {
                 closeButton.setEnabled(true);
                 readyComp.loadingLabel.setVisible(false);
                 _promptMessage(readyComp.SuccessMessage);
-
-                
-                System.out.println("Username: " + _username);
-                System.out.println("Password: " + CV.password);
-                System.out.println("Favourite Texts: " + CV.favText);
-                System.out.println("Favourite Number: " + CV.favNum);
             });
         }).start();
     }

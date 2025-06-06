@@ -126,9 +126,9 @@ public class Customer extends JPanel {
             _ -> {
                 blur.removeBlur();
                 blur = null;
+                readyComp = null;
                 PanelHelper.clear(half);
                 PanelHelper.clear(this);
-                readyComp = null;
                 SwingUtilities.invokeLater(() -> { window._loadFrontPage(); });
             }
         );
@@ -215,8 +215,6 @@ public class Customer extends JPanel {
         username = readyComp.RegisterUsername.textField.getText();
         phoneNumber = readyComp.RegisterPhoneNum.textField.getText().trim();
         age = readyComp.RegisterAge.textField.getText().trim();
-
-        System.out.println("checking first register");
 
         if (!FirstName.matches("[a-zA-Z]+") || !lastName.matches("[a-zA-Z]+")) {
             _promptMessage(readyComp.RegisterFirstErrorMessage[0]);
@@ -311,10 +309,6 @@ public class Customer extends JPanel {
             storage.customerRegister(user);
 
             SwingUtilities.invokeLater(() -> {
-                System.out.println("Username: " + user.username);
-                System.out.println("Password: " + storage.Users.get(user.username).password);
-                System.out.println("Favourite Texts: " + storage.Users.get(user.username).favText);
-                System.out.println("Favourite Number: " + storage.Users.get(user.username).favNum);
                 _promptMessage(readyComp.successLabel[0]);
                 readyComp.loadingLabel[0].setVisible(false);
                 readyComp.close.setEnabled(true);

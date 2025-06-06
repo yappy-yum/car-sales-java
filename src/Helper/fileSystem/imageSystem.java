@@ -59,15 +59,15 @@ public class imageSystem {
                              car logo icon
     //////////////////////////////////////////////////////////////*/
      
-    public static final ImageIcon AUDI = new ImageIcon(FILE_PATH.concat("car_logo/Audi.png"));
-    public static final ImageIcon BENTLEY = new ImageIcon(FILE_PATH.concat("car_logo/Bentley.png"));
-    public static final ImageIcon BMW = new ImageIcon(FILE_PATH.concat("car_logo/BMW.png"));
+    public static final ImageIcon AUDI = new ImageIcon(FILE_PATH.concat("car_logo/Audi.jpeg"));
+    public static final ImageIcon BENTLEY = new ImageIcon(FILE_PATH.concat("car_logo/Bentley.jpeg"));
+    public static final ImageIcon BMW = new ImageIcon(FILE_PATH.concat("car_logo/BMW.jpeg"));
     public static final ImageIcon BUGATTI = new ImageIcon(FILE_PATH.concat("car_logo/Bugatti.jpeg"));
     public static final ImageIcon FERRARI = new ImageIcon(FILE_PATH.concat("car_logo/Ferrari.jpeg"));
     public static final ImageIcon LAMBORGHINI = new ImageIcon(FILE_PATH.concat("car_logo/Lamborghini.jpeg"));
-    public static final ImageIcon MAYBACH = new ImageIcon(FILE_PATH.concat("car_logo/Maybach.png"));
-    public static final ImageIcon MERCEDES = new ImageIcon(FILE_PATH.concat("car_logo/Mercedes.png"));
-    public static final ImageIcon ROLLS_ROYCE = new ImageIcon(FILE_PATH.concat("car_logo/RollsRoyce.png")); 
+    public static final ImageIcon MAYBACH = new ImageIcon(FILE_PATH.concat("car_logo/Maybach.jpeg"));
+    public static final ImageIcon MERCEDES = new ImageIcon(FILE_PATH.concat("car_logo/Mercedes.jpeg"));
+    public static final ImageIcon ROLLS_ROYCE = new ImageIcon(FILE_PATH.concat("car_logo/RollsRoyce.jpeg")); 
 
     /*//////////////////////////////////////////////////////////////
                                Car Images
@@ -75,12 +75,32 @@ public class imageSystem {
     
     public static final ImageIcon ROLLS_ROYCE_PHANTOM = new ImageIcon(FILE_PATH.concat("car_image/RollsRoyce/Rolls_Royce_Phantom.jpeg"));
     public static final ImageIcon ROLLS_ROYCE_LUXE = new ImageIcon(FILE_PATH.concat("car_image/RollsRoyce/Rolls_Royce_Luxe.jpeg"));
+
+    public static final ImageIcon BMW_I9 = new ImageIcon(FILE_PATH.concat("car_image/BMW/BMW_I9.jpeg"));
+    public static final ImageIcon BMW_M4 = new ImageIcon(FILE_PATH.concat("car_image/BMW/BMW_M4.jpeg"));
+    public static final ImageIcon BMW_M9 = new ImageIcon(FILE_PATH.concat("car_image/BMW/BMW_M9.jpeg"));
+
+    public static final ImageIcon BUGATTI_CHIRON = new ImageIcon(FILE_PATH.concat("car_image/Bugatti/Bugatti_Chiron.jpeg"));
+    public static final ImageIcon BUGATTI_VEYRON = new ImageIcon(FILE_PATH.concat("car_image/Bugatti/Bugatti_Veyron.jpeg"));
+
+    public static final ImageIcon MERCEDES_Z4 = new ImageIcon(FILE_PATH.concat("car_image/Mercedes/Mercedes_Z4.jpeg"));
+    public static final ImageIcon MERCEDES_VISION_AVTR = new ImageIcon(FILE_PATH.concat("car_image/Mercedes/Mercedes_Vision_AVTR.jpeg"));
+    public static final ImageIcon MAYBACH_S680 = new ImageIcon(FILE_PATH.concat("car_image/Mercedes/Maybach_S680.jpeg"));
+
+    public static final ImageIcon AUDI_TT = new ImageIcon(FILE_PATH.concat("car_image/Audi/Audi_TT.jpeg"));
+    public static final ImageIcon AUDI_PB18_ETRON = new ImageIcon(FILE_PATH.concat("car_image/Audi/Audi_PB18_Etron.jpeg"));
     
     /*//////////////////////////////////////////////////////////////
                            mouse cursor icon
     //////////////////////////////////////////////////////////////*/
      
     public static final ImageIcon MOUSE_CURSOR = new ImageIcon(FILE_PATH.concat("mouse_cursor/cursor.jpeg")); 
+
+    /*//////////////////////////////////////////////////////////////
+                              ChatBox Icon
+    //////////////////////////////////////////////////////////////*/    
+
+    public static final ImageIcon CHATBOX_ICON = new ImageIcon(FILE_PATH.concat("frontPage/chatbox_icon.jpeg"));
 
     /*//////////////////////////////////////////////////////////////
                               profile icon
@@ -187,21 +207,29 @@ public class imageSystem {
      * 
      */
     public static ImageIcon _reduceImageTransparency(ImageIcon image, float alpha) {
-        // Get original image and dimensions
-        Image originalImage = image.getImage();
-        int width = originalImage.getWidth(null);
-        int height = originalImage.getHeight(null);
-
         // Create a BufferedImage with transparency
-        BufferedImage transparentImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = transparentImage.createGraphics();
+        BufferedImage transparentImage = new BufferedImage(
+                                                image.getImage().getWidth(null), 
+                                                image.getImage().getHeight(null), 
+                                                BufferedImage.TYPE_INT_ARGB
+                                            );
+        Graphics2D G = transparentImage.createGraphics();
 
         // Set transparency level
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-        g2d.drawImage(originalImage, 0, 0, null);
-        g2d.dispose();
+        G.setComposite(
+            AlphaComposite.getInstance(
+                AlphaComposite.SRC_OVER, 
+                alpha
+            )
+        );
+        G.drawImage(
+            image.getImage(), 
+            0, 
+            0, 
+            null
+        );
+        G.dispose();
 
-        // Return a new ImageIcon
         return new ImageIcon(transparentImage);
     }
 
@@ -219,13 +247,12 @@ public class imageSystem {
      * 
      */
     public static Color _reduceColorTransparency(Color color, float alpha) {
-        // Get the original color components
-        int red = color.getRed();
-        int green = color.getGreen();
-        int blue = color.getBlue();
-
-        // Create and return a new Color with modified alpha value
-        return new Color(red, green, blue, Math.round(alpha * 255));
+        return new Color(
+                    color.getRed(), 
+                    color.getGreen(), 
+                    color.getBlue(), 
+                    Math.round(alpha * 255)
+                );
     }
 
 

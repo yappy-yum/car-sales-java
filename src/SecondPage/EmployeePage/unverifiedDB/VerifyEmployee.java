@@ -79,7 +79,7 @@ public class VerifyEmployee extends JPanel {
             _ -> {
                 blur.removeBlur();
                 remove(this);
-                SwingUtilities.invokeLater( () -> { w._loadSecondPage(); } );
+                SwingUtilities.invokeLater( () -> { w._loadDBPage(); } );
             }
         );
         i.switchThemeComp.dummy.add(closeButton);

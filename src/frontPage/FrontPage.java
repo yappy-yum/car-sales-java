@@ -69,6 +69,8 @@ public class FrontPage {
      * 
      */
     private final ImageIcon GREY_HIGHLIGHT = imageSystem.GREY_HIGHLIGHT;  
+
+    private final ImageIcon CHAT = imageSystem.CHATBOX_ICON;
     
     /*//////////////////////////////////////////////////////////////
                               company logo
@@ -217,7 +219,6 @@ public class FrontPage {
             _helpAddThemeIcon(1070, 20);
             _helpAddVerifyStatusFrontPage(i.isLogin.currentProfile.isVerified);
             _helpAddLoginIcon(loginIconTexts, 960, 290);
-            
         }
 
     }
@@ -314,8 +315,8 @@ public class FrontPage {
         _helpAddLoginIcon(loginIconTexts, 960, (870 + 600) - 70);
         _helpAddShortVideoAndLogo(
             BENTLEY_CLIP, BENTLEY_LOGO, 
-            870, 890, 
-            200, 120
+            870, 850, 
+            200, 180
         );    
         
         _helpAddText(
@@ -331,7 +332,7 @@ public class FrontPage {
         _helpAddShortVideoAndLogo(
             BUGATTI_CLIP, BUGATTI_LOGO, 
             1680, 1670, 
-            170, 120
+            190, 190
         );
 
         _helpAddText(
@@ -363,7 +364,7 @@ public class FrontPage {
         _helpAddShortVideoAndLogo(
             MERCEDES_CLIP, MERCEDES_LOGO, 
             3300, 3320, 
-            200, 112
+            200, 200
         );
 
         _helpAddText(
@@ -620,13 +621,21 @@ public class FrontPage {
     
     void _helpAddThemeIcon(int targetX, int targetY) {
         helpStoreComp.addJButton(
+            i, i.component, 
+            imageSystem._scaleImage(CHAT, 50, 50), 
+            targetX, targetY + 90, 
+            targetX, targetY, 
+            50, 50
+        );
+
+        helpStoreComp.addJButton(
             i, i.component,
             imageSystem._scaleImage(
                 i.isDarkTheme.isDarkTheme ? LIGHT_BUTTON : DARK_BUTTON, 
                 50, 50
             ),
-            targetX, targetY + 90, 
-            targetX, targetY, 
+            targetX - 70, targetY + 90, 
+            targetX - 70, targetY, 
             50, 50
         ).addActionListener( _ -> { i.isDarkTheme.switchTheme(i.component, i.switchThemeComp); });
     }

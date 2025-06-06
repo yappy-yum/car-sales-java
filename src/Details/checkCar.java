@@ -2,6 +2,8 @@ package Details;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -18,6 +20,7 @@ import Helper.Comp.createComp;
 import Helper.Config.roundedBorder;
 import Helper.fileSystem.imageSystem;
 import Inventory.stockDetails;
+import Helper.login.Profile;
 
 public class checkCar extends JPanel {
 
@@ -43,6 +46,12 @@ public class checkCar extends JPanel {
         _addHeader();
         _addLeftInfo();
         _addRightImage();
+
+        if 
+        (
+            i.isLogin.currentProfile.department == Profile.Department.SALESMAN &&
+            i.stockInventory.SearchCarViaID(carId).carDetails.status == stockDetails.CarStatus.BOOKED
+        ) _addSetPaidButton();
 
         S.dummy.add(this);
     }
@@ -76,16 +85,16 @@ public class checkCar extends JPanel {
             new Font("Arial", Font.BOLD, 20)
         );
         closeButton.setVisible(true);
-        closeButton.addActionListener(
-            _ -> {
-                blur.removeBlur();
-                blur = null;
-                PanelHelper.clear(this);
-                SwingUtilities.invokeLater(() -> { window._loadSecondPage();});
-            }
-        );
+        closeButton.addActionListener( _ -> { _close(); } );
         S.dummy.add(closeButton);
         add(closeButton);
+    }
+
+    void _close() {
+        blur.removeBlur();
+        blur = null;
+        PanelHelper.clear(this);
+        SwingUtilities.invokeLater(() -> { window._loadDBPage();});        
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -110,14 +119,14 @@ public class checkCar extends JPanel {
     //////////////////////////////////////////////////////////////*/    
 
     void _addLeftInfo() {
-        stockDetails.transactDetails car = i.stockInventory.searchCar(CarID);
+        stockDetails.transactDetails car = i.stockInventory.SearchCarViaID(CarID);
 
         JTextArea leftInfo = createComp.createJTextArea(
             "Car ID: " + car.carId + "\n" +
             "Car Brand: " + car.carDetails.logoName + "\n" +
             "Car Name: " + car.carDetails.carName + "\n" +
-            "Cost: RM" + car.carDetails.buyingPrice + "\n" +
-            "Price: RM" + car.carDetails.sellingPrice + "\n" +
+            "Cost: RM" + String.format("%.2f", car.carDetails.buyingPrice) + "\n" +
+            "Price: RM" + String.format("%.2f", car.carDetails.sellingPrice) + "\n" +
             "Receivable From: " + car.carDetails.BoughtFrom + "\n" +
             "Payable To: " + car.carDetails.SellTo + "\n" +
             "Car Length: " + car.carDetails.carLength + "\n" + 
@@ -141,7 +150,7 @@ public class checkCar extends JPanel {
     //////////////////////////////////////////////////////////////*/    
 
     void _addRightImage() {
-        stockDetails.transactDetails car = i.stockInventory.searchCar(CarID);
+        stockDetails.transactDetails car = i.stockInventory.SearchCarViaID(CarID);
 
         JLabel rightImage = createComp.createJLabel(
             car.carDetails.carImage,
@@ -151,6 +160,50 @@ public class checkCar extends JPanel {
         rightImage.setVisible(true);
         S.dummy.add(rightImage);
         add(rightImage);
+    }
+
+    void _addSetPaidButton() {
+
+        JButton ApprovePaymentButton = createComp.createJButton(
+            "Paid", 
+            850, 400, 
+            100, 80, 
+            new roundedBorder(10, Color.BLACK, null), 
+            Color.BLACK, 
+            new Font("Arial", Font.BOLD, 20)
+        );
+        ApprovePaymentButton.addActionListener( 
+            _ -> { 
+                i.stockInventory.sellCar(
+                    CarID, 
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), 
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm:ss a")).toLowerCase()
+                ); 
+                _close();
+            } 
+        );
+
+        add(ApprovePaymentButton);
+        S.dummy.add(ApprovePaymentButton);
+
+        JButton RejectBookingButton = createComp.createJButton(
+            "Cancel", 
+            700, 400, 
+            100, 80,
+            new roundedBorder(10, Color.BLACK, null), 
+            Color.BLACK, 
+            new Font("Arial", Font.BOLD, 20)
+        );
+        RejectBookingButton.addActionListener( 
+            _ -> { 
+                i.stockInventory.cancerBooking(CarID);
+                _close(); 
+            } 
+        );
+
+        add(RejectBookingButton);
+        S.dummy.add(RejectBookingButton);
+
     }
 
 }

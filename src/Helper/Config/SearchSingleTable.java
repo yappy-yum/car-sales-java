@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
+import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
@@ -32,6 +33,7 @@ public class SearchSingleTable {
             int width, 
             int height,
             Color textColor,
+            Border border,
             String placeholder
         ) {
             searchField = createComp.createJTextField(
@@ -40,7 +42,7 @@ public class SearchSingleTable {
                 width, 
                 height, 
                 new Font("Arial", Font.PLAIN, 15), 
-                new roundedBorder(10, Color.WHITE, null), 
+                border, 
                 textColor
             );
             searchIcon = new JLabel(imageSystem._scaleImage(imageSystem.SEARCH, 25, 25));

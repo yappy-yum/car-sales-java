@@ -63,7 +63,7 @@ public class InventoryDB extends singleTable
             b, 
             c1, 
             null, 
-            70, 
+            100, 
             4, 
             5, 
             "Anything Inventory Related", 

@@ -18,6 +18,13 @@ import Components.initializer;
 import Helper.Comp.createComp.createJTable;
 import Helper.fileSystem.imageSystem;
 
+/**
+ * to add tick and cross icons into the table, allowing staff to manage users
+ * verification approval 
+ * 
+ * @author yappy-yum
+ * 
+ */
 public class tableAddIcon {
 
     public static class createProfileTable {

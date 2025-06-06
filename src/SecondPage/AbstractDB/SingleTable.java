@@ -19,6 +19,7 @@ import Helper.Comp.helpStoreComp;
 import Helper.Config.SearchSingleTable;
 import Helper.Config.roundedBorder;
 import Helper.Config.tableAddIcon;
+import Helper.fileSystem.imageSystem;
 import Helper.login.Profile;
 import Inventory.stockDetails;
 
@@ -142,8 +143,8 @@ public abstract class singleTable {
             320,
             1200,
             rowHeight,
-            Color.CYAN,
-            Color.WHITE,
+            i.isDarkTheme.isDarkTheme ? Color.CYAN : Color.BLUE,
+            i.isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLACK,
             Color.PINK,
             new Color(0, 0, 0, 0),
             new Font("Arial", Font.BOLD, 15),
@@ -161,7 +162,7 @@ public abstract class singleTable {
             50, 200,
             300, 100,
             new Font("Arial", Font.BOLD, 20),
-            Color.WHITE
+            i.isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLACK
         );
 
         SearchSingleTable.createSearchBar searchBar = new SearchSingleTable.createSearchBar(
@@ -171,7 +172,12 @@ public abstract class singleTable {
             230,
             270, 
             43,
-            Color.WHITE,
+            i.isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLACK,
+            new roundedBorder(
+                10, 
+                i.isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLACK, 
+                null
+            ),
             placeHolder
         );
         this.verifiedSearchBar = searchBar.searchField;
@@ -187,8 +193,9 @@ public abstract class singleTable {
             320, 
             1200, 
             rowHeight, 
-            Color.CYAN, 
-            Color.WHITE, Color.PINK,  
+            i.isDarkTheme.isDarkTheme ? Color.CYAN : Color.BLUE, 
+            i.isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLACK, 
+            i.isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE,  
             new Color(0, 0, 0, 0), 
             new Font("Arial", Font.BOLD, 15), 
             columnToFetchDataForProfileView, 
@@ -206,7 +213,7 @@ public abstract class singleTable {
             50, 200,
             300, 100,
             new Font("Arial", Font.BOLD, 20),
-            Color.WHITE
+            i.isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLACK
         );
 
         SearchSingleTable.createSearchBar searchBar = new SearchSingleTable.createSearchBar(
@@ -216,7 +223,12 @@ public abstract class singleTable {
             230,
             270, 
             43,
-            Color.WHITE,
+            i.isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLACK,
+            new roundedBorder(
+                10, 
+                i.isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLACK, 
+                null
+            ),
             placeHolder
         );
         this.unverifiedSearchBar = searchBar.searchField;
@@ -393,7 +405,7 @@ public abstract class singleTable {
                 200, 
                 50, 
                 new roundedBorder(15, Color.WHITE, null), 
-                Color.PINK, 
+                i.isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE, 
                 new Font("Arial", Font.BOLD, 15)
             );
             
@@ -408,8 +420,12 @@ public abstract class singleTable {
                 250, 
                 200, 
                 50, 
-                new roundedBorder(15, Color.WHITE, null), 
-                Color.PINK, 
+                new roundedBorder(
+                    15, 
+                    i.isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLUE, 
+                    imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)
+                ), 
+                i.isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE, 
                 new Font("Arial", Font.BOLD, 15)
             );
             
@@ -427,8 +443,12 @@ public abstract class singleTable {
                 250, 
                 200, 
                 50, 
-                new roundedBorder(15, Color.WHITE, null), 
-                Color.PINK, 
+                new roundedBorder(
+                    15, 
+                    i.isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLUE, 
+                    imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)
+                ), 
+                i.isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE, 
                 new Font("Arial", Font.BOLD, 15)
             );
 

@@ -109,7 +109,12 @@ public class UI extends JPanel {
             50, 2, 
             110, 100
         );
-        companyLogo.addActionListener(_ -> { PanelHelper.clear(this); SwingUtilities.invokeLater(() -> { w._loadFrontPage(); }); });
+        companyLogo.addActionListener(
+            _ -> { 
+                PanelHelper.clear(this); 
+                SwingUtilities.invokeLater(() -> { w._loadFrontPage(); });
+            }
+        );
         i.switchThemeComp.dummy.add(companyLogo);
 
         // right side - profile pic
@@ -136,25 +141,35 @@ public class UI extends JPanel {
         i.switchThemeComp.dummy.add(profilePic);
 
         // right side - theme icon
-        JButton themeIcon = helpStoreComp.addJButton(
+        _helpAddThemeIcon(1070, 20);
+
+        _initializeCustomerDB();
+        _initializeInventoryDB();
+        if (i.isLogin.currentProfile.department != Profile.Department.SALESMAN) _initializeSalesmanDB();
+        if (i.isLogin.currentProfile.department == Profile.Department.OWNER) _initializeManagerDB();  
+
+    }
+
+    void _helpAddThemeIcon(int targetX, int targetY) {
+        helpStoreComp.addJButton(
             i, this, 
+            imageSystem._scaleImage(imageSystem.CHATBOX_ICON, 50, 50), 
+            targetX, targetY + 90, 
+            targetX, targetY, 
+            50, 50
+        );
+
+        helpStoreComp.addJButton(
+            i, this,
             imageSystem._scaleImage(
                 i.isDarkTheme.isDarkTheme ? LIGHT_BUTTON : DARK_BUTTON, 
                 50, 50
             ),
-            1070, 110, 
-            1070, 20, 
+            targetX - 70, targetY + 90, 
+            targetX - 70, targetY, 
             50, 50
-        );
-        themeIcon.addActionListener( _ -> { i.isDarkTheme.switchTheme(this, i.switchThemeComp); });
-        i.switchThemeComp.dummy.add(themeIcon);
-
-        _initializeCustomerDB();
-        _initializeInventoryDB();
-        if (i.isLogin.currentProfile.department != Profile.Department.CUSTOMER) _initializeSalesmanDB();
-        if (i.isLogin.currentProfile.department == Profile.Department.OWNER) _initializeManagerDB();  
-
-    }
+        ).addActionListener( _ -> { i.isDarkTheme.switchTheme(this, i.switchThemeComp); });
+    }    
 
     void _initializeCustomerDB() { _initializeCustomer(); _customerButton(); }
     void _initializeInventoryDB() { _initializeInventory(); _inventoryButton(); }
@@ -275,15 +290,19 @@ public class UI extends JPanel {
             50, 80, 
             50, 130, 
             170, 50,
-            new roundedBorder(15, Color.WHITE, imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)),
-            Color.PINK,
+            new roundedBorder(
+                15, 
+                i.isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLUE, 
+                imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)
+            ),
+            i.isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE,
             new Font("Arial", Font.BOLD, 18)
         );
         button.addActionListener( _ -> { 
-            _customerDBVisible(true);
-            _salesmanDBVisible(false); 
-            _managerDBVisible(false);
-            _inventoryDBVisible(false);
+            if (i.CustomerDB != null) _customerDBVisible(true);
+            if (i.SalesmanDB != null) _salesmanDBVisible(false); 
+            if (i.ManagerDB != null) _managerDBVisible(false);
+            if (i.InventoryDB != null) _inventoryDBVisible(false);
         });
 
         i.switchThemeComp.SecondPageButtons.add(button);
@@ -296,15 +315,19 @@ public class UI extends JPanel {
             410, 80, 
             410, 130, 
             170, 50,
-            new roundedBorder(15, Color.WHITE, imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)),
-            Color.PINK,
+            new roundedBorder(
+                15, 
+                i.isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLUE, 
+                imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)
+            ),
+            i.isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE,
             new Font("Arial", Font.BOLD, 18)
         );
         button.addActionListener( _ -> {
-            _customerDBVisible(false);
-            _salesmanDBVisible(true);
-            _managerDBVisible(false);
-            _inventoryDBVisible(false);
+            if (i.CustomerDB != null) _customerDBVisible(false);
+            if (i.SalesmanDB != null) _salesmanDBVisible(true);
+            if (i.ManagerDB != null) _managerDBVisible(false);
+            if (i.InventoryDB != null) _inventoryDBVisible(false);
         });
 
         i.switchThemeComp.SecondPageButtons.add(button);
@@ -317,15 +340,19 @@ public class UI extends JPanel {
             590, 80, 
             590, 130, 
             170, 50,
-            new roundedBorder(15, Color.WHITE, imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)),
-            Color.PINK,
+            new roundedBorder(
+                15, 
+                i.isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLUE, 
+                imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)
+            ),
+            i.isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE,
             new Font("Arial", Font.BOLD, 18)
         );
         button.addActionListener( _ -> {
-            _customerDBVisible(false);
-            _salesmanDBVisible(false);
-            _managerDBVisible(true);
-            _inventoryDBVisible(false);
+            if (i.CustomerDB != null) _customerDBVisible(false);
+            if (i.SalesmanDB != null) _salesmanDBVisible(false);
+            if (i.ManagerDB != null) _managerDBVisible(true);
+            if (i.InventoryDB != null) _inventoryDBVisible(false);
         });
 
         i.switchThemeComp.SecondPageButtons.add(button);
@@ -338,15 +365,18 @@ public class UI extends JPanel {
             230, 80, 
             230, 130, 
             170, 50, 
-            new roundedBorder(15, Color.WHITE, imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)), 
-            Color.PINK, 
+            new roundedBorder(
+                15, 
+                i.isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLUE, 
+                imageSystem._reduceColorTransparency(Color.GRAY, 0.3f)), 
+            i.isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE, 
             new Font("Arial", Font.BOLD, 18)
         );
         button.addActionListener( _ -> {
-            _customerDBVisible(false);
-            _salesmanDBVisible(false);
-            _managerDBVisible(false);
-            _inventoryDBVisible(true);
+            if (i.CustomerDB != null) _customerDBVisible(false);
+            if (i.SalesmanDB != null) _salesmanDBVisible(false);
+            if (i.ManagerDB != null) _managerDBVisible(false);
+            if (i.InventoryDB != null) _inventoryDBVisible(true);
         });
 
         i.switchThemeComp.SecondPageButtons.add(button);
