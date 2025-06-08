@@ -3,6 +3,8 @@ package Components;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
+import Comment.SaveComp;
+import Comment.comment;
 import Details.AboutUs;
 import Details.AddCar;
 import Details.Deletion;
@@ -32,7 +34,8 @@ import StoreAnimation.videoAnimStorage;
 import frontPage.FrontPage;
 import frontPage.isDarkTheme;
 
-public class initializer {
+public class initializer 
+{
     
     public JFrame frame = new JFrame();
     public isLogin isLogin = new isLogin();
@@ -42,36 +45,28 @@ public class initializer {
     public schedule schedule = new schedule(storage::_incAge);
     public CarIDGenerator CarIDGenerator = new CarIDGenerator();
     public stockInventory stockInventory = new stockInventory(this);
+    public SaveComp SaveComp = new SaveComp();
     
-    public JScrollPane scrollPane;
-    public Components component;
-    public SwitchThemeComp switchThemeComp;
-    public storeVid storeVid;
-    public FrontPage frontPage;
-    public Customer Customer;
-    public AboutUs AboutUs;
-    public checkProfile checkProfile;
-    public CustomerDB CustomerDB;
-    public SalesmanDB SalesmanDB;
-    public ManagerDB ManagerDB;
-    public InventoryDB InventoryDB;
-    public TaC TaC;
-    public Job Job;
-    public UI UI;
-    public password password;
-    public Verify Verify;
-    public VerifyCust VerifyCust;
-    public VerifyEmployee VerifyEmployee;
-    public checkCar checkCar;
-    public AddCar AddCar;
-    public Deletion Deletion;
-    public Purchase Purchase;
+    public JScrollPane scrollPane;                          public Components component;
+    public SwitchThemeComp switchThemeComp;                 public storeVid storeVid;
+    public FrontPage frontPage;                             public Customer Customer;
+    public AboutUs AboutUs;                                 public checkProfile checkProfile;
+    public CustomerDB CustomerDB;                           public SalesmanDB SalesmanDB;
+    public ManagerDB ManagerDB;                             public InventoryDB InventoryDB;
 
-    public compAnimStorage compAnimStorage;
-    public videoAnimStorage videoAnimStorage;
 
-    public initializer() {
-        new Window(this);
-    }
+    public TaC TaC;                 public Job Job;         public UI UI;
+    public password password;       public Verify Verify;   public VerifyCust VerifyCust;
+
+
+    public VerifyEmployee VerifyEmployee;                   public checkCar checkCar;
+    public AddCar AddCar;                                   public Deletion Deletion;
+    public Purchase Purchase;                               public comment comment;
+
+
+    public compAnimStorage compAnimStorage;                 public videoAnimStorage videoAnimStorage;
+    
+
+    public initializer() { new Window(this); }
 
 }

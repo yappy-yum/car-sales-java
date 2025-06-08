@@ -35,7 +35,9 @@ public class stockInventory {
                 null, 
                 null, 
                 null, 
-                null
+                null,
+                null,
+                false
             )
         );
 
@@ -60,7 +62,9 @@ public class stockInventory {
                 null, 
                 null, 
                 null, 
-                null
+                null,
+                null,
+                false
             )
         );
 
@@ -85,7 +89,9 @@ public class stockInventory {
                 null, 
                 null, 
                 null, 
-                null
+                null,
+                null,
+                false
             )
         );
 
@@ -110,7 +116,9 @@ public class stockInventory {
                 null, 
                 null, 
                 null, 
-                null
+                null,
+                null,
+                false
             )
         );        
 
@@ -135,7 +143,9 @@ public class stockInventory {
                 null, 
                 null, 
                 null, 
-                null
+                null,
+                null,
+                false
             )
         );                
     }
@@ -163,7 +173,10 @@ public class stockInventory {
      * 
      * HashMap<> does override duplicated data
      * 
+     * @deprecated this variable has been deprecated, was mean for dynamic tables
+     * 
      */
+    @Deprecated
     public HashMap<String, ImageIcon> carLogo = new HashMap<String, ImageIcon>();
 
     /*//////////////////////////////////////////////////////////////
@@ -171,7 +184,7 @@ public class stockInventory {
     //////////////////////////////////////////////////////////////*/
     
     public void buyCar(stockDetails.transactDetails car) { 
-        carLogo.put(car.carDetails.logoName, car.carDetails.carLogo);
+        // carLogo.put(car.carDetails.logoName, car.carDetails.carLogo);
         carDetails.add(car); 
     }
 
@@ -217,7 +230,7 @@ public class stockInventory {
                                   Sold
     //////////////////////////////////////////////////////////////*/
     
-    public void sellCar(String carId, String DateSold, String TimeSold) {
+    public void sellCar(String carId, String DateSold, String TimeSold, String Salesman) {
         for (int i = 0; i < carDetails.size(); i++) {
             stockDetails.transactDetails car = carDetails.get(i);
 
@@ -225,12 +238,26 @@ public class stockInventory {
                 car.carDetails.status = stockDetails.CarStatus.SOLD;
                 car.DateSold = DateSold;
                 car.TimeSold = TimeSold;
+                car.Salesman = Salesman;
                 return;
             }
 
         }
     }
 
+    /*//////////////////////////////////////////////////////////////
+                               Search Car
+    //////////////////////////////////////////////////////////////*/    
+
+    /**
+     * Search Car Details via Car ID
+     * 
+     * @see stockDetails.transactDetails
+     * 
+     * @param carId Car ID
+     * @return {@link #stockDetails.transactDetails}
+     * 
+     */
     public stockDetails.transactDetails SearchCarViaID(String carId) {
         
         for (int i = 0; i < carDetails.size(); i++) {
@@ -244,28 +271,86 @@ public class stockInventory {
         return null;
     }
 
+    /*//////////////////////////////////////////////////////////////
+                  Search Car Booked/Bought by Customer
+    //////////////////////////////////////////////////////////////*/    
+
+    /**
+     * Search Car Details via Customer Username whom has booked/bought the car
+     * 
+     * <p>
+     * 
+     * This method will check the total cars, including its details (in List datatype) a 
+     * customer has bought/sold
+     * 
+     * @see stockDetails.transactDetails
+     * 
+     * @param Username Customer Username 
+     * @return {@link #stockDetails.transactDetails}
+     * 
+     */
     public List<stockDetails.transactDetails> SearchCarViaUsername(String Username) {
         List<stockDetails.transactDetails> lists = new ArrayList<>();
 
-        for (stockDetails.transactDetails car : carDetails) if (car.carDetails.SellTo != null && car.carDetails.SellTo.equals(Username)) lists.add(car);
+        for (stockDetails.transactDetails car : carDetails) 
+            if (car.carDetails.SellTo != null && car.carDetails.SellTo.equals(Username)) 
+                lists.add(car);
 
         return lists.isEmpty() ? null : lists;
     }
 
-    public void UserDeleted(String username) {
+    /*//////////////////////////////////////////////////////////////
+                                Deletion
+    //////////////////////////////////////////////////////////////*/
+    
+    /**
+     * Call this when customer account is deleted
+     * 
+     * <p>
+     * 
+     * if customer has prior booked a car, the car will be available again
+     * 
+     * <p>
+     * 
+     * if customer has prior bought a car, the car status will be changed to "username (Deleted)"
+     * 
+     * @param username Customer Username to be deleted
+     * 
+     */
+    public void UserDeleted(String username, boolean _isUserDeletedIsSalesman) {
 
-        for (stockDetails.transactDetails car : carDetails) {
-            if (car.carDetails.SellTo != null && car.carDetails.SellTo.equals(username)) {
+        for (stockDetails.transactDetails car : carDetails) 
+        {
 
-                if (car.carDetails.status.equals(stockDetails.CarStatus.BOOKED)) {
-                    car.carDetails.status = stockDetails.CarStatus.AVAILABLE;
-                    car.carDetails.SellTo = null;
-                    car.DateBookedAt = null;
-                    car.TimeBookedAt = null;
+            if (!_isUserDeletedIsSalesman) 
+            {
+                if (car.carDetails.SellTo != null && car.carDetails.SellTo.equals(username)) 
+                {
+
+                    if (car.carDetails.status.equals(stockDetails.CarStatus.BOOKED)) 
+                    {
+                        car.carDetails.status = stockDetails.CarStatus.AVAILABLE;
+                        car.carDetails.SellTo = null;
+                        car.DateBookedAt = null;
+                        car.TimeBookedAt = null;
+                        car.Salesman = null;
+                    }
+
+                    if (car.carDetails.status.equals(stockDetails.CarStatus.SOLD)) 
+                    {
+                        car.carDetails.SellTo = username.concat(" (Deleted)");
+                    }
+
                 }
 
-                if (car.carDetails.status.equals(stockDetails.CarStatus.SOLD)) {
-                    car.carDetails.SellTo = username.concat(" (Deleted)");
+            } 
+            
+            if (_isUserDeletedIsSalesman)
+            {
+
+                if (car.Salesman != null && car.Salesman.equals(username)) 
+                {
+                    car.Salesman = username.concat(" (Deleted)"); 
                 }
 
             }

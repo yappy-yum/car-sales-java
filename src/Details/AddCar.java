@@ -343,7 +343,9 @@ public class AddCar extends JPanel {
                 null, 
                 null, 
                 null, 
-                null
+                null,
+                null,
+                false
             )
         );
 

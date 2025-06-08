@@ -11,7 +11,8 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-public class ImageHandler {
+public class ImageHandler 
+{
 
     /*//////////////////////////////////////////////////////////////
                                Encryption
@@ -25,11 +26,21 @@ public class ImageHandler {
      * @return
      * @throws Exception
      */
-    public static Object[] hashImage(ImageIcon icon, String password) throws Exception {
+    public 
+    static 
+    Object[] 
+    hashImage
+                            (
+                                ImageIcon icon, 
+                                String password
+                            ) 
+                            throws Exception 
+    {
         // 1. create empty container to store image bytes in memory
         // 2. create blank image with the exact same size as the `icon`
         ByteArrayOutputStream imgBytes = new ByteArrayOutputStream();
-        BufferedImage bImage = new BufferedImage(
+        BufferedImage bImage = new BufferedImage
+                                (
                                     icon.getIconWidth(), 
                                     icon.getIconHeight(), 
                                     BufferedImage.TYPE_INT_RGB
@@ -78,7 +89,18 @@ public class ImageHandler {
      * @throws Exception
      * 
      */
-    public static ImageIcon getImage(String hash, String password, byte[] encryptedData) throws Exception {
+    public 
+    static 
+    ImageIcon 
+    getImage
+                            (
+                                String hash, 
+                                String password, 
+                                byte[] encryptedData
+                            ) 
+                            throws Exception 
+                            
+    {
         // 1. ready AES from the password given to be used for decryption
         byte[] keyBytes = new byte[16];
         byte[] pwdBytes = password.getBytes();

@@ -23,6 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import Comment.__init__;
 import Components.Window;
 import Components.initializer;
 import Details.checkProfile;
@@ -173,7 +174,7 @@ public class Purchase extends JPanel {
             targetX, targetY + 90, 
             targetX, targetY, 
             50, 50
-        );
+        ).addActionListener( _ -> { __init__.CommentInit(i, W, this); });;
 
         helpStoreComp.addJButton(
             i, this,

@@ -97,7 +97,7 @@ replace `<username>` and `<password>` with any username and password respectivel
 </details>
 
 <details>
-<summary>2. Occasional Ignorable Exceptions</summary>
+<summary>2. Occasionally Ignorable Exceptions</summary>
 
 - The following exceptions may appear **intermittently** under rare conditions, like during reloads, particularly rendering or background threading 
 - These can be **safely ignored** as they do not affect core functionality.
@@ -135,7 +135,7 @@ Exception in thread "JavaFX Application Thread" java.lang.NullPointerException: 
         at java.base/java.lang.Thread.run(Thread.java:1570)
 ```
 
-```java
+```bash
 Exception in thread "Thread-24041" java.lang.NullPointerException: Cannot invoke "Components.storeVid.clearAll()" because "this.i.storeVid" is null
         at Components.Window.lambda$_throw$0(Window.java:212)
         at java.base/java.lang.Thread.run(Thread.java:1570)
@@ -189,6 +189,8 @@ Exception in thread "AWT-EventQueue-0" java.lang.NumberFormatException: For inpu
         at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
         at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
 ```
+
+</details>
 
 ## 🔎 Scope
 

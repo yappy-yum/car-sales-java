@@ -91,8 +91,15 @@ public class Deletion extends JPanel {
     }
 
     void _removeEverything() {
-        i.storage.removeUser(i.isLogin.currentProfile.username);
-        i.stockInventory.UserDeleted(i.isLogin.currentProfile.username);
+        String you = i.isLogin.currentProfile.username;
+
+        i.stockInventory.UserDeleted(
+            you, 
+            i.storage._isUserDeletedASalesman(you)
+        );
+        i.storage.removeUser(you);
+
+
         i.isLogin.currentProfile = null;
         i.isLogin.isLogin = false;
 

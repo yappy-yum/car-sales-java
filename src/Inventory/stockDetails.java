@@ -72,6 +72,9 @@ public class stockDetails {
         public String DateBookedAt, TimeBookedAt;
         public String DateSold, TimeSold;
 
+        public String Salesman;
+        public boolean isCommented;
+
         public transactDetails(
             String carId,
             CarDetails carDetails, 
@@ -80,7 +83,9 @@ public class stockDetails {
             String DateBookedAt,
             String TimeBookedAt,
             String DateSold, 
-            String TimeSold
+            String TimeSold,
+            String Salesman,
+            boolean isCommented
         ) {
             this.carId = carId;
             this.carDetails = carDetails;
@@ -90,6 +95,8 @@ public class stockDetails {
             this.TimeBookedAt = TimeBookedAt;
             this.DateSold = DateSold;
             this.TimeSold = TimeSold;
+            this.Salesman = Salesman;
+            this.isCommented = isCommented;
             
         }
 

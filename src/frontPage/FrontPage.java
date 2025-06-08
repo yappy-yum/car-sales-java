@@ -23,6 +23,8 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
+import Comment.__init__;
+
 
 public class FrontPage {
     
@@ -620,13 +622,14 @@ public class FrontPage {
     //////////////////////////////////////////////////////////////*/       
     
     void _helpAddThemeIcon(int targetX, int targetY) {
-        helpStoreComp.addJButton(
-            i, i.component, 
-            imageSystem._scaleImage(CHAT, 50, 50), 
-            targetX, targetY + 90, 
-            targetX, targetY, 
-            50, 50
-        );
+        JButton ChatButton = helpStoreComp.addJButton(
+                                    i, i.component, 
+                                    imageSystem._scaleImage(CHAT, 50, 50), 
+                                    targetX, targetY + 90, 
+                                    targetX, targetY, 
+                                    50, 50
+                                );
+        ChatButton.addActionListener( _ -> { __init__.CommentInit(i, window, i.component); });
 
         helpStoreComp.addJButton(
             i, i.component,

@@ -220,6 +220,7 @@ public class Window {
         i.AddCar = null;
         i.Deletion = null;
         i.Purchase = null;
+        i.comment = null;
     }
 
     void _throw() {
@@ -244,6 +245,7 @@ public class Window {
         if (i.AddCar != null) i.frame.remove(i.AddCar);
         if (i.Deletion != null) i.frame.remove(i.Deletion);
         if (i.Purchase != null) i.frame.remove(i.Purchase);
+        if (i.comment != null) i.frame.remove(i.comment);
         if (i.storeVid != null) new Thread(() -> i.storeVid.clearAll()).start(); // @audit may slower during clearance, therefore push it to background
 
         i.frame.revalidate();

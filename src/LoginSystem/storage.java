@@ -40,6 +40,24 @@ public class storage {
                 imageSystem._scaleImage(imageSystem.PROFILE, 50, 50)
             )
         );
+
+        Users.put(
+            "aa", 
+            new Profile.userProfile(
+                Profile.Department.CUSTOMER,
+                true,
+                null,
+                null,
+                null,
+                0,
+                0,
+                "aa",
+                argon.HashIt("12!@qwQW  "),
+                null,
+                null,
+                imageSystem._scaleImage(imageSystem.PROFILE, 50, 50)
+            )
+        );
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -480,6 +498,13 @@ public class storage {
     public void _deleteConfidential(String username) 
     {
         CustomerVerification.remove(username);
+    }
+
+    public boolean _isUserDeletedASalesman(String _username) {
+        return 
+            Users.get(_username).department == 
+            Profile.Department.SALESMAN
+            ;
     }
 
 

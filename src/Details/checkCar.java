@@ -134,7 +134,8 @@ public class checkCar extends JPanel {
             "Status: " + car.carDetails.status + "\n" +
             "Date Bought: " + car.DateBought + " " + car.TimeBought + "\n" +
             "Date Booked: " + car.DateBookedAt + " " + car.TimeBookedAt + "\n" +
-            "Date Sold: " + car.DateSold + " " + car.TimeSold,
+            "Date Sold: " + car.DateSold + " " + car.TimeSold + "\n" +
+            "Salesman in charged: " + car.Salesman,
             20, 100,
             500, 500,
             new Font(Font.MONOSPACED, Font.BOLD, 20),
@@ -177,7 +178,8 @@ public class checkCar extends JPanel {
                 i.stockInventory.sellCar(
                     CarID, 
                     LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), 
-                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm:ss a")).toLowerCase()
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm:ss a")).toLowerCase(),
+                    i.isLogin.currentProfile.username
                 ); 
                 _close();
             } 

@@ -335,7 +335,8 @@ public class checkProfile extends JPanel {
         int LeftIndex = 0;
         int RightIndex = 0;
 
-        List<stockDetails.transactDetails> cars = i.stockInventory.SearchCarViaUsername(
+        List<stockDetails.transactDetails> cars = i.stockInventory.SearchCarViaUsername
+                                                            (
                                                                 user == null                      ?
                                                                 i.isLogin.currentProfile.username : 
                                                                 user
@@ -359,9 +360,10 @@ public class checkProfile extends JPanel {
                 } else {
                     CarDetails.add(
                         createComp.createJTextArea(
+                            "Salesman: " + car.Salesman + "\n" +
                             car.carId + ", " + car.carDetails.carName + "\n" +
                             "Sold on " + car.DateSold + " at " + car.TimeSold,
-                            520, 100 + (RightIndex * 50), 
+                            520, 100 + (RightIndex * 70), 
                             500, 50, 
                             new Font("Arial", Font.BOLD, 15), 
                             null,

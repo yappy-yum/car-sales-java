@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
+import Comment.__init__;
 import Components.Window;
 import Components.initializer;
 import Helper.Comp.PanelHelper;
@@ -157,7 +158,7 @@ public class UI extends JPanel {
             targetX, targetY + 90, 
             targetX, targetY, 
             50, 50
-        );
+        ).addActionListener( _ -> {  __init__.CommentInit(i, w, this);});;
 
         helpStoreComp.addJButton(
             i, this,
