@@ -237,10 +237,8 @@ public class loginTest {
             assertTrue(
                 storage.isPhoneNumberUnique(
                     Integer.parseInt(
-                        Pseudorandomness.GetRandomDigits(3).concat(
-                            Pseudorandomness.GetRandomDigits(3).concat(
-                                Pseudorandomness.GetRandomDigits(4)
-                            )
+                        "01".concat(
+                            Pseudorandomness.GetRandomDigits(8)
                         )
                     )
                 )
