@@ -39,9 +39,16 @@ jobs:
           CP="src:${ARGON_LIBS}:${DOTENV_LIB}:${JUNIT_JAR}"
           CP_BIN="bin:${ARGON_LIBS}:${DOTENV_LIB}:${JUNIT_JAR}"
         fi
+    
+        SRC_FILES=$(find src -name "*.java")
+        javac -d bin --module-path lib/javafx-sdk-24.0.1/lib \
+          --add-modules javafx.controls,javafx.fxml,javafx.media,javafx.swing \
+          -cp "$CP" $SRC_FILES
+    
+        javac -d bin --module-path lib/javafx-sdk-24.0.1/lib \
+          --add-modules javafx.controls,javafx.fxml,javafx.media,javafx.swing \
+          -cp "$CP_BIN" test/loginTest.java
 
-        javac -d bin --module-path lib/javafx-sdk-24.0.1/lib --add-modules javafx.controls,javafx.fxml,javafx.media,javafx.swing -cp "$CP" src/**/*.java
-        javac -d bin --module-path lib/javafx-sdk-24.0.1/lib --add-modules javafx.controls,javafx.fxml,javafx.media,javafx.swing -cp "$CP_BIN" test/loginTest.java
 
     - name: running tests ...
       shell: bash
