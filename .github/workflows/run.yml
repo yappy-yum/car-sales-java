@@ -30,24 +30,19 @@ jobs:
           ARGON_LIBS="lib/argon2/argon2-jvm-2.8.jar;lib/argon2/jna-5.17.0.jar;lib/argon2/jna-platform-5.17.0.jar"
           DOTENV_LIB="lib/dotenv/dotenv-java-3.2.0.jar"
           JUNIT_JAR="lib/junit/junit-platform-console-standalone-1.13.0-RC1.jar"
-          CP="src;${ARGON_LIBS};${DOTENV_LIB};${JUNIT_JAR}"
-          CP_BIN="bin;${ARGON_LIBS};${DOTENV_LIB};${JUNIT_JAR}"
+          CP="src;test;${ARGON_LIBS};${DOTENV_LIB};${JUNIT_JAR}"
         else
           ARGON_LIBS="lib/argon2/argon2-jvm-2.8.jar:lib/argon2/jna-5.17.0.jar:lib/argon2/jna-platform-5.17.0.jar"
           DOTENV_LIB="lib/dotenv/dotenv-java-3.2.0.jar"
           JUNIT_JAR="lib/junit/junit-platform-console-standalone-1.13.0-RC1.jar"
-          CP="src:${ARGON_LIBS}:${DOTENV_LIB}:${JUNIT_JAR}"
-          CP_BIN="bin:${ARGON_LIBS}:${DOTENV_LIB}:${JUNIT_JAR}"
+          CP="src:test:${ARGON_LIBS}:${DOTENV_LIB}:${JUNIT_JAR}"
         fi
     
-        SRC_FILES=$(find src -name "*.java")
+        JAVA_FILES=$(find src test -name "*.java")
         javac -d bin --module-path lib/javafx-sdk-24.0.1/lib \
           --add-modules javafx.controls,javafx.fxml,javafx.media,javafx.swing \
-          -cp "$CP" $SRC_FILES
-    
-        javac -d bin --module-path lib/javafx-sdk-24.0.1/lib \
-          --add-modules javafx.controls,javafx.fxml,javafx.media,javafx.swing \
-          -cp "$CP_BIN" test/loginTest.java
+          -cp "$CP" $JAVA_FILES
+
 
 
     - name: running tests ...
