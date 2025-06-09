@@ -1,4 +1,4 @@
-name: Baby Sharks
+name: Cocomelon
 
 on:
   [push, pull_request]
@@ -27,8 +27,35 @@ jobs:
       shell: bash
       run: |
         if [[ "$RUNNER_OS" == "Windows" ]]; then
-          CP="lib/argon2/*;src"
+          ARGON_LIBS="lib/argon2/argon2-jvm-2.8.jar;lib/argon2/jna-5.17.0.jar;lib/argon2/jna-platform-5.17.0.jar"
+          DOTENV_LIB="lib/dotenv/dotenv-java-3.2.0.jar"
+          JUNIT_JAR="lib/junit/junit-platform-console-standalone-1.13.0-RC1.jar"
+          CP="src;${ARGON_LIBS};${DOTENV_LIB};${JUNIT_JAR}"
+          CP_BIN="bin;${ARGON_LIBS};${DOTENV_LIB};${JUNIT_JAR}"
         else
-          CP="lib/argon2/*:src"
+          ARGON_LIBS="lib/argon2/argon2-jvm-2.8.jar:lib/argon2/jna-5.17.0.jar:lib/argon2/jna-platform-5.17.0.jar"
+          DOTENV_LIB="lib/dotenv/dotenv-java-3.2.0.jar"
+          JUNIT_JAR="lib/junit/junit-platform-console-standalone-1.13.0-RC1.jar"
+          CP="src:${ARGON_LIBS}:${DOTENV_LIB}:${JUNIT_JAR}"
+          CP_BIN="bin:${ARGON_LIBS}:${DOTENV_LIB}:${JUNIT_JAR}"
         fi
-        javac -d bin -cp "$CP" --module-path lib/javafx-sdk-24.0.1/lib --add-modules javafx.controls,javafx.fxml,javafx.media,javafx.swing src/**/**/*.java
+
+        javac -d bin --module-path lib/javafx-sdk-24.0.1/lib --add-modules javafx.controls,javafx.fxml,javafx.media,javafx.swing -cp "$CP" src/**/*.java
+        javac -d bin --module-path lib/javafx-sdk-24.0.1/lib --add-modules javafx.controls,javafx.fxml,javafx.media,javafx.swing -cp "$CP_BIN" test/loginTest.java
+
+    - name: running tests ...
+      shell: bash
+      run: |
+        if [[ "$RUNNER_OS" == "Windows" ]]; then
+          ARGON_LIBS="lib/argon2/argon2-jvm-2.8.jar;lib/argon2/jna-5.17.0.jar;lib/argon2/jna-platform-5.17.0.jar"
+          DOTENV_LIB="lib/dotenv/dotenv-java-3.2.0.jar"
+          JUNIT_JAR="lib/junit/junit-platform-console-standalone-1.13.0-RC1.jar"
+          CP_BIN="bin;${ARGON_LIBS};${DOTENV_LIB};${JUNIT_JAR}"
+        else
+          ARGON_LIBS="lib/argon2/argon2-jvm-2.8.jar:lib/argon2/jna-5.17.0.jar:lib/argon2/jna-platform-5.17.0.jar"
+          DOTENV_LIB="lib/dotenv/dotenv-java-3.2.0.jar"
+          JUNIT_JAR="lib/junit/junit-platform-console-standalone-1.13.0-RC1.jar"
+          CP_BIN="bin:${ARGON_LIBS}:${DOTENV_LIB}:${JUNIT_JAR}"
+        fi
+
+        java --module-path lib/javafx-sdk-24.0.1/lib --add-modules javafx.controls,javafx.fxml,javafx.media,javafx.swing -jar $JUNIT_JAR --class-path "$CP_BIN" --scan-classpath
