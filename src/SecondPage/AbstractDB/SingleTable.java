@@ -23,7 +23,7 @@ import Helper.fileSystem.imageSystem;
 import Helper.login.Profile;
 import Inventory.stockDetails;
 
-public abstract class singleTable {
+public abstract class SingleTable {
     
     initializer i;
     Window w;
@@ -87,7 +87,7 @@ public abstract class singleTable {
      * @param unverifiedDBPhrase
      * @param verifiedDBPhrase
      */
-    public singleTable(
+    public SingleTable(
         initializer i, 
         Window w,
         JPanel panel, 
