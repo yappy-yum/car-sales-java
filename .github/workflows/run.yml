@@ -23,6 +23,12 @@ jobs:
     - name: creating `bin` folder for class files ...
       run: mkdir bin
 
+    - name: creating `.env` file ...
+      run: |
+        echo "OWNER_USERNAME=owner" >> .env
+        echo "OWNER_PASSWORD=123" >> .env
+        echo "DECRYPT_PASSWORD=123" >> .env
+
     - name: compiling projects ...
       shell: bash
       run: |
