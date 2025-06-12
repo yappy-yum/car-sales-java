@@ -555,6 +555,7 @@ public class loginTest {
     
     @Test
     void Test_Image_Encryption_Decryption() {
+        System.setProperty("java.awt.headless", "true");
 
         ImageIcon RandomImage_1 = imageSystem.AUDI;
         ImageIcon RandomImage_2 = imageSystem.BMW_I9;
