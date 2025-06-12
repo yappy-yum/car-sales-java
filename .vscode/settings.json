@@ -5,6 +5,7 @@
         "lib/javafx-sdk-24.0.1/lib/*.jar",
         "lib/argon2/*.jar",
         "lib/dotenv/*.jar",
-        "lib/junit/*.jar"
+        "lib/junit/*.jar",
+        "lib/system-lambda/system-lambda-1.2.1.jar"
     ]
 }

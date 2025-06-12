@@ -4,17 +4,21 @@ a simple car sales management system built using only Java language
 
 > **⚠️ Disclaimer:**  
 > 1. This project is intended for **demonstration purposes only**. The code provided has not undergone thorough auditing or testing for production environments. **Use it at your own risk.**  
-> 2. The `files/sample` directory contains fictional content including user faces, documents, and CVs. All names, email addresses, phone numbers, institution names, etc are **entirely fictional** and are used solely for illustrative and educational purposes as part of this program.
+> 2. The `files/` directory contains fictional content including user faces, documents, and CVs. All names, email addresses, phone numbers, institution names, etc are **entirely fictional** and are used solely for illustrative and educational purposes as part of this program.
+
+
+<br>
+
 
 ## 🎯 Requirements
 
-- [JDK](https://www.oracle.com/java/technologies/downloads/): Java SE Development Kit
+- [JDK](https://www.oracle.com/java/technologies/downloads/): Java SE Development Kit, required to compile and run Java applications.
 - [Visual Studio Code](https://code.visualstudio.com/download): A recommended code editor for Java, or any other code editor of your choice
 
-**OPTIONAL**
+**OPTIONAL (but recommended)**
 
 - [Git](https://git-scm.com/downloads): Best terminal for non-linux users
-- [Makefile](https://stackoverflow.com/questions/32127524/how-to-install-and-use-make-in-windows): Best for shortcut 
+- [Makefile](https://stackoverflow.com/questions/32127524/how-to-install-and-use-make-in-windows): Automates repetitive tasks with commands.
 
 To verify the installation, run the following command:
 
@@ -36,6 +40,10 @@ To verify the installation, run the following command:
 > ```
 > An output similar to `GNU Make x.x.x` indicates a successful installation
 
+
+<br>
+
+
 ## ⏩ Quickstart
 
 To get all the codes installed in your code editor, run the following command:
@@ -44,63 +52,96 @@ To get all the codes installed in your code editor, run the following command:
 git clone https://github.com/yappy-yum/car-sales-java
 ```
 
+
+<br>
+
+
 ## ⚠️ Configuration
 
-**Before initialize/run the program, ensures that below changes has made to avoid any unnecessarily bug, not excluding missing dependencies.**
+**Before running the program, ensure the following configurations are made to avoid potential bugs and missing dependencies.**
 
 <details>
-<summary>MANDATORY</summary>
+<summary>🔧 MANDATORY CONFIGURATION</summary>
 
-**1. File Path**
-- Head over to `Helper.fileSystem.filePath` and look for `FILE_PATH`, ensures that the file path is relevant to your devices
+**1. 🔗 File Path**
+- Navigate to `Helper.fileSystem.filePath`
+- Update the `FILE_PATH` variable to match a valid path on your machine
 
-**2. .env file**
-- Create a `.env` file and add the following data:
+**2. 📄 `.env` file**
+- Create a `.env` file in the root directory.
+- Add the following environment variables:
 
 ```bash
 OWNER_USERNAME=<username>
 OWNER_PASSWORD=<password>
+DECRYPT_PASSWORD=<decryption-password>
 ```
-replace `<username>` and `<password>` with any username and password respectively for owner login 
+> Replace `<username>` and `<password>` with the desired owner login credentials.
+> Replace `<decryption-password>` with the password used for decrypting hashed images.
+
+**3. 🧰 Makefile**
+- If using the header generator, update the file path in **line 4**.
+- If using the terminal and want to try make deploy or make tests, verify that the Java file paths in **lines 13–14** are correct.
+
+**4. 🖥️ `run.cmd`**
+- If you're using Windows **without a terminal**, this script helps run the Java code.
+- Check and update file paths in **lines 5–7** as needed.
 
 </details>
 
 <details>
-<summary>OPTIONAL</summary>
+<summary>⚙️ OPTIONAL CONFIGURATION</summary>
 
-**1. Argon2 configuration**
-- head over to `loginPage.Argon2.Argon`, and change the value of `ITERATION`, `MEMORY`, and `PARALLELISM` that best suit for your own device and preferences
-- to test the effects, run the `main` method in `loginPage.Argon2.testArgon` 
+**1. ⚗️ Argon2 parameters**
+- Go to `loginPage.Argon2.Argon`.
+- Adjust the following values to match your system's performance:
+   - `ITERATION`
+   - `MEMORY`
+   - `PARALLELISM`
 
-**2. Makefile**
-- if you're using the header generater, you might want to check the file path on row no.4
+> **To test these settings, run the main method inside `loginPage.Argon2.testArgon`**
 
 </details>
 
+
 <br>
 
-> once you've finished all the configuration process, run the following command to run the tests and the program
->
-> ```
-> make tests
-> make deploy
-> ```
+
+## 🧪 Run Tests and Deploy
+
+After finishing the configuration:
+
+```bash
+make tests
+make deploy
+```
+
+Or, if you're on Windows without a terminal, open `run.cmd`. <br>
+Then:
+1. Choose option `1` to run test suits
+2. Choose option `2` to deloy and run the project
+
+
+<br>
+
 
 ## 🚨 Known Issue
 
 <details>
-<summary>1. Slow Startup on Initialization</summary>
+<summary>1. ⏳ Slow Startup on Initialization</summary>
 
-- During program startup, three Argon2 data hashes are executed for the owner profile.
-- This may cause a slight delay during initialization — this is expected behavior and not a bug.
+- On startup, the program performs **Argon2 hash operations** for the owner profile.
+- This may introduce a slight delay during initialization.
+- ✅ This is expected behavior and does not indicate a bug.
 
 </details>
 
 <details>
-<summary>2. Occasionally Ignorable Exceptions</summary>
+<summary>2. ⚠️ Occasionally Ignorable Exceptions</summary>
 
 - The following exceptions may appear **intermittently** under rare conditions, like during reloads, particularly rendering or background threading 
-- These can be **safely ignored** as they do not affect core functionality.
+- They are related to JavaFX rendering and threading behavior.
+- ✅ These do not affect program functionality and can be safely ignored.
 
 ```bash
 java.util.concurrent.RejectedExecutionException: Task com.sun.javafx.tk.quantum.PaintRenderJob@1af0d9dd[Not completed, task = java.util.concurrent.Executors$RunnableAdapter@12693f2a[Wrapped task = com.sun.javafx.tk.quantum.UploadingPainter@4fef1452]] rejected from com.sun.javafx.tk.quantum.QuantumRenderer@218458a4[Terminated, pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 1525]
@@ -137,14 +178,17 @@ Exception in thread "JavaFX Application Thread" java.lang.NullPointerException: 
 
 ```bash
 Exception in thread "Thread-24041" java.lang.NullPointerException: Cannot invoke "Components.storeVid.clearAll()" because "this.i.storeVid" is null
-        at Components.Window.lambda$_throw$0(Window.java:212)
+        at Components.Window.lambda$_throw$0(Window.java:249)
         at java.base/java.lang.Thread.run(Thread.java:1570)
 ```
 
 </details>
 
 <details>
-<summary>3. Integer Overflow</summary>
+<summary>3. 🧮 Integer Overflow</summary>
+
+- The system uses `int` data type for all the integer input fields.
+- An attempt to input a number **more than 2,147,483,647** can cause a runtime exception.
 
 ```bash
 Exception in thread "AWT-EventQueue-0" java.lang.NumberFormatException: For input string: "100000000000000000"
@@ -192,13 +236,24 @@ Exception in thread "AWT-EventQueue-0" java.lang.NumberFormatException: For inpu
 
 </details>
 
+
+<br>
+
+
 ## 🔎 Scope
 
 <details>
-<summary>java `src` structure</summary>
+<summary>java source folder structure</summary>
 
 ```javascript
 src/
+├── Comment/
+│   ├── __init__.java
+|   ├── ComConfig.java
+|   ├── comment.java
+|   ├── SaveComp.java
+│   └── UpdateCallback.java
+|
 ├── Components/
 │   ├── Components.java
 |   ├── initializer.java
@@ -208,9 +263,11 @@ src/
 |
 ├── Details/
 │   ├── AboutUs.java
+│   ├── AddCar.java
 │   ├── changeInformation.java
 │   ├── checkCar.java
 │   ├── checkProfile.java
+│   ├── Deletion.java
 │   ├── TaC.java
 │   └── Verify.java
 |
@@ -221,22 +278,28 @@ src/
 |
 ├── Helper/
 │   ├── Animation/
-│   │   ├── ComponentAnim.java
-│   │   └── VideoAnim.java
+│   │   ├── componentAnim.java
+│   │   └── videoAnim.java
 │   ├── Comp/
 │   │   ├── createComp.java
 │   │   ├── createDynamicTavle.java // @deprecated
 │   │   ├── createJFX.java
 │   │   ├── createScroll.java
 │   │   ├── helpStoreComp.java
-│   │   ├── PanelHelper.java
 │   │   └── wordWrap.java
 │   ├── Config/
-│   │   ├── roundedBorder.java
-│   │   ├── SearchDynTable.java // @deprecated
-│   │   ├── SerchSingleTable.java
-│   │   ├── tableAddIcon.java
-│   │   └── tableRenderConfig.java
+│   │   ├── PanelConfig/
+│   │   |   ├── DropdownPanel.java
+│   │   |   ├── GradientPanel.java
+│   │   |   └── PanelHelper.java
+│   │   ├── SearchTable/
+│   │   |   ├── SearchDynTable.java // @deprecated
+│   │   |   └── SearchSingleTable.java
+│   │   ├── TableSurface/
+│   │   |   ├── tableAddIcon.java 
+│   │   |   └── tableRenderConfig.java
+│   │   ├── BookingConfig.java
+│   │   └── roundedBorder.java
 │   ├── fileSystem/
 │   │   ├── filePath.java
 │   │   ├── fontSystem.java
@@ -248,7 +311,8 @@ src/
 │   │   ├── loginComp.java
 │   │   ├── loginFill.java
 │   │   └── Profile.java
-|   └── blur.java
+│   ├── blur.java
+|   └── ErrorMessages.java
 |
 ├── Inventory/
 │   ├── CarIDGenerator.java
@@ -278,8 +342,7 @@ src/
 │   │   ├── dynamicTable.java // @deprecated
 │   │   └── singleTable.java
 │   ├── CustomerPage/
-│   │   ├── 
-│   │   └── 
+│   │   └── Purchase.java
 │   ├── EmployeePage/
 │   │   ├── unVerifiedDB/
 │   │   |   ├── VerifyCust.java
@@ -301,6 +364,27 @@ src/
 
 </details>
 
+<details>
+<summary>java test folder structure</summary>
+
+```javascript
+test/
+├── framework/
+│   ├── ImageUtils.java
+│   ├── ProfileSample.java
+│   ├── Pseudorandomness.java
+|   └── StringToStyledDocument.java
+|
+├── AgeIncTest.java
+└── loginTest.java
+```
+
+</details>
+
+
+<br>
+
+
 ## 🙏 Attribution
 
 1. External Libraries
@@ -313,4 +397,4 @@ src/
 - [Montserrat](https://fonts.google.com/specimen/Montserrat) by Julieta Ulanovsky, Sol Matas, Juan Pablo del Peral, Jacques Le Bailly
 - [Nordin Slab Rounded Drawn](https://www.fontspace.com/search?q=Nordin%20Slab%20Rounded%20Drawn%20by%20craftsupplyco) by craftsupplyco
 - [Rosetta](https://www.fontspace.com/new/fonts) by craftsupplyco
-- [Beautiful People](https://www.fontspace.com/search?q=Beautiful%20People%20by%20Billy%20Argel%20Fonts)
+- [Tagesschrift](https://fonts.google.com/specimen/Tagesschrift) by Yanone

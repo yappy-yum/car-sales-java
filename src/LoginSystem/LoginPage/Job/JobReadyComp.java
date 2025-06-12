@@ -11,7 +11,6 @@ import javax.swing.JTextPane;
 import Components.initializer;
 import Helper.Comp.createComp;
 import Helper.ErrorMessages;
-import Helper.login.annotateButton;
 import Helper.login.loginComp;
 import Helper.login.loginFill;
 
@@ -77,17 +76,8 @@ public class JobReadyComp {
     /*//////////////////////////////////////////////////////////////
                           text annotate button
     //////////////////////////////////////////////////////////////*/
-    
-    public JButton[] annotateIcon = {
-        annotateButton.boldButton(CVFillPane, 480, 330),
-        annotateButton.italicButton(CVFillPane, 480, 370),
-        annotateButton.underlineButton(CVFillPane, 480, 410),
 
-        annotateButton.LeftButton(CVFillPane, 530, 330),
-        annotateButton.CenterButton(CVFillPane, 530, 370),
-        annotateButton.RightButton(CVFillPane, 530, 410),
-        annotateButton.JustifyButton(CVFillPane, 530, 450)
-    };
+    public JButton[] annotateIcon = ErrorMessages.TEXT_ANNOTATE_BUTTON(CVFillPane);    
 
     /*//////////////////////////////////////////////////////////////
                              Error Message

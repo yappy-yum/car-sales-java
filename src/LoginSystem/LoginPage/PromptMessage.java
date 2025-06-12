@@ -2,19 +2,17 @@ package LoginSystem.LoginPage;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import Components.SwitchThemeComp;
 import Components.initializer;
 import Helper.blur;
-import Helper.Comp.PanelHelper;
 import Helper.Comp.createComp;
 import Helper.Config.roundedBorder;
+import Helper.Config.PanelConfig.PanelHelper;
 import Helper.fileSystem.imageSystem;
 
 /**
@@ -72,7 +70,6 @@ public class PromptMessage extends JPanel {
         _addMessage();
         _addX();
 
-        S.dummy.add(this);
 
     }
 
@@ -96,7 +93,7 @@ public class PromptMessage extends JPanel {
                               Add Message
     //////////////////////////////////////////////////////////////*/    
 
-    void _addMessage() { S.dummy.add(text); add(text); text.setVisible(true); }
+    void _addMessage() { add(text); text.setVisible(true); }
 
     /*//////////////////////////////////////////////////////////////
                               Close Button
@@ -114,24 +111,15 @@ public class PromptMessage extends JPanel {
         closeButton.setVisible(true);
         closeButton.addActionListener(
             _ -> {
-                blur.removeBlur();
-                blur = null;
-                PanelHelper.clear(this);
-                SwingUtilities.invokeLater(() -> { 
-                    try {
-                        classToInteractWith
-                                .getClass()
-                                .getMethod("_removeMessage")
-                                .invoke(classToInteractWith);
-                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                        e.printStackTrace(); 
-                    }
-                });
+                PanelHelper.clear(
+                    blur, 
+                    this, 
+                    classToInteractWith, 
+                    "_removeMessage"
+                );
             }
         );
         add(closeButton);
-        S.dummy.add(closeButton);
-
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -148,7 +136,6 @@ public class PromptMessage extends JPanel {
         );
         header.setVisible(true);
         add(header);
-        S.dummy.add(header);
     }
 
 }

@@ -4,9 +4,9 @@ import javax.swing.JPanel;
 
 import Components.Window;
 import Components.initializer;
-import SecondPage.AbstractDB.singleTable;
+import SecondPage.AbstractDB.SingleTable;
 
-public class CustomerDB extends singleTable 
+public class CustomerDB extends SingleTable 
 { 
 
     public 
@@ -77,8 +77,6 @@ public class CustomerDB extends singleTable
             "Unverified Customer",
             "Verified Customer"
         );
-        i.switchThemeComp.dummy.add(this);
-
     } 
 
 }

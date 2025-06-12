@@ -3,7 +3,8 @@ package Comment;
 import Inventory.stockDetails;
 
 @FunctionalInterface
-public interface UpdateCallback {
+public interface UpdateCallback 
+{
     
     void CarUpdates(stockDetails.transactDetails newCar);
 

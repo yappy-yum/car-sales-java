@@ -5,8 +5,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import Helper.Comp.PanelHelper;
 import Helper.Comp.createScroll;
+import Helper.Config.PanelConfig.PanelHelper;
 import Helper.fileSystem.imageSystem;
 import SecondPage.UI;
 import SecondPage.CustomerPage.Purchase;

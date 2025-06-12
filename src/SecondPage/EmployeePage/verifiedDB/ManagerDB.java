@@ -4,9 +4,9 @@ import javax.swing.JPanel;
 
 import Components.Window;
 import Components.initializer;
-import SecondPage.AbstractDB.singleTable;
+import SecondPage.AbstractDB.SingleTable;
 
-public class ManagerDB extends singleTable
+public class ManagerDB extends SingleTable
 { 
 
     public 
@@ -68,7 +68,6 @@ public class ManagerDB extends singleTable
             "Unverified Managers",
             "Verified Managers"
         );
-        i.switchThemeComp.dummy.add(this);
     } 
 
 }

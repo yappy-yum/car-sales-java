@@ -7,7 +7,6 @@ import java.util.function.Supplier;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
@@ -16,13 +15,18 @@ import javax.swing.SwingUtilities;
 import Components.Window;
 import Components.initializer;
 import Helper.blur;
-import Helper.Comp.PanelHelper;
 import Helper.Comp.createComp;
 import Helper.Config.roundedBorder;
-import Helper.fileSystem.imageSystem;
+import Helper.Config.PanelConfig.DropdownPanel;
+import Helper.Config.PanelConfig.PanelHelper;
 import Inventory.stockDetails;
 
-public class comment extends JPanel {
+/**
+ * 
+ * Main class for comment JPanel
+ * 
+ */
+public class comment extends DropdownPanel {
 
     blur blur;
     initializer i;
@@ -36,35 +40,21 @@ public class comment extends JPanel {
     JLabel Header;
 
     stockDetails.transactDetails Car;
+
+    /*//////////////////////////////////////////////////////////////
+                              constructor
+    //////////////////////////////////////////////////////////////*/    
     
     public comment(initializer i, Window W) {
         this.i = i;
         this.W = W;
         blur = new blur(i.frame);
 
-        _background();      _close();
-        _addInput();        _addOutput();
-        _addSubmit();       _addHeader();
-        _addSubmitListener(); 
+        _close();           _addInput();        
+        _addOutput();       _addSubmit();       
+        _addHeader();       _addSubmitListener(); 
 
-        i.switchThemeComp.dummy.add(this);
-    }
-
-   /*//////////////////////////////////////////////////////////////
-                           Background JPanel
-    //////////////////////////////////////////////////////////////*/    
-
-    void _background() {
-        setOpaque(false);
-        setLayout(null);
-        setBorder(
-            new roundedBorder(
-                20, 
-                Color.BLACK, 
-                imageSystem._reduceColorTransparency(Color.GRAY, 0.7f)
-            )
-        );
-    }     
+    }  
 
     /*//////////////////////////////////////////////////////////////
                                  Close
@@ -82,9 +72,7 @@ public class comment extends JPanel {
         closeButton.setVisible(true);
         closeButton.addActionListener(
             _ -> {
-                blur.removeBlur();
-                blur = null;
-                PanelHelper.clear(this);
+                PanelHelper.clear(blur, this);
                 SwingUtilities.invokeLater(
                     () -> {
                         if (i.component != null) W._loadFrontPage();
@@ -96,8 +84,11 @@ public class comment extends JPanel {
         );
 
         add(closeButton);
-        i.switchThemeComp.dummy.add(closeButton);
     }
+
+    /*//////////////////////////////////////////////////////////////
+                               Add Header
+    //////////////////////////////////////////////////////////////*/    
 
     void _addHeader() {
         ComConfig.createHeader a = new ComConfig.createHeader(InputComment, i);
@@ -107,7 +98,6 @@ public class comment extends JPanel {
         Header.setVisible(true);
 
         add(Header);
-        i.switchThemeComp.dummy.add(Header);
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -120,7 +110,6 @@ public class comment extends JPanel {
         InputComment.setEditable(false);
 
         add(InputComment);
-        i.switchThemeComp.dummy.add(InputComment);
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -134,7 +123,6 @@ public class comment extends JPanel {
         OutputScroll.setVisible(true);
 
         add(OutputScroll);
-        i.switchThemeComp.dummy.add(OutputScroll);
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -153,7 +141,6 @@ public class comment extends JPanel {
         SubmitButton.setVisible(true);
 
         add(SubmitButton);
-        i.switchThemeComp.dummy.add(SubmitButton);
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -169,20 +156,17 @@ public class comment extends JPanel {
     }
 
     ActionListener _actSubmitListener() {
-        ComConfig.SubmitAction b = new ComConfig.SubmitAction
-                                            (
-                                                    (initializer) i,
-                                                    (JTextField) InputComment,
-                                                    (JTextPane) OutputPane,
-                                                    (Supplier<stockDetails.transactDetails>) (() -> this.Car),
-                                                    (JLabel) Header,
-                                                    (UpdateCallback) (stockDetails.transactDetails newCar) -> this.Car = newCar
-                                            );
-
-        if (b.CarId != null) this.Car = i.stockInventory.SearchCarViaID(b.CarId);
-        if (Car != null) System.out.println("Car is commented: " + Car.isCommented);
-
-        return b.Action;
+        return new ComConfig.SubmitAction
+                        // Safety Cast
+                        (
+                            (initializer) i,
+                            (JTextField) InputComment,
+                            (JTextPane) OutputPane,
+                            (Supplier<stockDetails.transactDetails>) (() -> this.Car),
+                            (JLabel) Header,
+                            (UpdateCallback) (stockDetails.transactDetails newCar) -> this.Car = newCar
+                        )
+                        .Action;
     }
 
 }

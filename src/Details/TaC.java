@@ -6,19 +6,18 @@ import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import Components.SwitchThemeComp;
 import Components.Window;
 import Components.initializer;
 import Helper.blur;
-import Helper.Comp.PanelHelper;
 import Helper.Comp.createComp;
 import Helper.Config.roundedBorder;
-import Helper.fileSystem.imageSystem;
+import Helper.Config.PanelConfig.DropdownPanel;
+import Helper.Config.PanelConfig.PanelHelper;
 
-public class TaC extends JPanel {
+public class TaC extends DropdownPanel {
 
     blur blur;
     initializer i;
@@ -31,23 +30,9 @@ public class TaC extends JPanel {
         this.window = window;
         this.S = i.switchThemeComp;
 
-        _background();
         _addHeader();
         _addText();
         _addX();
-        S.dummy.add(this);
-    }
-
-    void _background() {
-        setOpaque(false);
-        setLayout(null);
-        setBorder(
-            new roundedBorder(
-                20, 
-                Color.BLACK, 
-                imageSystem._reduceColorTransparency(Color.GRAY, 0.7f)
-            )
-        );
     }
 
     void _addHeader() {
@@ -60,7 +45,6 @@ public class TaC extends JPanel {
         );
         textLabel.setVisible(true);
         add(textLabel);
-        S.dummy.add(textLabel);
     }
 
     void _addText() {
@@ -96,7 +80,6 @@ public class TaC extends JPanel {
         editorPane.setFocusable(false);
 
         add(editorPane);
-        S.dummy.add(editorPane);
     }
 
     void _addX() {
@@ -110,14 +93,11 @@ public class TaC extends JPanel {
         closeButton.setVisible(true);
         closeButton.addActionListener(
             _ -> {
-                blur.removeBlur();
-                blur = null;
-                PanelHelper.clear(this);
+                PanelHelper.clear(blur, this);
                 SwingUtilities.invokeLater(() -> { window._loadFrontPage(); } );
             }
         );
         add(closeButton);
-        S.dummy.add(closeButton);
     }
 
 

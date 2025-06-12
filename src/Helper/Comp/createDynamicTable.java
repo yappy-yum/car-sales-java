@@ -24,6 +24,7 @@ import Helper.Comp.createComp.createJTable;
  * @author yappy-yum
  * 
  */
+@Deprecated
 public class createDynamicTable {
     
     /**

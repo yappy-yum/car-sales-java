@@ -16,14 +16,14 @@ import Components.initializer;
 import Details.AddCar;
 import Helper.Comp.createComp;
 import Helper.Comp.helpStoreComp;
-import Helper.Config.SearchSingleTable;
 import Helper.Config.roundedBorder;
-import Helper.Config.tableAddIcon;
+import Helper.Config.SearchTable.SearchSingleTable;
+import Helper.Config.TableSurface.tableAddIcon;
 import Helper.fileSystem.imageSystem;
 import Helper.login.Profile;
 import Inventory.stockDetails;
 
-public abstract class singleTable {
+public abstract class SingleTable {
     
     initializer i;
     Window w;
@@ -60,34 +60,11 @@ public abstract class singleTable {
 
     JButton addInventoryButton;
 
-
-
-
-
     /*//////////////////////////////////////////////////////////////
                               constructor
     //////////////////////////////////////////////////////////////*/    
 
-    /**
-     * 
-     * @param i
-     * @param w
-     * @param panel
-     * @param verifiedTitle
-     * @param unverifiedTitle
-     * @param verifiedColumnTitles
-     * @param unverifiedColumnTitles
-     * @param rowHeight
-     * @param verifiedIntInstruct 1 == customer; 2 == salesman; 3 == manager; 4 == inventory
-     * @param unverifiedIntInstruct 1 == customer; 2 == salesman; 3 == manager
-     * @param placeHolder
-     * @param columnToFetchDataForProfileView
-     * @param verifiedIntProfileSetUp 1 == user profile; 2 == inventory
-     * @param unverifiedIntProfileSetUp 3 == unverified customer; 4 == unverified emplyee
-     * @param unverifiedDBPhrase
-     * @param verifiedDBPhrase
-     */
-    public singleTable(
+    public SingleTable(
         initializer i, 
         Window w,
         JPanel panel, 
@@ -123,11 +100,14 @@ public abstract class singleTable {
         this.verifiedDBPhrase = verifiedDBPhrase;
 
         _initTableForVerified();
-        _initTableForUnverified();
-        _createButtons();
+
+        if (i.isLogin.currentProfile.department != Profile.Department.SALESMAN) {
+            _initTableForUnverified();
+            _createButtons();
+        }
+        
         _config();
 
-        i.switchThemeComp.dummy.add(this);
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -195,7 +175,7 @@ public abstract class singleTable {
             rowHeight, 
             i.isDarkTheme.isDarkTheme ? Color.CYAN : Color.BLUE, 
             i.isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLACK, 
-            i.isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE,  
+            Color.PINK,  
             new Color(0, 0, 0, 0), 
             new Font("Arial", Font.BOLD, 15), 
             columnToFetchDataForProfileView, 
@@ -378,14 +358,10 @@ public abstract class singleTable {
         // dummy
         if (verifiedLabel != null) i.switchThemeComp.SecondPageLabels.add(verifiedLabel);
         if (verifiedSearchBar != null) i.switchThemeComp.SecondPageJTextFields.add(verifiedSearchBar);
-        if (verifiedSearchIcon != null) i.switchThemeComp.dummy.add(verifiedSearchIcon);
-        if (verifiedTable != null) i.switchThemeComp.dummy.add(verifiedTable.getTableHeader());
         if (verifiedButton != null) i.switchThemeComp.SecondPageButtons.add(verifiedButton);
 
         if (unverifiedLabel != null) i.switchThemeComp.SecondPageLabels.add(unverifiedLabel);
         if (unverifiedSearchBar != null) i.switchThemeComp.SecondPageJTextFields.add(unverifiedSearchBar);
-        if (unverifiedSearchIcon != null) i.switchThemeComp.dummy.add(unverifiedSearchIcon);
-        if (unverifiedTable != null) i.switchThemeComp.dummy.add(unverifiedTable.getTableHeader());
         if (unverifiedButton != null) i.switchThemeComp.SecondPageButtons.add(unverifiedButton);
 
         if (addInventoryButton != null) i.switchThemeComp.SecondPageButtons.add(addInventoryButton);
@@ -404,7 +380,11 @@ public abstract class singleTable {
                 250, 
                 200, 
                 50, 
-                new roundedBorder(15, Color.WHITE, null), 
+                new roundedBorder(
+                    15, 
+                    i.isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLUE, 
+                    null
+                ), 
                 i.isDarkTheme.isDarkTheme ? Color.PINK : Color.BLUE, 
                 new Font("Arial", Font.BOLD, 15)
             );

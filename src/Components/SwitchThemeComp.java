@@ -1,11 +1,7 @@
 package Components;
 
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,12 +11,9 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableCellRenderer;
 
 import Helper.Config.roundedBorder;
-import Helper.Config.tableRenderConfig;
+import Helper.Config.TableSurface.tableRenderConfig;
 import Helper.fileSystem.imageSystem;
 import frontPage.isDarkTheme;
 
@@ -58,8 +51,6 @@ public class SwitchThemeComp {
     public ArrayList<JComponent> CustLabel = new ArrayList<>();
     public ArrayList<JTextField> searchBar = new ArrayList<>();
 
-    // dummy storage for others components
-    public ArrayList<Object> dummy = new ArrayList<>();
 
     /*//////////////////////////////////////////////////////////////
                               constructor
@@ -289,7 +280,7 @@ public class SwitchThemeComp {
                     new Color(0, 0, 0, 0)
                 )
             );
-            _helpChangeTable(table);
+            // _helpChangeTable(table);
         }
     }
 
@@ -380,89 +371,10 @@ public class SwitchThemeComp {
     //////////////////////////////////////////////////////////////*/
 
     public void clearEverything() {
-        Set<Container> touchedParents = new HashSet<>();
-
-        // Batch-remove JTextAreas
-        if (texts.size() > 0) for (JTextArea text : texts) safelyRemoveAndTrack(text, touchedParents);
-        if (TButtons.size() > 0) for (JButton btn : TButtons) safelyRemoveAndTrack(btn, touchedParents);
-        if (IButtons.size() > 0) for (JButton btn : IButtons) safelyRemoveAndTrack(btn, touchedParents);
-        if (TLabels.size() > 0) for (JLabel lbl : TLabels) safelyRemoveAndTrack(lbl, touchedParents);
-        if (ILabels.size() > 0) for (JLabel lbl : ILabels) safelyRemoveAndTrack(lbl, touchedParents);
-        if (JPanels.size() > 0) for (JPanel panel : JPanels) safelyRemoveAndTrack(panel, touchedParents);
-        if (dummy.size() > 0) for (Object dummyObj : dummy) safelyRemoveAndTrack(dummyObj, touchedParents);
-        if (JTables.size() > 0) for (JTable table : JTables) safelyRemoveAndTrack(table, touchedParents);
-        if (SecondPageLabels.size() > 0) for (JLabel label : SecondPageLabels) safelyRemoveAndTrack(label, touchedParents);
-        if (SecondPageButtons.size() > 0) for (JButton button : SecondPageButtons) safelyRemoveAndTrack(button, touchedParents);
-        if (SecondPageJTextFields.size() > 0) for (JTextField field : SecondPageJTextFields) safelyRemoveAndTrack(field, touchedParents);
-        if (CustLabel.size() > 0) for (JComponent label : CustLabel) safelyRemoveAndTrack(label, touchedParents);
-        if (searchBar.size() > 0) for (JTextField field : searchBar) safelyRemoveAndTrack(field, touchedParents);
-
-        SwingUtilities.invokeLater(() -> {
-            for (Container parent : touchedParents) {
-                parent.removeAll();
-                // parent.revalidate();
-                // parent.repaint();                
-            }
-
-            // Clear lists
-            texts.clear();        TButtons.clear();     IButtons.clear();     
-            TLabels.clear();      ILabels.clear();      JPanels.clear();
-            dummy.clear();        JTables.clear();      SecondPageLabels.clear();   
-            CustLabel.clear();    searchBar.clear();
-            SecondPageButtons.clear();              SecondPageJTextFields.clear(); 
-        });
-    }
-
-    // Track parent for batch repaint/revalidate
-    private void safelyRemoveAndTrack(Object obj, Set<Container> touchedParents) 
-    {
-        if 
-        (
-            obj instanceof Component comp && 
-            comp.getParent() != null
-        ) 
-        {
-            touchedParents.add(comp.getParent());                
-        }
-    }
-
-    /*//////////////////////////////////////////////////////////////
-                          Table Changes Config
-    //////////////////////////////////////////////////////////////*/    
-
-    private void _helpChangeTable(JTable table) {
-        if (table.getColumnModel().getColumnCount() > 1) {
-            table.getColumnModel().getColumn(1).setCellRenderer(new DefaultTableCellRenderer() {
-                @Override
-                public Component getTableCellRendererComponent(
-                    JTable table,
-                    Object value,
-                    boolean isSelected,
-                    boolean hasFocus,
-                    int row,
-                    int column
-                ) {
-                    if (value instanceof ImageIcon) {
-                        JLabel label = new JLabel((ImageIcon) value);
-                        label.setHorizontalAlignment(SwingConstants.CENTER);
-                        label.setOpaque(true);
-                        label.setBackground(new Color(0, 0, 0, 0));
-                        return label;
-                    }
-
-                    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                    c.setForeground(isDarkTheme.isDarkTheme ? Color.WHITE : Color.BLACK);
-                    c.setBackground(new Color(0, 0, 0, 0));
-
-                    if (c instanceof JComponent) ((JComponent) c).setOpaque(true);
-                    if (c instanceof JLabel) ((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
-
-                    return c;
-                }
-            });
-
-            table.repaint();
-        }
+        texts.clear();              TButtons.clear();               IButtons.clear();     
+        TLabels.clear();            ILabels.clear();                JPanels.clear();
+        JTables.clear();            CustLabel.clear();              SecondPageLabels.clear(); 
+        searchBar.clear();          SecondPageButtons.clear();      SecondPageJTextFields.clear(); 
     }
 
 

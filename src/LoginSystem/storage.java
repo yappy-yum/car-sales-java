@@ -15,8 +15,8 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 public class storage {
 
-    Argon.Hash argon = new Argon().new Hash();
-    Dotenv dotenv = Dotenv.load();
+    public Argon.Hash argon = new Argon().new Hash();
+    public Dotenv dotenv = Dotenv.load();
 
     /*//////////////////////////////////////////////////////////////
                               constructor
@@ -37,24 +37,6 @@ public class storage {
                 argon.HashIt(dotenv.get("OWNER_PASSWORD")), 
                 null, 
                 null, 
-                imageSystem._scaleImage(imageSystem.PROFILE, 50, 50)
-            )
-        );
-
-        Users.put(
-            "aa", 
-            new Profile.userProfile(
-                Profile.Department.CUSTOMER,
-                true,
-                null,
-                null,
-                null,
-                0,
-                0,
-                "aa",
-                argon.HashIt("12!@qwQW  "),
-                null,
-                null,
                 imageSystem._scaleImage(imageSystem.PROFILE, 50, 50)
             )
         );
@@ -242,9 +224,11 @@ public class storage {
      * 
      */
     public void changeDetails(
-        String oldUsername, String newUsername,
+        String oldUsername, 
+        String newUsername,
         String newPassword,
-        String newFavText, int newFavNum,
+        String newFavText, 
+        int newFavNum,
         int newPhoneNumber
     ) {
         Profile.userProfile profile = Users.get(oldUsername);
@@ -404,8 +388,8 @@ public class storage {
     //////////////////////////////////////////////////////////////*/    
     
     public void _incAge() {
-        for (Profile.userProfile profile : Users.values()) profile.age++;
-        for (Profile.CV profile : Job.values()) profile.age++;
+        for (Profile.userProfile customer : Users.values()) customer.age++;
+        for (Profile.CV pendingEmployee : Job.values()) pendingEmployee.age++;
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -429,12 +413,12 @@ public class storage {
             );
 
         } 
-        catch (Exception o) {
+        catch (Exception LOVE) {
 
-            o.printStackTrace();
+            LOVE.printStackTrace();
             JOptionPane.showMessageDialog(
                 null, 
-                "Error encrypting image: " + o.getMessage()
+                "Error encrypting image: " + LOVE.getMessage()
             );
 
         }

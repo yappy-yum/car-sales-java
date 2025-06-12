@@ -49,8 +49,6 @@ jobs:
           --add-modules javafx.controls,javafx.fxml,javafx.media,javafx.swing \
           -cp "$CP" $JAVA_FILES
 
-
-
     - name: running tests ...
       shell: bash
       run: |

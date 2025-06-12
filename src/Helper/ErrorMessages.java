@@ -1,6 +1,10 @@
 package Helper;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JTextPane;
+
+import Helper.login.annotateButton;
 import Helper.login.loginComp;
 
 public class ErrorMessages {
@@ -67,5 +71,22 @@ public class ErrorMessages {
         loginComp.createErrorMessage("favourite text must contain only characters", 20, 50),
         loginComp.createErrorMessage("favourite number must contain only numbers", 20, 50)        
     };
+
+    /*//////////////////////////////////////////////////////////////
+                            Annotate Button
+    //////////////////////////////////////////////////////////////*/    
+
+    public static JButton[] TEXT_ANNOTATE_BUTTON(JTextPane CVTextPane) {
+        return new JButton[] {
+            annotateButton.boldButton(CVTextPane, 480, 330),
+            annotateButton.italicButton(CVTextPane, 480, 370),
+            annotateButton.underlineButton(CVTextPane, 480, 410),
+
+            annotateButton.LeftButton(CVTextPane, 530, 330),
+            annotateButton.CenterButton(CVTextPane, 530, 370),
+            annotateButton.RightButton(CVTextPane, 530, 410),
+            annotateButton.JustifyButton(CVTextPane, 530, 450)
+        };
+    }
 
 }

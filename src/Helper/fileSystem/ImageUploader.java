@@ -18,18 +18,27 @@ public class ImageUploader {
         fileChooser.setDialogTitle("Select an image");
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-        int result = fileChooser.showOpenDialog(null);
-
-        if (result == JFileChooser.APPROVE_OPTION) {
+        if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) 
+        {
             File selectedFile = fileChooser.getSelectedFile();
 
-            // Optional: check if it's an image file
+            // check if it's an image file
             String fileName = selectedFile.getName().toLowerCase();
-            if (fileName.endsWith(".png") || fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")) {
+            
+            if 
+            (
+                fileName.endsWith(".png") || 
+                fileName.endsWith(".jpg") || 
+                fileName.endsWith(".jpeg")
+            ) 
+            {
                 return new ImageIcon(selectedFile.getAbsolutePath());
-            } else {
+            }
+            else 
+            {
                 System.err.println("Invalid image file type selected.");
             }
+            
         }
 
         return null; 

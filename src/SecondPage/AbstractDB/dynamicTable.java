@@ -29,6 +29,7 @@ import Inventory.stockDetails;
  * @author yappy-yum
  * 
  */
+@Deprecated
 public abstract class dynamicTable {
 
     initializer i;
@@ -173,15 +174,6 @@ public abstract class dynamicTable {
         texts.forEach(t -> { if (t != null) panel.add(t); });
         tables.forEach(t -> { if (t.table != null) panel.add(t.table.getTableHeader()); });
         tables.forEach(t -> { if (t.table != null) panel.add(t.table); });
-
-        // dummy
-        if (label != null) i.switchThemeComp.dummy.add(label);
-        if (searchBar != null) i.switchThemeComp.dummy.add(searchBar);
-        if (searchIcon != null) i.switchThemeComp.dummy.add(searchIcon);
-        logos.forEach(t -> { if (t != null) i.switchThemeComp.dummy.add(t); });
-        texts.forEach(t -> { if (t != null) i.switchThemeComp.dummy.add(t); });
-        tables.forEach(t -> { if (t.table != null) i.switchThemeComp.dummy.add(t.table.getTableHeader()); });
-        tables.forEach(t -> { if (t.table != null) i.switchThemeComp.dummy.add(t.table); });
 
         // hide them
         if (label != null) label.setVisible(false);

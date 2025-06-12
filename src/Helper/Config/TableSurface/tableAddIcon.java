@@ -1,4 +1,4 @@
-package Helper.Config;
+package Helper.Config.TableSurface;
 
 import java.awt.Color;
 import java.awt.Component;

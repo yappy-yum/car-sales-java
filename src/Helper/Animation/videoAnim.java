@@ -71,6 +71,7 @@ public class videoAnim {
         });
     }
 
+
     public void start() {
         if (!isAnimating) {
             animationStartTime = System.currentTimeMillis();
@@ -99,7 +100,7 @@ public class videoAnim {
     }
             
 
-    public boolean isFullyVisible() {
+    public boolean isInViewPort() {
         JViewport viewport = scrollPane.getViewport();
         Rectangle viewportBounds = viewport.getViewRect();
         Rectangle compBounds = videoPanel.getBounds();

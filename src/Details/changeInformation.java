@@ -2,11 +2,9 @@ package Details;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import Components.SwitchThemeComp;
@@ -14,10 +12,10 @@ import Components.Window;
 import Components.initializer;
 import Helper.blur;
 import Helper.Animation.componentAnim;
-import Helper.Comp.PanelHelper;
 import Helper.Comp.createComp;
 import Helper.Config.roundedBorder;
-import Helper.fileSystem.imageSystem;
+import Helper.Config.PanelConfig.DropdownPanel;
+import Helper.Config.PanelConfig.PanelHelper;
 import Helper.login.Profile;
 import Helper.login.loginComp;
 import Helper.login.loginFill;
@@ -25,7 +23,7 @@ import LoginSystem.storage;
 import LoginSystem.LoginPage.PromptMessage;
 import LoginSystem.LoginPage.Job.JobReadyComp;
 
-public class changeInformation extends JPanel {
+public class changeInformation extends DropdownPanel {
     
     blur blur;
     SwitchThemeComp S;
@@ -68,24 +66,10 @@ public class changeInformation extends JPanel {
         this.readyComp = new JobReadyComp(i);
         this.readyComp.setVisible(true);
 
-        _background();
         _addComp();
         _addCloseAndSubmit();
 
-        S.dummy.add(this);
     }    
-
-    void _background() {
-        setOpaque(false);
-        setLayout(null);
-        setBorder(
-            new roundedBorder(
-                20, 
-                Color.BLACK, 
-                imageSystem._reduceColorTransparency(Color.GRAY, 0.7f)
-            )
-        );
-    }   
 
     /*//////////////////////////////////////////////////////////////
                              add components
@@ -110,30 +94,9 @@ public class changeInformation extends JPanel {
         add(favNum.passwordField);
         add(loading);
 
-        _addToDummy();
-    }
-
-    void _addToDummy() {
-        S.dummy.add(passInstruct.button);
-        S.dummy.add(passInstruct.textArea);
-        S.dummy.add(passInstruct.textBackground);
-        S.dummy.add(password.label);
-        S.dummy.add(password.button);
-        S.dummy.add(password.passwordField);
-        S.dummy.add(PhoneNum.label);
-        S.dummy.add(PhoneNum.textField);
-        S.dummy.add(Username.label);
-        S.dummy.add(Username.textField);
-        S.dummy.add(favText.label);
-        S.dummy.add(favText.button);
-        S.dummy.add(favText.passwordField);
-        S.dummy.add(favNum.label);
-        S.dummy.add(favNum.button);
-        S.dummy.add(favNum.passwordField);
-        S.dummy.add(loading);
-
         _setVisible();
-    }   
+
+    }
 
     /*//////////////////////////////////////////////////////////////
                               set visible
@@ -242,22 +205,14 @@ public class changeInformation extends JPanel {
         close.setVisible(true);
         close.addActionListener(
             _ -> {
-                blur.removeBlur();
-                blur = null;
-                PanelHelper.clear(this);
-                SwingUtilities.invokeLater(() -> { 
-                    try {
-                        classToInteractWith
-                                .getClass()
-                                .getMethod("_removeChanges")
-                                .invoke(classToInteractWith);
-                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                        e.printStackTrace(); 
-                    }
-                });
+                PanelHelper.clear(
+                    blur, 
+                    this, 
+                    classToInteractWith,
+                    "_removeChanges"
+                );
             }
         );
-        S.dummy.add(close);
         add(close);
 
         submit = createComp.createJButton(
@@ -270,7 +225,6 @@ public class changeInformation extends JPanel {
         );
         submit.setVisible(true);
         submit.addActionListener( _ -> { _checkDetails(); } );
-        S.dummy.add(submit);
         add(submit);
     }
 

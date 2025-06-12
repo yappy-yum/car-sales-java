@@ -143,5 +143,7 @@ public class blur {
         frame.setContentPane(oriContent);
         frame.revalidate();
         frame.repaint();
+
+        oriContent = null;
     }
 }

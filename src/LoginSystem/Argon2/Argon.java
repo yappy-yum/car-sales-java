@@ -54,15 +54,8 @@ public class Argon {
     public class Hash {
         Argon2 argon = Argon2Factory.create();
 
-        public String HashIt(String text) {
-            return _hash(text);
-        }
-        
-        public String HashIt(int integer) {
-            return _hash(
-                String.valueOf(integer)
-            );
-        }
+        public String HashIt(String text) {return _hash(text);}
+        public String HashIt(int integer) {return _hash(String.valueOf(integer));}
 
         /**
          * verify the login credentials 

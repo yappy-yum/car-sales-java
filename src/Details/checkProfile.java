@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
@@ -17,10 +16,11 @@ import Components.Window;
 import Components.initializer;
 import Helper.blur;
 import Helper.Animation.componentAnim;
-import Helper.Comp.PanelHelper;
 import Helper.Comp.createComp;
 import Helper.Comp.helpStoreComp;
 import Helper.Config.roundedBorder;
+import Helper.Config.PanelConfig.DropdownPanel;
+import Helper.Config.PanelConfig.PanelHelper;
 import Helper.fileSystem.ImageUploader;
 import Helper.fileSystem.fontSystem;
 import Helper.fileSystem.imageSystem;
@@ -28,7 +28,7 @@ import Helper.login.Profile;
 import Inventory.stockDetails;
 import LoginSystem.storage;
 
-public class checkProfile extends JPanel {
+public class checkProfile extends DropdownPanel {
     
     blur blur;
     Window window;
@@ -67,28 +67,11 @@ public class checkProfile extends JPanel {
         this.i = i;
         this.user = user;
 
-        _background();              _addX();               _logout();          
+        /* _background(); */        _addX();               _logout();          
         _changeInformation();       _deleteAccount();      _switchButton();
         _addHeader();               _verify();             _addInformation();
         _CarDetails();              _addComp();
 
-        S.dummy.add(this);
-    }
-
-    /*//////////////////////////////////////////////////////////////
-                           JPanel Background
-    //////////////////////////////////////////////////////////////*/
-    
-    void _background() {
-        setOpaque(false);
-        setLayout(null);
-        setBorder(
-            new roundedBorder(
-                20, 
-                Color.BLACK, 
-                imageSystem._reduceColorTransparency(Color.GRAY, 0.7f)
-            )
-        );
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -255,9 +238,7 @@ public class checkProfile extends JPanel {
                     i.isLogin.currentProfile = null;
                     i.isLogin.isLogin = false;
 
-                    blur.removeBlur();
-                    blur = null;
-                    PanelHelper.clear(this);
+                    PanelHelper.clear(blur, this);
                     SwingUtilities.invokeLater(() -> window._loadFrontPage());
                 }
             );
@@ -382,20 +363,20 @@ public class checkProfile extends JPanel {
     
     void _addComp() {
 
-        if (EditButton != null) add(EditButton); S.dummy.add(EditButton);
-        if (LogoutButton != null) add(LogoutButton); S.dummy.add(LogoutButton);
-        if (VerifyButton != null) add(VerifyButton); S.dummy.add(VerifyButton);
-        if (DeleteButton != null) add(DeleteButton); S.dummy.add(DeleteButton);
+        if (EditButton != null) add(EditButton); 
+        if (LogoutButton != null) add(LogoutButton);
+        if (VerifyButton != null) add(VerifyButton);
+        if (DeleteButton != null) add(DeleteButton);
 
-        if (header != null) add(header); S.dummy.add(header);
-        if (closeButton != null) add(closeButton); S.dummy.add(closeButton);
-        if (LeftInfo != null) add(LeftInfo); S.dummy.add(LeftInfo);
-        if (RightPFP != null) add(RightPFP); S.dummy.add(RightPFP);
-        if (RightInfo != null) add(RightInfo); S.dummy.add(RightInfo);
+        if (header != null) add(header); 
+        if (closeButton != null) add(closeButton); 
+        if (LeftInfo != null) add(LeftInfo); 
+        if (RightPFP != null) add(RightPFP);
+        if (RightInfo != null) add(RightInfo); 
 
-        if (SwitchToCar != null) add(SwitchToCar); S.dummy.add(SwitchToCar);
-        if (SwitchToProfile != null) add(SwitchToProfile); S.dummy.add(SwitchToProfile);
-        if (CarDetails.size() > 0) CarDetails.stream().forEach(i -> { add(i); S.dummy.add(i); });
+        if (SwitchToCar != null) add(SwitchToCar); 
+        if (SwitchToProfile != null) add(SwitchToProfile);
+    if (CarDetails.size() > 0) CarDetails.stream().forEach(i -> { add(i); });
 
         _setProfileVisible(true);
         _setCarVisible(false);
@@ -425,7 +406,7 @@ public class checkProfile extends JPanel {
                           Component Clearance
     //////////////////////////////////////////////////////////////*/    
 
-    public void _removeChanges() { PanelHelper.clear(change); change = null; }
+    public void _removeChanges() {remove(change); change = null; }
 
     void _promptChanges() {
         change = new changeInformation(i, window, this);
@@ -444,9 +425,9 @@ public class checkProfile extends JPanel {
         );
     }
 
-    public void _removeVerify() { PanelHelper.clear(i.Verify); }
+    public void _removeVerify() { remove(i.Verify); i.Verify = null; }
 
-    public void _removeEverything() { PanelHelper.clear(i.Deletion); }
+    public void _removeEverything() { remove(i.Deletion); i.Deletion = null; }
 
     void _promptVerify() {
         helpStoreComp._startDropDown(
@@ -467,9 +448,7 @@ public class checkProfile extends JPanel {
     }
 
     public void _close() {
-        blur.removeBlur();
-        blur = null;
-        PanelHelper.clear(this);
+        PanelHelper.clear(blur, this);
         SwingUtilities.invokeLater(
             () -> {
                 if (i.component != null) window._loadFrontPage();
@@ -480,9 +459,7 @@ public class checkProfile extends JPanel {
     }
 
     public void _closeEverything() {
-        blur.removeBlur();
-        blur = null;
-        PanelHelper.clear(this);
+        PanelHelper.clear(blur, this);
         SwingUtilities.invokeLater( () -> { window._loadFrontPage(); } );
     }
 

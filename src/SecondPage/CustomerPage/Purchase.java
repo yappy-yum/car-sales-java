@@ -3,11 +3,7 @@ package SecondPage.CustomerPage;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.RenderingHints;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -27,18 +23,19 @@ import Comment.__init__;
 import Components.Window;
 import Components.initializer;
 import Details.checkProfile;
-import Helper.Comp.PanelHelper;
 import Helper.Comp.createComp;
 import Helper.Comp.helpStoreComp;
 import Helper.Config.BookingConfig;
 import Helper.Config.roundedBorder;
+import Helper.Config.PanelConfig.GradientPanel;
+import Helper.Config.PanelConfig.PanelHelper;
 import Helper.fileSystem.imageSystem;
 import Helper.login.loginComp;
 import Inventory.stockDetails;
 import Inventory.stockInventory;
 import frontPage.isDarkTheme;
 
-public class Purchase extends JPanel {
+public class Purchase extends GradientPanel {
     
     initializer i;
     isDarkTheme isDarkTheme;
@@ -64,7 +61,6 @@ public class Purchase extends JPanel {
         SwingUtilities.invokeLater(() -> {            
             _addAllMenus(); 
             _addTops();
-            i.switchThemeComp.dummy.add(this); 
             PanelHelper.resizeHeightToFit(this); 
 
             searchBar.addKeyListener(new KeyAdapter() {
@@ -78,42 +74,11 @@ public class Purchase extends JPanel {
     }
 
     /*//////////////////////////////////////////////////////////////
-                          background gradient
+                             Parent JPanel
     //////////////////////////////////////////////////////////////*/
-
-    private static final Color BLACK = Color.decode("#1a1919");  
-    private static final Color DARK_BLUE = new Color(25, 25, 128);
-    private static final Color WHITE = Color.decode("#f5e6f3");
-    private static final Color PINK = new Color(255, 192, 203);    
-
-   /*//////////////////////////////////////////////////////////////
-                         paint background theme
-    //////////////////////////////////////////////////////////////*/    
     
     @Override
-    protected void paintComponent(Graphics G) {
-        super.paintComponent(G);
-        Graphics2D G2D = (Graphics2D) G;
-
-        G2D.setRenderingHint(
-            RenderingHints.KEY_ANTIALIASING, 
-            RenderingHints.VALUE_ANTIALIAS_ON
-        );
-
-        // determine the gradient colors
-        Color topColor = isDarkTheme.isDarkTheme ? BLACK : WHITE;
-        Color bottomColor = isDarkTheme.isDarkTheme ? DARK_BLUE : PINK;
-
-        // setup gradient
-        GradientPaint gradient = new GradientPaint(
-            0, 0, topColor, 
-            getWidth(), getHeight(), bottomColor
-        );  
-
-        // apply gradient
-        G2D.setPaint(gradient);
-        G2D.fillRect(0, 0, getWidth(), getHeight());
-    }      
+    public boolean isDarkTheme() { return isDarkTheme.isDarkTheme; }
     
     /*//////////////////////////////////////////////////////////////
                              1. Insert Data
@@ -133,7 +98,6 @@ public class Purchase extends JPanel {
 
                 _addMenuComp(panel, car);
                 _addComp(panel);
-                i.switchThemeComp.dummy.add(panel);
 
                 panel.setVisible(true);
                 panels.add(panel);
@@ -227,8 +191,6 @@ public class Purchase extends JPanel {
 
             panel.add(hi.textArea);
             panel.add(hi.textBackground);
-            i.switchThemeComp.dummy.add(hi.textArea);
-            i.switchThemeComp.dummy.add(hi.textBackground);
 
             StartBook.addMouseListener(new MouseAdapter() {
                 @Override
@@ -416,8 +378,8 @@ public class Purchase extends JPanel {
         );
         logoButton.addActionListener(
             _ -> {
-                panels.stream().forEach(i -> PanelHelper.clear(i));
-                PanelHelper.clear(this);
+                panels.stream().forEach(i -> PanelHelper.clear(null, i));
+                PanelHelper.clear(null, this);
                 W._loadFrontPage();
             }
         );

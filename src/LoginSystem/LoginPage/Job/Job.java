@@ -6,7 +6,6 @@ import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.StyledDocument;
@@ -16,15 +15,14 @@ import Components.Window;
 import Components.initializer;
 import Helper.blur;
 import Helper.Animation.componentAnim;
-import Helper.Comp.PanelHelper;
 import Helper.Comp.createComp;
-import Helper.Config.roundedBorder;
-import Helper.fileSystem.imageSystem;
+import Helper.Config.PanelConfig.DropdownPanel;
+import Helper.Config.PanelConfig.PanelHelper;
 import Helper.login.Profile;
 import LoginSystem.Argon2.Argon;
 import LoginSystem.LoginPage.PromptMessage;
 
-public class Job extends JPanel {
+public class Job extends DropdownPanel {
 
     SwitchThemeComp S;
     JButton submitButton;
@@ -37,11 +35,18 @@ public class Job extends JPanel {
     Argon.Hash argon = new Argon().new Hash();
 
     Profile.CV CV = new Profile.CV(
-        null, null, null, 
-        null, null, 
-        null, null, 
-        null, null, 
-        null, 0, 0
+        null, 
+        null, 
+        null, 
+        null, 
+        null, 
+        null, 
+        null, 
+        null, 
+        null, 
+        null, 
+        0, 
+        0
     );
 
     /*//////////////////////////////////////////////////////////////
@@ -55,31 +60,13 @@ public class Job extends JPanel {
         this.readyComp = new JobReadyComp(i);
         this.S = i.switchThemeComp;
 
-        _background();
         _addComp();
         _addX();
         _addSubmit();
         _addTextAnnotate();
 
         readyComp.setVisible(true);
-        S.dummy.add(this);
-    }
-
-    /*//////////////////////////////////////////////////////////////
-                           Background JPanel
-    //////////////////////////////////////////////////////////////*/    
-
-    void _background() {
-        setOpaque(false);
-        setLayout(null);
-        setBorder(
-            new roundedBorder(
-                20, 
-                Color.BLACK, 
-                imageSystem._reduceColorTransparency(Color.GRAY, 0.7f)
-            )
-        );
-    }    
+    }  
 
     /*//////////////////////////////////////////////////////////////
                              add to JPanel
@@ -138,63 +125,7 @@ public class Job extends JPanel {
 
         // text annotation
         Arrays.stream(readyComp.annotateIcon).forEach(i -> add(i));
-        _addToDummy();
-    }
-
-    void _addToDummy() {
-        // header
-        S.dummy.add(readyComp.header);
-
-        // Name
-        S.dummy.add(readyComp.FirstName.label);
-        S.dummy.add(readyComp.FirstName.textField);
-        S.dummy.add(readyComp.LastName.label);
-        S.dummy.add(readyComp.LastName.textField);
-        S.dummy.add(readyComp.Username.label);
-        S.dummy.add(readyComp.Username.textField);
-        
-        // Personal Data
-        S.dummy.add(readyComp.PhoneNum.label);
-        S.dummy.add(readyComp.PhoneNum.textField);
-        S.dummy.add(readyComp.Age.label);
-        S.dummy.add(readyComp.Age.textField);
-        S.dummy.add(readyComp.Gender.gender[0]);
-        S.dummy.add(readyComp.Gender.gender[1]);
-        S.dummy.add(readyComp.Gender.gender[2]);
-        S.dummy.add(readyComp.Gender.label[0]);
-        S.dummy.add(readyComp.Gender.label[1]);
-        S.dummy.add(readyComp.Gender.label[2]);
-        S.dummy.add(readyComp.Gender.others);
-
-        // Roles
-        S.dummy.add(readyComp.RolesLabel);
-        S.dummy.add(readyComp.Roles.role[0]);
-        S.dummy.add(readyComp.Roles.role[1]);
-        S.dummy.add(readyComp.Roles.label[0]);
-        S.dummy.add(readyComp.Roles.label[1]);
-
-        // Passwords
-        S.dummy.add(readyComp.PasswordInstructor.button);
-        S.dummy.add(readyComp.PasswordInstructor.textArea);
-        S.dummy.add(readyComp.PasswordInstructor.textBackground);
-        S.dummy.add(readyComp.Password.label);
-        S.dummy.add(readyComp.Password.button);
-        S.dummy.add(readyComp.Password.passwordField);
-        S.dummy.add(readyComp.FavNum.label);
-        S.dummy.add(readyComp.FavNum.button);
-        S.dummy.add(readyComp.FavNum.passwordField);
-        S.dummy.add(readyComp.FavText.label);
-        S.dummy.add(readyComp.FavText.button);
-        S.dummy.add(readyComp.FavText.passwordField);
-
-        // CV
-        S.dummy.add(readyComp.CVLabel);
-        S.dummy.add(readyComp.CVScroll);
-        S.dummy.add(readyComp.loadingLabel);
-
-        // text annotation
-        Arrays.stream(readyComp.annotateIcon).forEach(i -> S.dummy.add(i));
-    }    
+    } 
 
     void _addX() {
         closeButton = createComp.createJButton(
@@ -207,18 +138,10 @@ public class Job extends JPanel {
         closeButton.setVisible(true);
         closeButton.addActionListener(
             _ -> {
-                blur.removeBlur();
-                blur = null;
-                SwingUtilities.invokeLater(
-                    () -> {
-                        PanelHelper.clear(this);
-                        // window._loadFrontPage();
-                        SwingUtilities.invokeLater(() -> { window._loadFrontPage(); });
-                    }
-                );
+                PanelHelper.clear(blur, this);
+                SwingUtilities.invokeLater(() -> { window._loadFrontPage(); });
             }
         );
-        S.dummy.add(closeButton);
         add(closeButton);
     }
 
@@ -240,7 +163,6 @@ public class Job extends JPanel {
                 _checkDetails();
             } 
         );
-        S.dummy.add(submitButton);
         add(submitButton);
     }
 
@@ -270,7 +192,7 @@ public class Job extends JPanel {
         favNum = String.valueOf(readyComp.FavNum.passwordField.getPassword());
         cv = readyComp.CVFillPane.getStyledDocument();
 
-        if (!FirstName.matches("[a-zA-Z]+") || !lastName.matches("[a-zA-Z]+")) {
+        if (!FirstName.matches("[a-zA-Z ]+") || !lastName.matches("[a-zA-Z ]+")) {
             _promptMessage(readyComp.ErrorMessage[0]);
             return;
         }
@@ -358,7 +280,10 @@ public class Job extends JPanel {
         }).start();
     }
 
-    public void _removeMessage() { remove(message); message = null; }
+    public void _removeMessage() { 
+        remove(message); 
+        message = null; 
+    }
 
     void _promptMessage(JLabel text) {
         message = new PromptMessage(i, text, this);

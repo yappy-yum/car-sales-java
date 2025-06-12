@@ -119,26 +119,13 @@ public class componentAnim {
         }
     }
     
-    // private void setupViewportListener() {
-    //     scrollPane.getViewport().addChangeListener(_ -> {
-    //         if (isFullyVisible(targetComponent)) {
-    //             if (!targetComponent.isVisible()) {
-    //                 start(() -> {}); // ✅ Only show when fully visible
-    //             }
-    //         } else if (isFullyOutOfView(targetComponent)) {
-    //             if (targetComponent.isVisible()) {
-    //                 exit(); // ✅ Only hide when completely gone
-    //             }
-    //         }
-    //     });
-    // }
     private void setupViewportListener() {
         viewportListener = _ -> {
             if (isFullyVisible(targetComponent)) {
                 if (!targetComponent.isVisible()) {
                     start(() -> {}); // ✅ Only show when fully visible
                 }
-            } else if (isFullyOutOfView(targetComponent)) {
+            } else if (!isFullyVisible(targetComponent)) {
                 if (targetComponent.isVisible()) {
                     exit(); // ✅ Only hide when completely gone
                 }
@@ -151,17 +138,6 @@ public class componentAnim {
     public void setDuration(int milliseconds) {
         duration = milliseconds;
         setupAnimation();
-    }
-
-    private boolean isFullyOutOfView(Component comp) {
-        JViewport viewport = scrollPane.getViewport();
-        Rectangle viewportBounds = viewport.getViewRect();
-        
-        // 🔥 Ensure we consider exact component position
-        Rectangle compBounds = new Rectangle(comp.getX(), comp.getY(), comp.getWidth(), comp.getHeight());
-        
-        // ✅ Fully out if completely outside viewport
-        return !viewportBounds.intersects(compBounds);
     }
 
     private boolean isFullyVisible(Component comp) {

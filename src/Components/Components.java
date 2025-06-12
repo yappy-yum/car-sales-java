@@ -2,10 +2,11 @@ package Components;
 
 import Helper.Animation.videoAnim;
 import Helper.Animation.componentAnim;
-import Helper.Comp.PanelHelper;
 import Helper.Comp.createJFX;
 import Helper.Comp.createScroll;
 import Helper.Comp.helpStoreComp;
+import Helper.Config.PanelConfig.GradientPanel;
+import Helper.Config.PanelConfig.PanelHelper;
 import Helper.fileSystem.videoSystem;
 import Helper.login.Profile;
 import LoginSystem.isLogin;
@@ -13,11 +14,6 @@ import LoginSystem.LoginPage.Customer.Customer;
 import frontPage.FaQConfig;
 import frontPage.isDarkTheme;
 
-import java.awt.Color;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.util.Collections;
 import java.util.stream.Stream;
 
@@ -33,7 +29,7 @@ import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
-public class Components extends JPanel {
+public class Components extends GradientPanel {
 
     JFrame frame;
     JScrollPane scrollPane;
@@ -43,6 +39,13 @@ public class Components extends JPanel {
     SwitchThemeComp Switch;
     isLogin isLogin;
     Window window;
+
+    /*//////////////////////////////////////////////////////////////
+                             Parent JPanel
+    //////////////////////////////////////////////////////////////*/
+    
+    @Override
+    public boolean isDarkTheme() { return isDarkTheme.isDarkTheme; }
     
     /*//////////////////////////////////////////////////////////////
                               constructor
@@ -57,51 +60,11 @@ public class Components extends JPanel {
         this.window = w;
 
         setLayout(null);
-        Switch.dummy.add(this);
-
     }
 
     public void addScroll(JScrollPane scrollPane) { 
         this.scrollPane = scrollPane; 
-    }
-
-    /*//////////////////////////////////////////////////////////////
-                          background gradient
-    //////////////////////////////////////////////////////////////*/
-
-    private static final Color BLACK = Color.decode("#1a1919");  
-    private static final Color DARK_BLUE = new Color(25, 25, 128);
-    private static final Color WHITE = Color.decode("#f5e6f3");
-    private static final Color PINK = new Color(255, 192, 203);    
-
-   /*//////////////////////////////////////////////////////////////
-                         paint background theme
-    //////////////////////////////////////////////////////////////*/    
-    
-    @Override
-    protected void paintComponent(Graphics G) {
-        super.paintComponent(G);
-        Graphics2D G2D = (Graphics2D) G;
-
-        G2D.setRenderingHint(
-            RenderingHints.KEY_ANTIALIASING, 
-            RenderingHints.VALUE_ANTIALIAS_ON
-        );
-
-        // determine the gradient colors
-        Color topColor = isDarkTheme.isDarkTheme ? BLACK : WHITE;
-        Color bottomColor = isDarkTheme.isDarkTheme ? DARK_BLUE : PINK;
-
-        // setup gradient
-        GradientPaint gradient = new GradientPaint(
-            0, 0, topColor, 
-            getWidth(), getHeight(), bottomColor
-        );  
-
-        // apply gradient
-        G2D.setPaint(gradient);
-        G2D.fillRect(0, 0, getWidth(), getHeight());
-    }       
+    }  
 
     /*//////////////////////////////////////////////////////////////
                             add short wejeo
@@ -171,7 +134,7 @@ public class Components extends JPanel {
         i.videoAnimStorage.addAnim(animation);
     
         scrollPane.getViewport().addChangeListener(_ -> {
-            if (animation.isFullyVisible()) {
+            if (animation.isInViewPort()) {
                 if (!fJfxPanel.isVisible()) animation.start();
             } else {
                 if (fJfxPanel.isVisible()) animation.exit(player);
@@ -179,7 +142,7 @@ public class Components extends JPanel {
         });
     
         SwingUtilities.invokeLater(() -> {
-            if (animation.isFullyVisible()) {
+            if (animation.isInViewPort()) {
                 animation.start();
             } else {
                 fJfxPanel.setVisible(false);
@@ -235,16 +198,16 @@ public class Components extends JPanel {
         
             case 1: 
                 if (isLogin.currentProfile.department == Profile.Department.CUSTOMER) {
-                    PanelHelper.clear(this);
+                    _remove();
                     window._loadPurchasePage();
                 }
                 else if (isLogin.currentProfile.isVerified) {
-                    PanelHelper.clear(this);
+                    _remove();
                     window._loadDBPage();
                 }
         }
     }   
     
-    public void _remove() { PanelHelper.clear(this); }
+    public void _remove() { PanelHelper.clear(null, this); }
 
 }

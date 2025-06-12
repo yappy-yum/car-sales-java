@@ -6,18 +6,17 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import Components.Window;
 import Components.initializer;
 import Helper.blur;
-import Helper.Comp.PanelHelper;
 import Helper.Comp.createComp;
 import Helper.Config.roundedBorder;
-import Helper.fileSystem.imageSystem;
+import Helper.Config.PanelConfig.DropdownPanel;
+import Helper.Config.PanelConfig.PanelHelper;
 
-public class Deletion extends JPanel {
+public class Deletion extends DropdownPanel {
     
     blur blur;
     initializer i;
@@ -30,23 +29,9 @@ public class Deletion extends JPanel {
         this.i = i;
         this.W = W;
 
-        _background();
         _addPermissionText();
         _createButtons();
 
-        i.switchThemeComp.dummy.add(this);
-    }
-
-    void _background() {
-        setOpaque(false);
-        setLayout(null);
-        setBorder(
-            new roundedBorder(
-                20, 
-                Color.BLACK, 
-                imageSystem._reduceColorTransparency(Color.GRAY, 0.7f)
-            )
-        );
     }
 
     void _addPermissionText() {
@@ -59,7 +44,6 @@ public class Deletion extends JPanel {
         );
         label.setVisible(true);
         add(label);
-        i.switchThemeComp.dummy.add(label);
     }
 
     void _createButtons() {
@@ -74,7 +58,6 @@ public class Deletion extends JPanel {
         yesButton.addActionListener(_ -> { _removeEverything(); });
         yesButton.setVisible(true);
         add(yesButton);
-        i.switchThemeComp.dummy.add(yesButton);
 
         JButton noButton = createComp.createJButton(
             "No, Keep It", 
@@ -87,7 +70,6 @@ public class Deletion extends JPanel {
         noButton.addActionListener(_ -> { _removeThisOnly(); });
         noButton.setVisible(true);
         add(noButton);
-        i.switchThemeComp.dummy.add(noButton);
     }
 
     void _removeEverything() {
@@ -103,25 +85,22 @@ public class Deletion extends JPanel {
         i.isLogin.currentProfile = null;
         i.isLogin.isLogin = false;
 
-        blur.removeBlur();
-        blur = null;
-        PanelHelper.clear(this);
-        SwingUtilities.invokeLater(() -> { 
-            try {
-                classToInteractWith
-                        .getClass()
-                        .getMethod("_closeEverything")
-                        .invoke(classToInteractWith);
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-            }     
-        });
+        // PanelHelper.clear(blur, this);
+        // SwingUtilities.invokeLater(() -> { 
+        //     try {
+        //         classToInteractWith
+        //                 .getClass()
+        //                 .getMethod("_closeEverything")
+        //                 .invoke(classToInteractWith);
+        //     } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+        //         e.printStackTrace();
+        //     }     
+        // });
+        PanelHelper.clear(blur, this, classToInteractWith, "_closeEverything");
     }
 
     void _removeThisOnly() {
-        blur.removeBlur();
-        blur = null;
-        PanelHelper.clear(this);
+        PanelHelper.clear(blur, this);
         SwingUtilities.invokeLater(() -> { 
             try {
                 classToInteractWith

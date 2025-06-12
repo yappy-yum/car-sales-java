@@ -1,4 +1,4 @@
-package Helper.Config;
+package Helper.Config.SearchTable;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -15,6 +15,7 @@ import javax.swing.table.TableRowSorter;
 
 import Helper.Comp.createComp;
 import Helper.Comp.createDynamicTable;
+import Helper.Config.roundedBorder;
 import Helper.fileSystem.imageSystem;
 
 /**
@@ -24,6 +25,7 @@ import Helper.fileSystem.imageSystem;
  * @deprecated
  * 
  */
+@Deprecated
 public class SearchDynTable {
     
     public static class createSearchBar {

@@ -4,9 +4,9 @@ import javax.swing.JPanel;
 
 import Components.Window;
 import Components.initializer;
-import SecondPage.AbstractDB.singleTable;
+import SecondPage.AbstractDB.SingleTable;
 
-public class SalesmanDB extends singleTable
+public class SalesmanDB extends SingleTable
 { 
 
     public 
@@ -86,7 +86,6 @@ public class SalesmanDB extends singleTable
             "Unverified Salesman",
             "Verified Salesman"
         );
-        i.switchThemeComp.dummy.add(this);
     } 
 
 }

@@ -7,7 +7,6 @@ import java.time.format.DateTimeFormatter;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
@@ -15,14 +14,14 @@ import Components.SwitchThemeComp;
 import Components.Window;
 import Components.initializer;
 import Helper.blur;
-import Helper.Comp.PanelHelper;
 import Helper.Comp.createComp;
 import Helper.Config.roundedBorder;
-import Helper.fileSystem.imageSystem;
+import Helper.Config.PanelConfig.DropdownPanel;
+import Helper.Config.PanelConfig.PanelHelper;
 import Inventory.stockDetails;
 import Helper.login.Profile;
 
-public class checkCar extends JPanel {
+public class checkCar extends DropdownPanel {
 
     blur blur;
     Window window;
@@ -41,7 +40,6 @@ public class checkCar extends JPanel {
         this.i = i;
         this.CarID = carId;
 
-        _background();
         _addX();
         _addHeader();
         _addLeftInfo();
@@ -53,23 +51,6 @@ public class checkCar extends JPanel {
             i.stockInventory.SearchCarViaID(carId).carDetails.status == stockDetails.CarStatus.BOOKED
         ) _addSetPaidButton();
 
-        S.dummy.add(this);
-    }
-
-    /*//////////////////////////////////////////////////////////////
-                           JPanel Background
-    //////////////////////////////////////////////////////////////*/    
-
-    void _background() {
-        setOpaque(false);
-        setLayout(null);
-        setBorder(
-            new roundedBorder(
-                20, 
-                Color.BLACK, 
-                imageSystem._reduceColorTransparency(Color.GRAY, 0.7f)
-            )
-        );
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -86,14 +67,11 @@ public class checkCar extends JPanel {
         );
         closeButton.setVisible(true);
         closeButton.addActionListener( _ -> { _close(); } );
-        S.dummy.add(closeButton);
         add(closeButton);
     }
 
     void _close() {
-        blur.removeBlur();
-        blur = null;
-        PanelHelper.clear(this);
+        PanelHelper.clear(blur, this);
         SwingUtilities.invokeLater(() -> { window._loadDBPage();});        
     }
 
@@ -110,7 +88,6 @@ public class checkCar extends JPanel {
             Color.BLACK
         );
         header.setVisible(true);
-        S.dummy.add(header);
         add(header);
     }
 
@@ -142,7 +119,6 @@ public class checkCar extends JPanel {
             null, Color.BLACK
         );
         leftInfo.setVisible(true);
-        S.dummy.add(leftInfo);
         add(leftInfo);
     }
 
@@ -159,7 +135,6 @@ public class checkCar extends JPanel {
             250, 200
         );
         rightImage.setVisible(true);
-        S.dummy.add(rightImage);
         add(rightImage);
     }
 
@@ -186,7 +161,6 @@ public class checkCar extends JPanel {
         );
 
         add(ApprovePaymentButton);
-        S.dummy.add(ApprovePaymentButton);
 
         JButton RejectBookingButton = createComp.createJButton(
             "Cancel", 
@@ -204,7 +178,6 @@ public class checkCar extends JPanel {
         );
 
         add(RejectBookingButton);
-        S.dummy.add(RejectBookingButton);
 
     }
 

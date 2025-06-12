@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 
 import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
@@ -14,8 +13,8 @@ import Components.initializer;
 import Helper.blur;
 import Helper.Comp.createComp;
 import Helper.Config.roundedBorder;
+import Helper.Config.PanelConfig.DropdownPanel;
 import Helper.fileSystem.fontSystem;
-import Helper.fileSystem.imageSystem;
 import Helper.login.Profile;
 
 /**
@@ -24,7 +23,7 @@ import Helper.login.Profile;
  * CV they've filled in
  * 
  */
-public class VerifyEmployee extends JPanel {
+public class VerifyEmployee extends DropdownPanel {
 
     initializer i;
     Window w;
@@ -39,26 +38,8 @@ public class VerifyEmployee extends JPanel {
         this.w = w;
         this.blur = new blur(i.frame);
 
-        _background();
         _addX();
         _addProfile(user);
-        i.switchThemeComp.dummy.add(this);
-    }
-
-    /*//////////////////////////////////////////////////////////////
-                               Background
-    //////////////////////////////////////////////////////////////*/     
-
-    void _background() {
-        setOpaque(false);
-        setLayout(null);
-        setBorder(
-            new roundedBorder(
-                20, 
-                Color.BLACK, 
-                imageSystem._reduceColorTransparency(Color.GRAY, 0.7f)
-            )
-        );
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -82,7 +63,6 @@ public class VerifyEmployee extends JPanel {
                 SwingUtilities.invokeLater( () -> { w._loadDBPage(); } );
             }
         );
-        i.switchThemeComp.dummy.add(closeButton);
         add(closeButton);
     }    
 
@@ -112,11 +92,9 @@ public class VerifyEmployee extends JPanel {
         cv.scrollPane.setBounds(500, 20, 380, 450);
 
         info.setVisible(true);
-        i.switchThemeComp.dummy.add(info);
         add(info);
 
         cv.scrollPane.setVisible(true);
-        i.switchThemeComp.dummy.add(cv.scrollPane);
         add(cv.scrollPane);
 
     }

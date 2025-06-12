@@ -4,9 +4,9 @@ import javax.swing.JPanel;
 
 import Components.Window;
 import Components.initializer;
-import SecondPage.AbstractDB.singleTable;
+import SecondPage.AbstractDB.SingleTable;
 
-public class InventoryDB extends singleTable 
+public class InventoryDB extends SingleTable 
 { 
     
     public
@@ -73,7 +73,6 @@ public class InventoryDB extends singleTable
             null,
             null
         );
-        i.switchThemeComp.dummy.add(this);
     }
 
 }

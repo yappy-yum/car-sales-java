@@ -7,7 +7,6 @@ import java.time.format.DateTimeFormatter;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import Components.SwitchThemeComp;
@@ -16,9 +15,10 @@ import Components.initializer;
 import Helper.ErrorMessages;
 import Helper.blur;
 import Helper.Animation.componentAnim;
-import Helper.Comp.PanelHelper;
 import Helper.Comp.createComp;
 import Helper.Config.roundedBorder;
+import Helper.Config.PanelConfig.DropdownPanel;
+import Helper.Config.PanelConfig.PanelHelper;
 import Helper.fileSystem.ImageUploader;
 import Helper.fileSystem.fontSystem;
 import Helper.fileSystem.imageSystem;
@@ -27,7 +27,7 @@ import Helper.login.loginFill;
 import Inventory.stockDetails;
 import LoginSystem.LoginPage.PromptMessage;
 
-public class AddCar extends JPanel {
+public class AddCar extends DropdownPanel {
 
     initializer i;
     SwitchThemeComp S;
@@ -72,29 +72,11 @@ public class AddCar extends JPanel {
         this.S = i.switchThemeComp;
         this.blur = new blur(i.frame);
 
-        _background();
         _addRightInsertImage();
         _addSubmitCloseButton();
         _addComp();
         _setVisible();
 
-        S.dummy.add(this);
-    }
-
-    /*//////////////////////////////////////////////////////////////
-                               Background
-    //////////////////////////////////////////////////////////////*/    
-
-    void _background() {
-        setOpaque(false);
-        setLayout(null);
-        setBorder(
-            new roundedBorder(
-                20, 
-                Color.BLACK, 
-                imageSystem._reduceColorTransparency(Color.GRAY, 0.7f)
-            )
-        );
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -201,33 +183,6 @@ public class AddCar extends JPanel {
         add(CarCost.textField);
         add(CarSellingPrice.label);
         add(CarSellingPrice.textField);
-
-        S.dummy.add(Close);
-        S.dummy.add(Submit);
-
-        // S.dummy.add(BrandLabel);
-        S.dummy.add(Brand);
-
-        // S.dummy.add(ImageLabel);
-        S.dummy.add(Image);
-
-        S.dummy.add(CarBrand.label);
-        S.dummy.add(CarBrand.textField);
-        S.dummy.add(CarFullName.label);
-        S.dummy.add(CarFullName.textField);
-        S.dummy.add(CarLengthInstructor.button);
-        S.dummy.add(CarLengthInstructor.textArea);
-        S.dummy.add(CarLengthInstructor.textBackground);
-        S.dummy.add(CarLength.label);
-        S.dummy.add(CarLength.textField);
-        S.dummy.add(CarHorsePower.label);
-        S.dummy.add(CarHorsePower.textField);
-        S.dummy.add(PayableFrom.label);
-        S.dummy.add(PayableFrom.textField);
-        S.dummy.add(CarCost.label);
-        S.dummy.add(CarCost.textField);
-        S.dummy.add(CarSellingPrice.label);
-        S.dummy.add(CarSellingPrice.textField);
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -380,9 +335,7 @@ public class AddCar extends JPanel {
     //////////////////////////////////////////////////////////////*/    
 
     void _close() {
-        blur.removeBlur();
-        blur = null;
-        PanelHelper.clear(this);
+        PanelHelper.clear(null, this);
         SwingUtilities.invokeLater(() -> { W._loadDBPage(); });
     }
 

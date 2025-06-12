@@ -1,49 +1,49 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "java",
-            "name": "RichTextEditor",
-            "request": "launch",
-            "mainClass": "LoginSystem.LoginPage.Job.RichTextEditor",
-            "projectName": "car-sales-java_ad07ba69"
-        },
-        {
-            "type": "java",
-            "name": "RichTextEditor",
-            "request": "launch",
-            "mainClass": "Helper.login.RichTextEditor",
-            "projectName": "car-sales-java_ad07ba69"
-        },
-        {
-            "type": "java",
-            "name": "RichTextEditor",
-            "request": "launch",
-            "mainClass": "RichTextEditor",
-            "projectName": "car-sales-java_ad07ba69"
-        },
-        {
-            "type": "java",
-            "name": "Current File",
-            "request": "launch",
-            "mainClass": "${file}",
-            "vmArgs": "-cp \"lib/argon2/*;lib/dotenv/dotenv-java-3.2.0.jar;bin\""
-        },
-        {
-            "type": "java",
-            "name": "App",
-            "request": "launch",
-            "mainClass": "App",
-            "projectName": "car-sales-java_ad07ba69",
-            "vmArgs": "-cp \"lib/argon2/*;lib/dotenv/dotenv-java-3.2.0.jar;bin\" --module-path ./lib/javafx-sdk-24/lib --add-modules javafx.controls,javafx.fxml,javafx.media"
-        },
-        {
-            "type": "java",
-            "name": "testArgon",
-            "request": "launch",
-            "mainClass": "loginPage.Argon2.testArgon",
-            "projectName": "car-sales-java_ad07ba69",
-            "vmArgs": "-cp \"lib/argon2/*;bin\" --module-path ./lib/javafx-sdk-24/lib --add-modules javafx.controls,javafx.fxml,javafx.media"
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "RichTextEditor - LoginSystem.LoginPage.Job",
+      "request": "launch",
+      "mainClass": "LoginSystem.LoginPage.Job.RichTextEditor",
+      "projectName": "car-sales-java_ad07ba69"
+    },
+    {
+      "type": "java",
+      "name": "RichTextEditor - Helper.login",
+      "request": "launch",
+      "mainClass": "Helper.login.RichTextEditor",
+      "projectName": "car-sales-java_ad07ba69"
+    },
+    {
+      "type": "java",
+      "name": "RichTextEditor - Root Package",
+      "request": "launch",
+      "mainClass": "RichTextEditor",
+      "projectName": "car-sales-java_ad07ba69"
+    },
+    {
+      "type": "java",
+      "name": "Current File",
+      "request": "launch",
+      "mainClass": "${file}",
+      "projectName": "car-sales-java_ad07ba69"
+    },
+    {
+      "type": "java",
+      "name": "App",
+      "request": "launch",
+      "mainClass": "App",
+      "projectName": "car-sales-java_ad07ba69",
+      "vmArgs": "--module-path ./lib/javafx-sdk-24.0.1/lib --add-modules javafx.controls,javafx.fxml,javafx.media"
+    },
+    {
+      "type": "java",
+      "name": "testArgon",
+      "request": "launch",
+      "mainClass": "loginPage.Argon2.testArgon",
+      "projectName": "car-sales-java_ad07ba69",
+      "vmArgs": "--module-path ./lib/javafx-sdk-24.0.1/lib --add-modules javafx.controls,javafx.fxml,javafx.media"
+    }
+  ]
 }

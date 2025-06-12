@@ -1,6 +1,5 @@
 package LoginSystem.LoginPage.Customer;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.util.Arrays;
 
@@ -17,15 +16,15 @@ import Components.Window;
 import Components.initializer;
 import Helper.blur;
 import Helper.Animation.componentAnim;
-import Helper.Comp.PanelHelper;
-import Helper.Config.roundedBorder;
+import Helper.Config.PanelConfig.DropdownPanel;
+import Helper.Config.PanelConfig.PanelHelper;
 import Helper.fileSystem.imageSystem;
 import Helper.login.Profile;
 import Helper.login.loginComp;
 import LoginSystem.storage;
 import LoginSystem.LoginPage.PromptMessage;
 
-public class Customer extends JPanel {
+public class Customer extends DropdownPanel {
     
     SwitchThemeComp S;
     JScrollPane pane;
@@ -59,7 +58,6 @@ public class Customer extends JPanel {
         this.S = i.switchThemeComp;
 
         background();
-        S.dummy.add(this);
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -79,16 +77,6 @@ public class Customer extends JPanel {
      * 
      */
     protected void background() {
-        setOpaque(false);
-        setLayout(null);
-        setBorder(
-            new roundedBorder(
-                20, 
-                Color.BLACK, 
-                imageSystem._reduceColorTransparency(Color.GRAY, 0.7f)
-            )
-        );
-
         halfNotice();
         _addComp();
     }    
@@ -124,11 +112,9 @@ public class Customer extends JPanel {
         );
         readyComp.close.addActionListener( 
             _ -> {
-                blur.removeBlur();
-                blur = null;
                 readyComp = null;
-                PanelHelper.clear(half);
-                PanelHelper.clear(this);
+                half.removeAll();
+                PanelHelper.clear(blur, this);
                 SwingUtilities.invokeLater(() -> { window._loadFrontPage(); });
             }
         );
@@ -216,7 +202,7 @@ public class Customer extends JPanel {
         phoneNumber = readyComp.RegisterPhoneNum.textField.getText().trim();
         age = readyComp.RegisterAge.textField.getText().trim();
 
-        if (!FirstName.matches("[a-zA-Z]+") || !lastName.matches("[a-zA-Z]+")) {
+        if (!FirstName.matches("[a-zA-Z ]+") || !lastName.matches("[a-zA-Z ]+")) {
             _promptMessage(readyComp.RegisterFirstErrorMessage[0]);
             return;
         }
@@ -491,82 +477,9 @@ public class Customer extends JPanel {
         Arrays.stream(readyComp.RegisterSecondErrorMessage).forEach(i -> add((Component) i));
         Arrays.stream(readyComp.loadingLabel).forEach(i -> add((Component) i));
 
-        _addToDummy();
-
-    } 
-    
-    /**
-     * 1.2 add all the components to the JPanel
-     * 
-     */
-    protected void _addToDummy() {
-        // first page register
-        S.dummy.add(readyComp.FirstPageRegisterLabel);
-        S.dummy.add(readyComp.RegisterFirstName.label);
-        S.dummy.add(readyComp.RegisterFirstName.textField);
-        S.dummy.add(readyComp.RegisterLastName.label);
-        S.dummy.add(readyComp.RegisterLastName.textField);
-        S.dummy.add(readyComp.RegisterUsername.label);
-        S.dummy.add(readyComp.RegisterUsername.textField);
-        S.dummy.add(readyComp.RegisterPhoneNum.label);
-        S.dummy.add(readyComp.RegisterPhoneNum.textField);
-        S.dummy.add(readyComp.RegisterAge.label);
-        S.dummy.add(readyComp.RegisterAge.textField);
-        S.dummy.add(readyComp.FirstRegisterButton);
-
-        // second page register
-        S.dummy.add(readyComp.RegisterGender.gender[0]);
-        S.dummy.add(readyComp.RegisterGender.gender[1]);
-        S.dummy.add(readyComp.RegisterGender.gender[2]);
-        S.dummy.add(readyComp.RegisterGender.label[0]);
-        S.dummy.add(readyComp.RegisterGender.label[1]);
-        S.dummy.add(readyComp.RegisterGender.label[2]);
-        S.dummy.add(readyComp.RegisterGender.others);
-        S.dummy.add(readyComp.RegisterPasswordInstructor.button);
-        S.dummy.add(readyComp.RegisterPasswordInstructor.textArea);
-        S.dummy.add(readyComp.RegisterPasswordInstructor.textBackground);
-        S.dummy.add(readyComp.RegisterPassword.label);
-        S.dummy.add(readyComp.RegisterPassword.button);
-        S.dummy.add(readyComp.RegisterPassword.passwordField);
-        S.dummy.add(readyComp.RegisterFavText.label);
-        S.dummy.add(readyComp.RegisterFavText.button);
-        S.dummy.add(readyComp.RegisterFavText.passwordField);
-        S.dummy.add(readyComp.RegisterFavNum.label);
-        S.dummy.add(readyComp.RegisterFavNum.button);
-        S.dummy.add(readyComp.RegisterFavNum.passwordField);
-        S.dummy.add(readyComp.passwordInstruct);
-        S.dummy.add(readyComp.register);
-
-        // first page login
-        S.dummy.add(readyComp.FirstPageLoginLabel);
-        S.dummy.add(readyComp.LoginUsername.label);
-        S.dummy.add(readyComp.LoginUsername.textField);
-        S.dummy.add(readyComp.LoginPassword.label);
-        S.dummy.add(readyComp.LoginPassword.button);
-        S.dummy.add(readyComp.LoginPassword.passwordField);
-        S.dummy.add(readyComp.login1);
-        S.dummy.add(readyComp.alternative1);
-
-        // second page login
-        S.dummy.add(readyComp.LoginPhoneNumber.label);
-        S.dummy.add(readyComp.LoginPhoneNumber.textField);
-        S.dummy.add(readyComp.LoginFavNum.label);
-        S.dummy.add(readyComp.LoginFavNum.button);
-        S.dummy.add(readyComp.LoginFavNum.passwordField);
-        S.dummy.add(readyComp.LoginFavText.label);
-        S.dummy.add(readyComp.LoginFavText.button);
-        S.dummy.add(readyComp.LoginFavText.passwordField);
-        S.dummy.add(readyComp.login2);
-        S.dummy.add(readyComp.alternative2);
-
-        // error && success message
-        Arrays.stream(readyComp.RegisterFirstErrorMessage).forEach(i -> S.dummy.add((Component) i));
-        Arrays.stream(readyComp.RegisterSecondErrorMessage).forEach(i -> S.dummy.add((Component) i));
-        Arrays.stream(readyComp.loadingLabel).forEach(i -> S.dummy.add((Component) i));
-
         Fill();
 
-    }     
+    }   
 
     /*//////////////////////////////////////////////////////////////
                              Prompt Message

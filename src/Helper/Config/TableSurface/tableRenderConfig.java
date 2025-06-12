@@ -1,4 +1,4 @@
-package Helper.Config;
+package Helper.Config.TableSurface;
 
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.Component;

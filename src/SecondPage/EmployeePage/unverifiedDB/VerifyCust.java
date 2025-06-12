@@ -6,7 +6,6 @@ import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
@@ -15,8 +14,8 @@ import Components.initializer;
 import Helper.blur;
 import Helper.Comp.createComp;
 import Helper.Config.roundedBorder;
+import Helper.Config.PanelConfig.DropdownPanel;
 import Helper.fileSystem.fontSystem;
-import Helper.fileSystem.imageSystem;
 import Helper.login.Profile;
 
 /**
@@ -25,7 +24,7 @@ import Helper.login.Profile;
  * document verification
  * 
  */
-public class VerifyCust extends JPanel {
+public class VerifyCust extends DropdownPanel {
     
     initializer i;
     String user;
@@ -45,27 +44,9 @@ public class VerifyCust extends JPanel {
         this.user = user;
         this.blur = new blur(i.frame);
 
-        _background();
         _addX();
         _addProfile(Face, Docs, profile);
-        i.switchThemeComp.dummy.add(this);
 
-    }
-
-    /*//////////////////////////////////////////////////////////////
-                               Background
-    //////////////////////////////////////////////////////////////*/    
-
-    void _background() {
-        setOpaque(false);
-        setLayout(null);
-        setBorder(
-            new roundedBorder(
-                20, 
-                Color.BLACK, 
-                imageSystem._reduceColorTransparency(Color.GRAY, 0.7f)
-            )
-        );
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -89,7 +70,6 @@ public class VerifyCust extends JPanel {
                 SwingUtilities.invokeLater( () -> { w._loadDBPage(); } );
             }
         );
-        i.switchThemeComp.dummy.add(closeButton);
         add(closeButton);
     }
 
@@ -124,15 +104,12 @@ public class VerifyCust extends JPanel {
         );
 
         info.setVisible(true);
-        i.switchThemeComp.dummy.add(info);
         add(info);
 
         docId.setVisible(true);
-        i.switchThemeComp.dummy.add(docId);
         add(docId);
 
         face.setVisible(true);
-        i.switchThemeComp.dummy.add(face);
         add(face);
 
     }

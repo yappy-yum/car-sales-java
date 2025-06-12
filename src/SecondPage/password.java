@@ -5,24 +5,23 @@ import java.awt.Font;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import Components.SwitchThemeComp;
 import Components.Window;
 import Components.initializer;
 import Helper.blur;
-import Helper.Comp.PanelHelper;
 import Helper.Comp.createComp;
 import Helper.Comp.helpStoreComp;
 import Helper.Config.roundedBorder;
-import Helper.fileSystem.imageSystem;
+import Helper.Config.PanelConfig.DropdownPanel;
+import Helper.Config.PanelConfig.PanelHelper;
 import Helper.login.Profile;
 import Helper.login.loginFill;
 import LoginSystem.storage;
 import SecondPage.EmployeePage.unverifiedDB.VerifyCust;
 
-public class password extends JPanel {
+public class password extends DropdownPanel {
 
     blur blur;
     initializer i;
@@ -48,27 +47,9 @@ public class password extends JPanel {
         this.username = username;
         this.storage = i.storage;
 
-        _background();
         _createButtons();
         _addComp();
 
-        S.dummy.add(this);
-    }
-
-    /*//////////////////////////////////////////////////////////////
-                               Background
-    //////////////////////////////////////////////////////////////*/    
-
-    void _background() {
-        setOpaque(false);
-        setLayout(null);
-        setBorder(
-            new roundedBorder(
-                20,
-                Color.BLACK,
-                imageSystem._reduceColorTransparency(Color.GRAY, 0.7f)
-            )
-        );
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -88,11 +69,6 @@ public class password extends JPanel {
         add(check);
         add(close);
 
-        S.dummy.add(Password.label);
-        S.dummy.add(Password.button);
-        S.dummy.add(Password.passwordField);
-        S.dummy.add(check);
-        S.dummy.add(close);
     }
 
     void _createButtons() {
@@ -118,9 +94,7 @@ public class password extends JPanel {
     }
 
     void _close() {
-        blur.removeBlur();
-        blur = null;
-        PanelHelper.clear(this);
+        PanelHelper.clear(blur, this);
     }
 
     void _checkPassword() {
@@ -136,10 +110,6 @@ public class password extends JPanel {
             () -> i.VerifyCust,
             1000, 500
         );
-
-        // System.out.println("start removing password");
-        // _close();
-        // System.out.println("password removed successfull");
 
     }
 

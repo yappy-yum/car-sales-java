@@ -1,5 +1,7 @@
 package Components;
 
+import java.time.Clock;
+
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
@@ -42,9 +44,9 @@ public class initializer
     public isDarkTheme isDarkTheme = new isDarkTheme();
     public Argon Argon = new Argon();
     public storage storage = new storage();
-    public schedule schedule = new schedule(storage::_incAge);
+    public schedule schedule = new schedule(storage::_incAge, Clock.systemDefaultZone());
     public CarIDGenerator CarIDGenerator = new CarIDGenerator();
-    public stockInventory stockInventory = new stockInventory(this);
+    public stockInventory stockInventory = new stockInventory();
     public SaveComp SaveComp = new SaveComp();
     
     public JScrollPane scrollPane;                          public Components component;

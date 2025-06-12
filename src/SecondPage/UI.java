@@ -2,23 +2,19 @@ package SecondPage;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import Comment.__init__;
 import Components.Window;
 import Components.initializer;
-import Helper.Comp.PanelHelper;
 import Helper.Comp.helpStoreComp;
 import Helper.Config.roundedBorder;
+import Helper.Config.PanelConfig.GradientPanel;
+import Helper.Config.PanelConfig.PanelHelper;
 import Helper.fileSystem.imageSystem;
 import Helper.login.Profile;
 import SecondPage.EmployeePage.verifiedDB.CustomerDB;
@@ -27,7 +23,7 @@ import SecondPage.EmployeePage.verifiedDB.ManagerDB;
 import SecondPage.EmployeePage.verifiedDB.SalesmanDB;
 import Details.checkProfile;
 
-public class UI extends JPanel {
+public class UI extends GradientPanel {
 
     /*//////////////////////////////////////////////////////////////
                                  images
@@ -47,51 +43,20 @@ public class UI extends JPanel {
     JScrollPane scroll;
 
     public UI(initializer i, Window w) { this.i = i; this.w = w; }
-    public void _setScroll(JScrollPane scroll) { this.scroll = scroll; _init_(); i.switchThemeComp.dummy.add(this); }
+    public void _setScroll(JScrollPane scroll) { this.scroll = scroll; _init_(); }
 
     /*//////////////////////////////////////////////////////////////
-                          background gradient
+                             Parent JPanel
     //////////////////////////////////////////////////////////////*/
-
-    private static final Color BLACK = Color.decode("#1a1919");  
-    private static final Color DARK_BLUE = new Color(25, 25, 128);
-    private static final Color WHITE = Color.decode("#f5e6f3");
-    private static final Color PINK = new Color(255, 192, 203);    
-
-   /*//////////////////////////////////////////////////////////////
-                         paint background theme
-    //////////////////////////////////////////////////////////////*/    
     
     @Override
-    protected void paintComponent(Graphics G) {
-        super.paintComponent(G);
-        Graphics2D G2D = (Graphics2D) G;
-
-        G2D.setRenderingHint(
-            RenderingHints.KEY_ANTIALIASING, 
-            RenderingHints.VALUE_ANTIALIAS_ON
-        );
-
-        // determine the gradient colors
-        Color topColor = i.isDarkTheme.isDarkTheme ? BLACK : WHITE;
-        Color bottomColor = i.isDarkTheme.isDarkTheme ? DARK_BLUE : PINK;
-
-        // setup gradient
-        GradientPaint gradient = new GradientPaint(
-            0, 0, topColor, 
-            getWidth(), getHeight(), bottomColor
-        );  
-
-        // apply gradient
-        G2D.setPaint(gradient);
-        G2D.fillRect(0, 0, getWidth(), getHeight());
-    }       
+    public boolean isDarkTheme() { return i.isDarkTheme.isDarkTheme; }
 
     /*//////////////////////////////////////////////////////////////
                             JPanel Settings
     //////////////////////////////////////////////////////////////*/    
 
-    void _init_() { setLayout(null); _addTopParts(); i.switchThemeComp.dummy.add(this); } 
+    void _init_() { setLayout(null); _addTopParts(); } 
     
     /*//////////////////////////////////////////////////////////////
                                 Top Part
@@ -112,11 +77,10 @@ public class UI extends JPanel {
         );
         companyLogo.addActionListener(
             _ -> { 
-                PanelHelper.clear(this); 
+                PanelHelper.clear(null, this); 
                 SwingUtilities.invokeLater(() -> { w._loadFrontPage(); });
             }
         );
-        i.switchThemeComp.dummy.add(companyLogo);
 
         // right side - profile pic
         JButton profilePic = helpStoreComp.addJButton(
@@ -139,7 +103,6 @@ public class UI extends JPanel {
                 );
             }
         );
-        i.switchThemeComp.dummy.add(profilePic);
 
         // right side - theme icon
         _helpAddThemeIcon(1070, 20);
@@ -191,7 +154,6 @@ public class UI extends JPanel {
             new String[] {"Username", "First Name", "Last Name", "Gender", "Age"},
             new String[] {"Username", "First Name", "Last Name", "Gender", "Age", "Approve", "Reject"}
         );
-        i.switchThemeComp.dummy.add(i.CustomerDB);
     }
     
     void _initializeSalesman() {
@@ -204,7 +166,6 @@ public class UI extends JPanel {
             new String[] {"Username", "First Name", "Last Name", "Gender", "Age"},
             new String[] {"Username", "First Name", "Last Name", "Gender", "Age", "Approve", "Reject"}
         );
-        i.switchThemeComp.dummy.add(i.SalesmanDB);
     }
 
     void _initializeManager() {
@@ -217,7 +178,6 @@ public class UI extends JPanel {
             new String[] {"Username", "First Name", "Last Name", "Gender", "Age"},
             new String[] {"Username", "First Name", "Last Name", "Gender", "Age", "Approve", "Reject"}
         );
-        i.switchThemeComp.dummy.add(i.ManagerDB);
     }
 
     void _initializeInventory() {
@@ -229,7 +189,6 @@ public class UI extends JPanel {
             null,
             new String[] {"Car ID", "logo", "Car Name", "Status", "Account Payable", "Account Receivable"}
         );
-        i.switchThemeComp.dummy.add(i.InventoryDB);
     }
 
     /*//////////////////////////////////////////////////////////////

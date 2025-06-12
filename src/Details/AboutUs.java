@@ -6,18 +6,17 @@ import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import Components.SwitchThemeComp;
 import Components.Window;
 import Components.initializer;
 import Helper.blur;
-import Helper.Comp.PanelHelper;
 import Helper.Comp.createComp;
 import Helper.Config.roundedBorder;
-import Helper.fileSystem.imageSystem;
+import Helper.Config.PanelConfig.DropdownPanel;
+import Helper.Config.PanelConfig.PanelHelper;
 
-public class AboutUs extends JPanel {
+public class AboutUs extends DropdownPanel {
 
     blur blur;
     initializer i;
@@ -34,28 +33,10 @@ public class AboutUs extends JPanel {
         this.window = window;
         this.S = i.switchThemeComp;
 
-        _background();
         _addHeader();
         _addText();
         _addX();
 
-        S.dummy.add(this);
-    }
-
-    /*//////////////////////////////////////////////////////////////
-                           JPanel Background
-    //////////////////////////////////////////////////////////////*/    
-
-    void _background() {
-        setOpaque(false);
-        setLayout(null);
-        setBorder(
-            new roundedBorder(
-                20, 
-                Color.BLACK, 
-                imageSystem._reduceColorTransparency(Color.GRAY, 0.7f)
-            )
-        );
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -72,8 +53,11 @@ public class AboutUs extends JPanel {
         );
         textLabel.setVisible(true);
         add(textLabel);
-        S.dummy.add(textLabel);
     }
+
+    /*//////////////////////////////////////////////////////////////
+                               Body Texts
+    //////////////////////////////////////////////////////////////*/    
 
     void _addText() {
         String htmlText = """
@@ -107,8 +91,11 @@ public class AboutUs extends JPanel {
         editorPane.setFocusable(false);
 
         add(editorPane);
-        S.dummy.add(editorPane);
     }
+
+    /*//////////////////////////////////////////////////////////////
+                                 Close
+    //////////////////////////////////////////////////////////////*/    
 
     void _addX() {
         JButton closeButton = createComp.createJButton(
@@ -121,14 +108,11 @@ public class AboutUs extends JPanel {
         closeButton.setVisible(true);
         closeButton.addActionListener(
             _ -> {
-                blur.removeBlur();
-                blur = null;
-                PanelHelper.clear(this);
+                PanelHelper.clear(null, this);
                 window._loadFrontPage();
             }
         );
         add(closeButton);
-        S.dummy.add(closeButton);
     }
 
 

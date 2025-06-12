@@ -19,8 +19,17 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.function.Supplier;
 
+/**
+ * 
+ * Helper to create the comment JLabel components
+ * 
+ */
 public class ComConfig 
 {
+
+    /*//////////////////////////////////////////////////////////////
+                             JLabel Header
+    //////////////////////////////////////////////////////////////*/    
 
     public static class createHeader {
 
@@ -67,8 +76,10 @@ public class ComConfig
     public static JTextField CreateInput() {
         return createComp.createJTextField
         (
-            20, 100, 
-            600, 50, 
+            20, 
+            100, 
+            600, 
+            50, 
             new Font("Arial", Font.BOLD, 18), 
             new roundedBorder(10, Color.BLACK, null), 
             Color.BLACK
@@ -102,8 +113,8 @@ public class ComConfig
     }
 
     /*//////////////////////////////////////////////////////////////
-                              Append Texts
-    //////////////////////////////////////////////////////////////*/    
+                             Append Action
+    //////////////////////////////////////////////////////////////*/   
 
     public static class SubmitAction {
 
@@ -128,11 +139,9 @@ public class ComConfig
                             stockDetails.transactDetails _Car = _CarSupplier.get();
                             if (_Car == null) return;
 
-                            System.out.println("Car name being appended: " + _Car.carDetails.carName);
                             String text = input.getText().trim();
 
-                            if (!text.isEmpty()) 
-                            {
+                            if (!text.isEmpty()) {
                                 try 
                                 {
                                     output
@@ -174,6 +183,10 @@ public class ComConfig
 
     }
 
+    /*//////////////////////////////////////////////////////////////
+                       Helper: Header Text Config
+    //////////////////////////////////////////////////////////////*/    
+
     protected static JLabel HeaderLabelConfig(stockDetails.transactDetails Car, JLabel header) {
 
         if (!Car.isCommented && Car.carDetails.status == stockDetails.CarStatus.SOLD) {
@@ -192,12 +205,24 @@ public class ComConfig
 
     }
 
+    /*//////////////////////////////////////////////////////////////
+                         Helper: Loop Next Car
+    //////////////////////////////////////////////////////////////*/    
+
     protected static class LoopCommentRenew {
 
         JLabel DummyLabel;
         String CarID;
 
-        protected LoopCommentRenew(initializer i, String carId, JTextField input, JLabel Header) {
+        protected LoopCommentRenew
+                            (
+                                initializer i, 
+                                String carId, 
+                                JTextField input, 
+                                JLabel Header
+                            ) 
+                            
+        {
 
             List<stockDetails.transactDetails> Transact = i.stockInventory.SearchCarViaUsername(i.isLogin.currentProfile.username);
             if (Transact == null) return;
@@ -219,10 +244,8 @@ public class ComConfig
 
             } 
 
-            System.out.println("Dummy executed");
             DummyLabel = new JLabel();
             DummyLabel.setText("Comment");
-            
             input.setEditable(false);
 
         }

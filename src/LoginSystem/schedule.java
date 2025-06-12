@@ -1,5 +1,6 @@
 package LoginSystem;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.concurrent.Executors;
@@ -15,22 +16,29 @@ public class schedule {
     
     private final Runnable _incAge;
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    private final Clock clock;
 
-    public schedule(Runnable _incAge) {
+    public schedule(Runnable _incAge, Clock clock) {
         this._incAge = _incAge;
+        this.clock = clock;
+        start();
     }
 
     public void start() {
         scheduler.scheduleAtFixedRate(() -> {
-            LocalDate date = LocalDate.now();
-            LocalTime time = LocalTime.now();
+            LocalDate date = LocalDate.now(clock);
+            LocalTime time = LocalTime.now(clock);
 
-            if (
+            if 
+            (
                 date.getMonthValue() == 1 && 
                 date.getDayOfMonth() == 1 && 
                 time.getHour() == 0 && 
                 time.getMinute() == 0
-            ) _incAge.run();
+            ) 
+            {
+                _incAge.run();
+            }
             
         }, 0, 1, TimeUnit.MINUTES);
     }
