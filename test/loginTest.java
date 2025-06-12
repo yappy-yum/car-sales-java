@@ -25,7 +25,7 @@ public class loginTest {
     //////////////////////////////////////////////////////////////*/    
 
     @BeforeEach
-    void setUp() { storage = new storage(); }
+    void setUp() { storage = new storage(); System.setProperty("java.awt.headless", "true"); }
 
     /* ------------------ Password ------------------ */
 
